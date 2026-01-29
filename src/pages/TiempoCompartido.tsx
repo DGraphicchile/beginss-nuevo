@@ -3,6 +3,7 @@ import { Clock, Users, Heart, Sparkles, Gift } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 
 interface TiempoOferta {
   id: string;
@@ -110,6 +111,7 @@ export default function TiempoCompartido() {
   ];
 
   return (
+    <RequireAuth title="Tiempo compartido" sectionName="tiempo compartido">
     <div className="min-h-screen bg-white">
       {/* HEADER / HERO con imagen de fondo y texto blanco */}
       <section
@@ -374,5 +376,6 @@ export default function TiempoCompartido() {
         </div>
       )}
     </div>
+    </RequireAuth>
   );
 }

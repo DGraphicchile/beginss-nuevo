@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/AuthContext';
 import { ToastProvider } from './lib/ToastContext';
 import ToastContainer from './components/Toast';
+import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import OnboardingModal from './components/OnboardingModal';
@@ -32,6 +33,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       <div className="min-h-screen bg-[#FAF7F2]">
         <Navbar />
         <Routes>

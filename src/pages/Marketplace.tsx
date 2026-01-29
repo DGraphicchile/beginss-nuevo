@@ -9,6 +9,7 @@ import Badge from '../components/Badge';
 import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 
 interface Product extends MarketplaceListing {
   profiles?: {
@@ -335,6 +336,7 @@ export default function Marketplace() {
   });
 
   return (
+    <RequireAuth title="Marketplace" sectionName="marketplace">
     <div className="min-h-screen">
       <section className="relative min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh] pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh]">
@@ -1166,5 +1168,6 @@ export default function Marketplace() {
         </div>
       )}
     </div>
+    </RequireAuth>
   );
 }

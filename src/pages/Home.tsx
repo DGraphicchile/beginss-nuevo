@@ -4,6 +4,8 @@ import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
 import { useAuth } from '../lib/AuthContext';
 
+const APP_DOWNLOAD_URL = import.meta.env.VITE_APP_DOWNLOAD_URL || '';
+
 export default function Home() {
   const { user } = useAuth();
   const valores = [
@@ -183,19 +185,25 @@ export default function Home() {
           <Button variant="cta" className="px-8 py-3 text-base sm:text-lg">
             Crear mi perfil Beginss
           </Button>
-          <Button
-            variant="outlined"
-            className="px-8 py-3 text-base sm:text-lg !bg-white !border-[#2D5444] !text-[#2D5444] hover:!bg-[#2D5444] hover:!text-white"
-          >
-            Descargar la app
-          </Button>
+          {APP_DOWNLOAD_URL && (
+            <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="outlined"
+                className="px-8 py-3 text-base sm:text-lg !bg-white !border-[#2D5444] !text-[#2D5444] hover:!bg-[#2D5444] hover:!text-white"
+              >
+                Descargar la app
+              </Button>
+            </a>
+          )}
         </div>
       )}
 
-      {/* Mensaje de disponibilidad */}
-      <p className="mt-6 text-center text-sm text-[#6E6E6E] italic">
-        App disponible muy pronto
-      </p>
+      {/* Mensaje de disponibilidad - solo si aún no hay URL de descarga */}
+      {!APP_DOWNLOAD_URL && (
+        <p className="mt-6 text-center text-sm text-[#6E6E6E] italic">
+          App disponible muy pronto
+        </p>
+      )}
 
     </div>
   </div>

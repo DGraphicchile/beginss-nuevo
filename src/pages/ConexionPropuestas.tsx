@@ -4,6 +4,7 @@ import { Users, MapPin, Heart, Sparkles, Clock, User, Phone } from 'lucide-react
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { Profile } from '../lib/supabase';
@@ -127,6 +128,7 @@ export default function ConexionPropuestas() {
   };
 
   return (
+    <RequireAuth title="Conexión y propuestas" sectionName="conexión y propuestas">
     <div className="min-h-screen bg-white">
       {/* HERO con imagen */}
       <section
@@ -307,5 +309,6 @@ export default function ConexionPropuestas() {
       </section>
 
     </div>
+    </RequireAuth>
   );
 }

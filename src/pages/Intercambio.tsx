@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Repeat, Users, Briefcase, Sparkles, Heart, ArrowRight } from 'lucide-react';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 import { useAuth } from '../lib/AuthContext';
 
 export default function Intercambio() {
@@ -28,6 +29,7 @@ export default function Intercambio() {
   ];
 
   return (
+    <RequireAuth title="Intercambio" sectionName="intercambio">
     <div className="min-h-screen">
        <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
   <div className="absolute inset-0">
@@ -194,5 +196,6 @@ export default function Intercambio() {
         </div>
       </section>
     </div>
+    </RequireAuth>
   );
 }

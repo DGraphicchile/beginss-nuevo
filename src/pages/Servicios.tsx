@@ -4,6 +4,7 @@ import { Briefcase, MapPin, Search, Users, Phone } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { Profile } from '../lib/supabase';
@@ -115,6 +116,7 @@ export default function Servicios() {
   const filteredProfiles = userProfiles;
 
   return (
+    <RequireAuth title="Servicios" sectionName="servicios">
     <div className="min-h-screen bg-white">
       {/* HERO con imagen */}
       <section
@@ -287,5 +289,6 @@ export default function Servicios() {
         </div>
       </section>
     </div>
+    </RequireAuth>
   );
 }

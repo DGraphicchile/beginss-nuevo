@@ -3,6 +3,7 @@ import { Repeat, Package, Search, Heart, Sparkles, Users } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import FloatingElements from '../components/FloatingElements';
+import RequireAuth from '../components/RequireAuth';
 
 interface TruequeItem {
   id: string;
@@ -110,6 +111,7 @@ export default function Trueque() {
   ];
 
   return (
+  <RequireAuth title="Trueque" sectionName="trueque">
   <div className="min-h-screen bg-white">
     {/* HERO */}
 <section
@@ -365,5 +367,6 @@ export default function Trueque() {
       </div>
     )}
   </div>
+  </RequireAuth>
 );
 } 
