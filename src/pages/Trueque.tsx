@@ -111,7 +111,7 @@ export default function Trueque() {
   ];
 
   return (
-  <RequireAuth title="Trueque" sectionName="trueque">
+  <RequireAuth title="Trueque" titleKey="auth.sectionNames.trueque" sectionName="trueque">
   <div className="min-h-screen bg-white">
     {/* HERO */}
 <section

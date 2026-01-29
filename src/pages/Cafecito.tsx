@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Heart, MessageCircle, Users, Sparkles, TrendingUp, Coffee, Search, MapPin, Video, Clock, Plus } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import { useToast } from '../lib/ToastContext';
@@ -47,6 +48,7 @@ interface CafecitoEvent {
 }
 
 export default function Cafecito() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { showToast } = useToast();
   const [activeFilter, setActiveFilter] = useState('todos');
@@ -313,16 +315,16 @@ export default function Cafecito() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
               <Coffee className="w-4 h-4 text-[#e74865]" />
-              <span className="text-[#3E6049] text-sm font-semibold">Comunidad activa</span>
+              <span className="text-[#3E6049] text-sm font-semibold">{t('cafecito.hero.badge')}</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-              Zona Cafecito
+              {t('cafecito.hero.title')}
             </h1>
 
             <p className="text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-              Del corazón de una Mujer Beginss a otra: pausa, conexión y creación. Un rincón digital donde bajamos el ritmo para subir la inspiración.{' '}
-              <span className="font-semibold text-[#b2d9d9]">Todo pensado para inspirarte, acompañarte y tejer juntas una red que impulsa sueños y crea impacto real.</span>
+              {t('cafecito.hero.subtitle')}{' '}
+              <span className="font-semibold text-[#b2d9d9]">{t('cafecito.hero.subtitleBold')}</span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Search, ShoppingBag, Leaf, Star, MapPin, Heart, Sparkles, Repeat, ArrowRight, X, Upload, Plus, Phone } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import { useToast } from '../lib/ToastContext';
 import { supabase, MarketplaceListing } from '../lib/supabase';
-import { CIRCULOS_CATEGORIAS, CATEGORIAS_TITULOS } from '../constants/circulos';
+import { CIRCULOS_CATEGORIAS } from '../constants/circulos';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
@@ -21,6 +22,7 @@ interface Product extends MarketplaceListing {
 }
 
 export default function Marketplace() {
+  const { t, i18n } = useTranslation();
   const { user, profile } = useAuth();
   const { showToast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,8 +54,8 @@ export default function Marketplace() {
   });
 
   const categories = [
-    { id: 'todos', label: 'Todos', icon: ShoppingBag },
-    ...CIRCULOS_CATEGORIAS.map((c) => ({ id: c.title, label: c.title, icon: Leaf })),
+    { id: 'todos', label: t('marketplacePage.categoriesAll'), icon: ShoppingBag },
+    ...CIRCULOS_CATEGORIAS.map((c) => ({ id: c.title, label: t(`circulosPage.circles.${c.id}.title`), icon: Leaf })),
   ];
 
   useEffect(() => {
@@ -190,7 +192,7 @@ export default function Marketplace() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
-      showToast('Debes iniciar sesión para publicar un producto', 'warning');
+      showToast(t('marketplacePage.toasts.loginRequired'), 'warning');
       return;
     }
 
@@ -199,7 +201,7 @@ export default function Marketplace() {
       const imageUrls = await uploadImages();
       
       if (imageUrls.length === 0 && formData.images.length > 0) {
-        showToast('Error al subir las imágenes. Intenta de nuevo.', 'error');
+        showToast(t('marketplacePage.toasts.uploadError'), 'error');
         return;
       }
 
@@ -240,7 +242,7 @@ export default function Marketplace() {
 
       if (listingError) {
         console.error('Error creating listing:', listingError);
-        showToast('Error al crear el producto. Intenta de nuevo.', 'error');
+        showToast(t('marketplacePage.toasts.createError'), 'error');
         return;
       }
 
@@ -283,10 +285,10 @@ export default function Marketplace() {
       // Recargar productos
       loadProducts();
       
-      showToast('Producto publicado exitosamente', 'success');
+      showToast(t('marketplacePage.toasts.published'), 'success');
     } catch (error) {
       console.error('Error submitting form:', error);
-      showToast('Error al publicar el producto. Intenta de nuevo.', 'error');
+      showToast(t('marketplacePage.toasts.publishError'), 'error');
     }
   };
 
@@ -308,15 +310,16 @@ export default function Marketplace() {
     });
     setSavingInterest(null);
     if (intErr && intErr.code !== '23505') {
-      showToast('No se pudo registrar tu interés.', 'error');
+      showToast(t('marketplacePage.toasts.interestError'), 'error');
       return;
     }
     setInterestedListingIds((prev) => new Set([...prev, listingId]));
-    showToast('¡Interés guardado! Aparecerá en tu perfil en "Me interesó".', 'success');
+    showToast(t('marketplacePage.toasts.interestSaved'), 'success');
   };
 
+  const priceLocale = i18n.language === 'en' ? 'en-US' : i18n.language === 'pt-BR' ? 'pt-BR' : 'es-CO';
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-CO', {
+    return new Intl.NumberFormat(priceLocale, {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0
@@ -336,7 +339,7 @@ export default function Marketplace() {
   });
 
   return (
-    <RequireAuth title="Marketplace" sectionName="marketplace">
+    <RequireAuth title="Marketplace" titleKey="auth.sectionNames.marketplace" sectionName="marketplace">
     <div className="min-h-screen">
       <section className="relative min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh] pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh]">
@@ -354,17 +357,17 @@ export default function Marketplace() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
               <ShoppingBag className="w-4 h-4 text-[#7CA982]" />
-              <span className="text-[#3E6049] text-sm font-semibold">Marketplace consciente</span>
+              <span className="text-[#3E6049] text-sm font-semibold">{t('marketplacePage.hero.badge')}</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-              Marketplace de{' '}
-              <span className="text-[#b2d9d9]">Mujeres Beginss</span>
+              {t('marketplacePage.hero.title')}{' '}
+              <span className="text-[#b2d9d9]">{t('marketplacePage.hero.titleHighlight')}</span>
             </h1>
 
             <p className="text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-              Cada compra es un acto de apoyo y cada venta, una oportunidad para crecer.{' '}
-              <span className="font-semibold text-[#b2d9d9]">Compra con impacto. Vende con sentido. Crezcamos juntas.</span>
+              {t('marketplacePage.hero.subtitle')}{' '}
+              <span className="font-semibold text-[#b2d9d9]">{t('marketplacePage.hero.subtitleBold')}</span>
             </p>
 
             <div className="max-w-2xl mx-auto mb-8">
@@ -372,7 +375,7 @@ export default function Marketplace() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8E8E8E]" />
                 <input
                   type="text"
-                  placeholder="Busca productos, servicios o emprendedoras..."
+                  placeholder={t('marketplacePage.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:outline-none text-[#5F5F5F] shadow-lg"
@@ -387,11 +390,11 @@ export default function Marketplace() {
                   className="text-lg px-8 py-4"
                   onClick={() => setShowModal(true)}
                 >
-                  Publicar mi producto
+                  {t('marketplacePage.publishProduct')}
                 </Button>
               ) : (
                 <Button variant="primary" className="text-lg px-8 py-4">
-                  Únete para vender
+                  {t('marketplacePage.joinToSell')}
                 </Button>
               )}
             </div>
@@ -415,7 +418,7 @@ export default function Marketplace() {
                 }`}
               >
                 <ShoppingBag className="w-5 h-5" />
-                Marketplace
+                {t('marketplacePage.viewMarketplace')}
               </button>
               <button
                 onClick={() => setViewMode('trueque')}
@@ -426,7 +429,7 @@ export default function Marketplace() {
                 }`}
               >
                 <Repeat className="w-5 h-5" />
-                Trueque
+                {t('marketplacePage.viewTrueque')}
               </button>
             </div>
           </div>
@@ -452,7 +455,7 @@ export default function Marketplace() {
           {/* Productos */}
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-[#6E6E6E]">Cargando productos...</p>
+              <p className="text-[#6E6E6E]">{t('marketplacePage.loadingProducts')}</p>
             </div>
           ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -476,11 +479,11 @@ export default function Marketplace() {
                     )}
                     {product.exchange_mode === 'barter' ? (
                       <div className="absolute top-3 right-3 bg-[#F5C542] text-[#1E1E1E] px-3 py-1 rounded-full text-xs font-semibold">
-                        Trueque
+                        {t('marketplacePage.badgeTrueque')}
                       </div>
                     ) : (
                       <div className="absolute top-3 right-3 bg-[#7CA982] text-[#1E1E1E] px-3 py-1 rounded-full text-xs font-semibold">
-                        Marketplace
+                        {t('marketplacePage.badgeMarketplace')}
                       </div>
                     )}
                   </div>
@@ -493,7 +496,7 @@ export default function Marketplace() {
                         if (n === 0) return null;
                         return (
                           <Badge variant="celeste" className="text-xs">
-                            {n === 1 ? '1 categoría' : `${n} categorías`}
+                            {n === 1 ? t('marketplacePage.oneCategory') : t('marketplacePage.nCategories', { n })}
                           </Badge>
                         );
                       })()}
@@ -535,7 +538,7 @@ export default function Marketplace() {
             <div className="text-center py-12">
               <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-gray-400" />
               <p className="text-lg text-[#6E6E6E]">
-                No hay {viewMode === 'marketplace' ? 'productos' : 'trueques'} disponibles
+                {viewMode === 'marketplace' ? t('marketplacePage.noProducts') : t('marketplacePage.noTrueques')}
               </p>
             </div>
           )}
@@ -558,10 +561,10 @@ export default function Marketplace() {
             className="w-16 h-16 mx-auto mb-6"
           />
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#b2d9d9' }}>
-            ¿Lista para vender o intercambiar?
+            {t('marketplacePage.cta.title')}
           </h2>
           <p className="text-xl mb-8 text-white/90 leading-relaxed">
-            Publica tus productos o servicios y conecta con miles de mujeres que valoran el comercio consciente.
+            {t('marketplacePage.cta.subtitle')}
           </p>
           {user ? (
             <Button 
@@ -569,11 +572,11 @@ export default function Marketplace() {
               className="bg-white text-[#7CA982] hover:bg-gray-50 text-lg px-8 py-4 shadow-2xl"
               onClick={() => setShowModal(true)}
             >
-              Publicar mi primer producto
+              {t('marketplacePage.cta.publishFirst')}
             </Button>
           ) : (
             <Button variant="cta" className="bg-white text-[#7CA982] hover:bg-gray-50 text-lg px-8 py-4 shadow-2xl">
-              Crear cuenta y vender
+              {t('marketplacePage.cta.createAccountSell')}
             </Button>
           )}
         </div>
@@ -608,7 +611,7 @@ export default function Marketplace() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-[2rem] z-10">
-              <h2 className="text-2xl font-bold text-[#1E1E1E]">Publicar producto</h2>
+              <h2 className="text-2xl font-bold text-[#1E1E1E]">{t('marketplacePage.modal.title')}</h2>
               <button
                 onClick={() => {
                   setShowModal(false);
@@ -639,23 +642,23 @@ export default function Marketplace() {
               {/* Selección de tipo */}
               {!productType || productType === null ? (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-4">Selecciona el tipo de producto</h3>
+                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-4">{t('marketplacePage.modal.selectType')}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       onClick={() => setProductType('marketplace')}
                       className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#7CA982] hover:bg-[#7CA982]/5 transition-all text-left"
                     >
                       <ShoppingBag className="w-8 h-8 text-[#7CA982] mb-3" />
-                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">Marketplace</h4>
-                      <p className="text-gray-600">Venta de productos y servicios</p>
+                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.marketplaceLabel')}</h4>
+                      <p className="text-gray-600">{t('marketplacePage.modal.marketplaceDesc')}</p>
                     </button>
                     <button
                       onClick={() => setProductType('trueque')}
                       className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#F5C542] hover:bg-[#F5C542]/5 transition-all text-left"
                     >
                       <Repeat className="w-8 h-8 text-[#F5C542] mb-3" />
-                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">Trueque</h4>
-                      <p className="text-gray-600">Intercambio sin dinero</p>
+                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.truequeLabel')}</h4>
+                      <p className="text-gray-600">{t('marketplacePage.modal.truequeDesc')}</p>
                     </button>
                   </div>
                 </div>
@@ -667,39 +670,42 @@ export default function Marketplace() {
                       onClick={() => setProductType(null as any)}
                       className="text-[#7CA982] hover:text-[#5a8a6a] transition-colors"
                     >
-                      ← Cambiar tipo
+                      {t('marketplacePage.modal.changeType')}
                     </button>
                     <Badge variant={productType === 'marketplace' ? 'green' : 'pink'} className="flex items-center gap-2">
                       {productType === 'marketplace' ? <ShoppingBag className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
-                      {productType === 'marketplace' ? 'Marketplace' : 'Trueque'}
+                      {productType === 'marketplace' ? t('marketplacePage.modal.marketplaceLabel') : t('marketplacePage.modal.truequeLabel')}
                     </Badge>
                   </div>
 
                   {/* Categorías (Círculos de acción) - multi-select */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Categorías * (puedes elegir varias)</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.categoriesLabel')}</label>
                     <div className="border-2 border-gray-200 rounded-2xl p-4 focus-within:border-[#7CA982] focus-within:ring-2 focus-within:ring-[#7CA982]/20 transition-all max-h-48 overflow-y-auto">
-                      {CATEGORIAS_TITULOS.map((titulo) => (
-                        <label key={titulo} className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2">
+                      {CIRCULOS_CATEGORIAS.map((c) => (
+                        <label key={c.id} className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2">
                           <input
                             type="checkbox"
-                            checked={formData.categories.includes(titulo)}
+                            checked={formData.categories.includes(c.title)}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFormData({ ...formData, categories: [...formData.categories, titulo] });
+                                setFormData({ ...formData, categories: [...formData.categories, c.title] });
                               } else {
-                                setFormData({ ...formData, categories: formData.categories.filter((c) => c !== titulo) });
+                                setFormData({ ...formData, categories: formData.categories.filter((cat) => cat !== c.title) });
                               }
                             }}
                             className="w-4 h-4 rounded border-gray-300 text-[#7CA982] focus:ring-[#7CA982]"
                           />
-                          <span className="text-sm text-[#1E1E1E]">{titulo}</span>
+                          <span className="text-sm text-[#1E1E1E]">{t(`circulosPage.circles.${c.id}.title`)}</span>
                         </label>
                       ))}
                     </div>
                     {formData.categories.length > 0 && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Seleccionadas: {formData.categories.join(', ')}
+                        {t('marketplacePage.modal.selected')}: {formData.categories.map((cat) => {
+                          const circ = CIRCULOS_CATEGORIAS.find((x) => x.title === cat);
+                          return circ ? t(`circulosPage.circles.${circ.id}.title`) : cat;
+                        }).join(', ')}
                       </p>
                     )}
                   </div>
@@ -707,25 +713,25 @@ export default function Marketplace() {
                   {/* Nombre/Título según tipo */}
                   {productType === 'marketplace' ? (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Nombre del producto *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.productNameLabel')}</label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Ej: Set de Cosmética Natural"
+                        placeholder={t('marketplacePage.modal.productNamePlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Título del trueque *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.truequeTitleLabel')}</label>
                       <input
                         type="text"
                         required
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="Ej: Intercambio de servicios de diseño"
+                        placeholder={t('marketplacePage.modal.truequeTitlePlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                     </div>
@@ -733,7 +739,7 @@ export default function Marketplace() {
 
                   {/* Etiquetas */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Etiquetas</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.tagsLabel')}</label>
                     <div className="flex flex-wrap gap-2 mb-3">
                       {formData.tags.map((tag, idx) => (
                         <span
@@ -762,7 +768,7 @@ export default function Marketplace() {
                             addTag();
                           }
                         }}
-                        placeholder="Escribe una etiqueta y presiona Enter"
+                        placeholder={t('marketplacePage.modal.tagPlaceholder')}
                         className="flex-1 px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                       <Button
@@ -770,14 +776,14 @@ export default function Marketplace() {
                         variant="primary"
                         onClick={addTag}
                       >
-                        Agregar
+                        {t('marketplacePage.modal.add')}
                       </Button>
                     </div>
                   </div>
 
                   {/* Imagen */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Imágenes del producto</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.imagesLabel')}</label>
                     <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6">
                       {formData.imagePreviews.length > 0 ? (
                         <div className="grid grid-cols-3 gap-4 mb-4">
@@ -802,8 +808,8 @@ export default function Marketplace() {
                       {formData.imagePreviews.length < 6 && (
                         <label className="cursor-pointer block text-center">
                           <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                          <p className="text-gray-600 mb-2">Haz clic para subir imágenes</p>
-                          <p className="text-sm text-gray-400">PNG, JPG hasta 5MB (máx. 6 imágenes)</p>
+                          <p className="text-gray-600 mb-2">{t('marketplacePage.modal.uploadImages')}</p>
+                          <p className="text-sm text-gray-400">{t('marketplacePage.modal.uploadHint')}</p>
                           <input
                             type="file"
                             accept="image/*"
@@ -819,25 +825,25 @@ export default function Marketplace() {
                   {/* Dirección según tipo */}
                   {productType === 'marketplace' ? (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Dirección de entrega *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.deliveryAddressLabel')}</label>
                       <input
                         type="text"
                         required
                         value={formData.deliveryAddress}
                         onChange={(e) => setFormData({ ...formData, deliveryAddress: e.target.value })}
-                        placeholder="Ej: Calle 123, Bogotá"
+                        placeholder={t('marketplacePage.modal.addressPlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Dirección de intercambio *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.exchangeAddressLabel')}</label>
                       <input
                         type="text"
                         required
                         value={formData.exchangeAddress}
                         onChange={(e) => setFormData({ ...formData, exchangeAddress: e.target.value })}
-                        placeholder="Ej: Calle 123, Bogotá"
+                        placeholder={t('marketplacePage.modal.addressPlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                     </div>
@@ -846,7 +852,7 @@ export default function Marketplace() {
                   {/* Tipo de oferta solo para trueque */}
                   {productType === 'trueque' && (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-3">Tipo de oferta *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-3">{t('marketplacePage.modal.offerTypeLabel')}</label>
                       <div className="flex gap-4">
                         <button
                           type="button"
@@ -857,7 +863,7 @@ export default function Marketplace() {
                               : 'border-gray-200 text-gray-600 hover:border-gray-300'
                           }`}
                         >
-                          Ofrecer
+                          {t('marketplacePage.modal.offer')}
                         </button>
                         <button
                           type="button"
@@ -868,7 +874,7 @@ export default function Marketplace() {
                               : 'border-gray-200 text-gray-600 hover:border-gray-300'
                           }`}
                         >
-                          Buscar
+                          {t('marketplacePage.modal.search')}
                         </button>
                       </div>
                     </div>
@@ -876,13 +882,13 @@ export default function Marketplace() {
 
                   {/* Cantidad */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Cantidad</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.quantityLabel')}</label>
                     <input
                       type="number"
                       min="1"
                       value={formData.quantity}
                       onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                      placeholder="Ej: 1, 2, 5..."
+                      placeholder={t('marketplacePage.modal.quantityPlaceholder')}
                       className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                     />
                   </div>
@@ -890,7 +896,7 @@ export default function Marketplace() {
                   {/* Precio solo para marketplace */}
                   {productType === 'marketplace' && (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Precio *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.priceLabel')}</label>
                       <input
                         type="number"
                         required
@@ -898,7 +904,7 @@ export default function Marketplace() {
                         step="0.01"
                         value={formData.price}
                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                        placeholder="Ej: 45000"
+                        placeholder={t('marketplacePage.modal.pricePlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all"
                       />
                     </div>
@@ -906,13 +912,13 @@ export default function Marketplace() {
 
                   {/* Descripción */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Descripción *</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.modal.descriptionLabel')}</label>
                     <textarea
                       required
                       rows={4}
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Describe tu producto o trueque..."
+                      placeholder={t('marketplacePage.modal.descriptionPlaceholder')}
                       className="w-full px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/20 outline-none transition-all resize-none"
                     />
                   </div>
@@ -943,7 +949,7 @@ export default function Marketplace() {
                       }}
                       className="flex-1"
                     >
-                      Cancelar
+                      {t('marketplacePage.modal.cancel')}
                     </Button>
                     <Button
                       type="submit"
@@ -956,7 +962,7 @@ export default function Marketplace() {
                         (productType === 'trueque' && (!formData.title || !formData.exchangeAddress))
                       }
                     >
-                      Publicar producto
+                      {t('marketplacePage.modal.publish')}
                     </Button>
                   </div>
                 </form>
@@ -996,11 +1002,11 @@ export default function Marketplace() {
               </button>
               {selectedProduct.exchange_mode === 'barter' ? (
                 <div className="absolute top-4 left-4 bg-[#F5C542] text-[#1E1E1E] px-3 py-1 rounded-full text-sm font-semibold">
-                  Trueque
+                  {t('marketplacePage.badgeTrueque')}
                 </div>
               ) : (
                 <div className="absolute top-4 left-4 bg-[#7CA982] text-[#1E1E1E] px-3 py-1 rounded-full text-sm font-semibold">
-                  Marketplace
+                  {t('marketplacePage.badgeMarketplace')}
                 </div>
               )}
             </div>
@@ -1057,7 +1063,7 @@ export default function Marketplace() {
               )}
 
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[#1E1E1E] mb-2">Descripción</h3>
+                <h3 className="text-lg font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.detail.description')}</h3>
                 <p className="text-[#5F5F5F] leading-relaxed whitespace-pre-wrap">
                   {selectedProduct.description}
                 </p>
@@ -1073,8 +1079,8 @@ export default function Marketplace() {
                   <>
                     {cantidad && (
                       <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-[#1E1E1E] mb-2">Cantidad</h3>
-                        <p className="text-[#5F5F5F]">{cantidad} {cantidad === '1' ? 'unidad' : 'unidades'}</p>
+                        <h3 className="text-lg font-semibold text-[#1E1E1E] mb-2">{t('marketplacePage.detail.quantity')}</h3>
+                        <p className="text-[#5F5F5F]">{cantidad} {cantidad === '1' ? t('marketplacePage.detail.unit') : t('marketplacePage.detail.units')}</p>
                       </div>
                     )}
 
@@ -1082,7 +1088,7 @@ export default function Marketplace() {
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-[#1E1E1E] mb-2 flex items-center gap-2">
                           <MapPin className="w-5 h-5 text-[#8E8E8E]" />
-                          {selectedProduct.exchange_mode === 'sale' ? 'Dirección de entrega' : 'Dirección de intercambio'}
+                          {selectedProduct.exchange_mode === 'sale' ? t('marketplacePage.detail.deliveryAddress') : t('marketplacePage.detail.exchangeAddress')}
                         </h3>
                         <p className="text-[#5F5F5F]">{selectedProduct.location}</p>
                       </div>
@@ -1090,7 +1096,7 @@ export default function Marketplace() {
 
                     {filteredTags.length > 0 && (
                       <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-[#1E1E1E] mb-3">Etiquetas</h3>
+                        <h3 className="text-lg font-semibold text-[#1E1E1E] mb-3">{t('marketplacePage.detail.tags')}</h3>
                         <div className="flex flex-wrap gap-2">
                           {filteredTags.map((tag, idx) => {
                             const variants: Array<'green' | 'celeste' | 'pink'> = ['green', 'celeste', 'pink'];
@@ -1110,7 +1116,7 @@ export default function Marketplace() {
 
               {selectedProduct.images && selectedProduct.images.length > 1 && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-3">Más imágenes</h3>
+                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-3">{t('marketplacePage.detail.moreImages')}</h3>
                   <div className="grid grid-cols-3 gap-4">
                     {selectedProduct.images.slice(1).map((image, idx) => (
                       <img
@@ -1127,7 +1133,7 @@ export default function Marketplace() {
               {user && String(selectedProduct.user_id) !== String(user.id) && selectedProduct.status === 'active' && (
                 <div className="pt-4 border-t border-gray-200">
                   {interestedListingIds.has(selectedProduct.id) ? (
-                    <p className="text-center text-[#7CA982] font-semibold text-sm">✓ Ya mostraste interés</p>
+                    <p className="text-center text-[#7CA982] font-semibold text-sm">{t('marketplacePage.detail.alreadyInterested')}</p>
                   ) : (
                     <Button
                       variant="secondary"
@@ -1135,7 +1141,7 @@ export default function Marketplace() {
                       onClick={() => handleMeInteresa(selectedProduct.id, selectedProduct.title, selectedProduct.description, selectedProduct.exchange_mode)}
                       disabled={!!savingInterest}
                     >
-                      {savingInterest === selectedProduct.id ? 'Guardando...' : 'Me interesa'}
+                      {savingInterest === selectedProduct.id ? t('marketplacePage.detail.saving') : t('marketplacePage.detail.meInteresa')}
                     </Button>
                   )}
                 </div>
@@ -1151,7 +1157,7 @@ export default function Marketplace() {
                     }}
                   >
                     <Phone className="w-5 h-5" />
-                    Contactar: {selectedProduct.profiles.phone_number}
+                    {t('marketplacePage.detail.contact')}: {selectedProduct.profiles.phone_number}
                   </Button>
                 </div>
               )}
@@ -1159,7 +1165,7 @@ export default function Marketplace() {
               {!selectedProduct.profiles?.phone_number && (
                 <div className="pt-6 border-t border-gray-200">
                   <p className="text-center text-[#8E8E8E] text-sm">
-                    El vendedor no ha proporcionado un número de contacto
+                    {t('marketplacePage.detail.noContact')}
                   </p>
                 </div>
               )}

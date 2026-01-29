@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-[#FAF7F2] border-t border-[#7CA982]/20">
       <div className="max-w-7xl mx-auto px-8 py-12">
@@ -11,7 +14,7 @@ export default function Footer() {
               <img src="/logo-beginns-full.svg" alt="Beginss" className="h-12" />
             </div>
             <p className="text-[#5F5F5F] text-base mb-6 max-w-md leading-relaxed">
-              Una comunidad circular de mujeres enfocada en bienestar, sostenibilidad, arte y colaboración. Cada intercambio es una semilla que florece en comunidad.
+              {t('footer.tagline')}
             </p>
             <a
               href="https://www.instagram.com/beginsscomunidad?igsh=NjF1cDludnNsOW04"
@@ -24,37 +27,37 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-[#3E6049]">Explorar</h3>
+            <h3 className="font-semibold mb-4 text-[#3E6049]">{t('footer.explore')}</h3>
             <ul className="space-y-2 text-sm text-[#5F5F5F]">
               <li>
                 <Link to="/marketplace" className="hover:text-[#7CA982] transition-colors">
-                  Marketplace
+                  {t('nav.marketplace')}
                 </Link>
               </li>
               <li>
                 <Link to="/cafecito" className="hover:text-[#7CA982] transition-colors">
-                  Cafecito
+                  {t('nav.cafecito')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4 text-[#3E6049]">Información</h3>
+            <h3 className="font-semibold mb-4 text-[#3E6049]">{t('footer.information')}</h3>
             <ul className="space-y-2 text-sm text-[#5F5F5F]">
               <li>
                 <Link to="/valores" className="hover:text-[#7CA982] transition-colors">
-                  Sobre nosotras
+                  {t('footer.aboutUs')}
                 </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-[#7CA982] transition-colors">
-                  Política de privacidad
+                  {t('footer.privacyPolicy')}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-[#7CA982] transition-colors">
-                  Términos y condiciones
+                  {t('footer.termsAndConditions')}
                 </a>
               </li>
             </ul>
@@ -64,10 +67,10 @@ export default function Footer() {
         <div className="border-t border-[#7CA982]/20 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-[#8E8E8E]">
-              © 2026 Beginss. Todos los derechos reservados.
+              {t('footer.copyright')}
             </p>
             <p className="text-sm text-[#8E8E8E]">
-              Pronto app móvil disponible
+              {t('footer.mobileAppSoon')}
             </p>
           </div>
         </div>

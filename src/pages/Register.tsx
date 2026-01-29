@@ -1,50 +1,44 @@
 import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 import { useAuth } from '../lib/AuthContext';
 import Button from '../components/Button';
 import { CalendarDays, Megaphone, Users, Sparkles, HeartHandshake, BadgeCheck } from 'lucide-react';
 
 export default function Register() {
+  const { t } = useTranslation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signUp, loading: authLoading } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
+      setError(t('register.errorPasswordLength'));
       setLoading(false);
       return;
     }
-
     const { error } = await signUp(email, password, fullName);
-
     if (error) {
-      // Manejar diferentes tipos de errores
       if (error.message?.includes('already registered') || error.message?.includes('already exists') || error.code === '23505') {
-        setError('Este correo ya está registrado. Intenta iniciar sesión.');
+        setError(t('register.errorEmailExists'));
       } else if (error.code === 'PGRST301' || error.status === 409) {
-        // Perfil ya existe pero el usuario se creó, continuar
-        console.log('Profile already exists, continuing...');
-        // Esperar un momento para que se cargue el perfil
         setTimeout(() => {
           setLoading(false);
           navigate('/perfil');
         }, 500);
         return;
       } else {
-        setError(`Error al crear la cuenta: ${error.message || 'Intenta de nuevo.'}`);
+        setError(t('register.errorGeneric'));
       }
       setLoading(false);
     } else {
-      // Esperar un momento para que se cargue el perfil antes de navegar
       setTimeout(() => {
         setLoading(false);
         navigate('/perfil');
@@ -64,43 +58,39 @@ export default function Register() {
           <div className="absolute bottom-10 right-12 h-12 w-12 rounded-full ring-2 ring-[#F59E0B]/35" />
         </div>
 
-        {/* Texto centrado arriba */}
         <div className="text-center max-w-3xl mb-10">
           <h1 className="font-['Montserrat',ui-sans-serif] text-[#1F2D1F] text-5xl md:text-6xl font-extrabold leading-tight mb-4">
-            Únete a Beginss
+            {t('register.title')}
           </h1>
           <p className="font-['Montserrat',ui-sans-serif] text-[#3E6049] text-lg md:text-[18px] leading-relaxed mb-4">
-            <strong>Lleva tu talento más lejos</strong><br />
-            Publica tus eventos, talleres o charlas y conéctate con Mujeres Beginss que quieren aprender de ti.
+            <Trans i18nKey="register.subtitle" components={{ strong: <strong />, br: <br /> }} />
             <br />
-            <span className="font-semibold">¡Inspira, comparte y llena tus cupos!</span>
+            <span className="font-semibold">{t('register.inspire')}</span>
           </p>
-
-          {/* Chips coloridos */}
           <div className="flex flex-wrap justify-center gap-3">
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(56,189,248,0.16)', color:'#0EA5E9', borderColor:'rgba(56,189,248,0.45)' }}>
-              <CalendarDays className="h-4 w-4" /> Agenda
+              <CalendarDays className="h-4 w-4" /> {t('register.agenda')}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(245,158,11,0.18)', color:'#B45309', borderColor:'rgba(245,158,11,0.45)' }}>
-              <Megaphone className="h-4 w-4" /> Promoción
+              <Megaphone className="h-4 w-4" /> {t('register.promotion')}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(251,146,60,0.18)', color:'#C2410C', borderColor:'rgba(251,146,60,0.45)' }}>
-              <Users className="h-4 w-4" /> Comunidad
+              <Users className="h-4 w-4" /> {t('register.community')}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(244,114,182,0.18)', color:'#BE185D', borderColor:'rgba(244,114,182,0.45)' }}>
-              <Sparkles className="h-4 w-4" /> Impacto
+              <Sparkles className="h-4 w-4" /> {t('register.impact')}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(124,169,130,0.18)', color:'#2F5E44', borderColor:'rgba(124,169,130,0.45)' }}>
-              <HeartHandshake className="h-4 w-4" /> Colabora
+              <HeartHandshake className="h-4 w-4" /> {t('register.collaborate')}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm ring-1"
               style={{ backgroundColor:'rgba(242,140,123,0.18)', color:'#9A3427', borderColor:'rgba(242,140,123,0.45)' }}>
-              <BadgeCheck className="h-4 w-4" /> Calidad
+              <BadgeCheck className="h-4 w-4" /> {t('register.quality')}
             </span>
           </div>
         </div>
@@ -138,7 +128,7 @@ export default function Register() {
 
               <div>
                 <label htmlFor="fullName" className="block text-sm font-semibold text-[#2D5444] mb-2">
-                  Nombre completo
+                  {t('register.fullName')}
                 </label>
                 <input
                   id="fullName"
@@ -147,13 +137,12 @@ export default function Register() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
-                  placeholder="Tu nombre"
+                  placeholder={t('register.fullNamePlaceholder')}
                 />
               </div>
-
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-[#2D5444] mb-2">
-                  Correo electrónico
+                  {t('register.email')}
                 </label>
                 <input
                   id="email"
@@ -162,13 +151,12 @@ export default function Register() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
-                  placeholder="tu@email.com"
+                  placeholder={t('register.emailPlaceholder')}
                 />
               </div>
-
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-[#2D5444] mb-2">
-                  Contraseña
+                  {t('register.password')}
                 </label>
                 <input
                   id="password"
@@ -177,26 +165,23 @@ export default function Register() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
-                  placeholder="Mínimo 6 caracteres"
+                  placeholder={t('register.passwordPlaceholder')}
                 />
               </div>
-
-              {/* Botón negro para contraste */}
               <Button
                 type="submit"
                 variant="primary"
                 disabled={loading}
                 className="w-full rounded-full !bg-black !text-white hover:brightness-110"
               >
-                {loading ? 'Creando cuenta...' : 'Crear mi cuenta'}
+                {loading ? t('register.submitting') : t('register.submit')}
               </Button>
             </form>
-
             <div className="mt-4 text-center">
               <p className="text-sm text-[#2D5444]">
-                ¿Ya tienes cuenta?{' '}
+                {t('register.hasAccount')}{' '}
                 <Link to="/login" className="text-[#3E6049] hover:underline font-semibold">
-                  Inicia sesión
+                  {t('register.signIn')}
                 </Link>
               </p>
             </div>

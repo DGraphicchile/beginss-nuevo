@@ -111,7 +111,7 @@ export default function TiempoCompartido() {
   ];
 
   return (
-    <RequireAuth title="Tiempo compartido" sectionName="tiempo compartido">
+    <RequireAuth title="Tiempo compartido" titleKey="auth.sectionNames.tiempoCompartido" sectionName="tiempo compartido">
     <div className="min-h-screen bg-white">
       {/* HEADER / HERO con imagen de fondo y texto blanco */}
       <section

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Briefcase, MapPin, Search, Users, Phone } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
@@ -20,35 +21,35 @@ interface UserProfile {
   skills: string[];
 }
 
+const CATEGORY_KEYS: { value: string; labelKey: string }[] = [
+  { value: '', labelKey: 'serviciosPage.categories.all' },
+  { value: 'Educación', labelKey: 'serviciosPage.categories.educacion' },
+  { value: 'Bienestar', labelKey: 'serviciosPage.categories.bienestar' },
+  { value: 'Diseño', labelKey: 'serviciosPage.categories.diseno' },
+  { value: 'Hogar', labelKey: 'serviciosPage.categories.hogar' },
+  { value: 'Tecnología', labelKey: 'serviciosPage.categories.tecnologia' },
+  { value: 'Marketing', labelKey: 'serviciosPage.categories.marketing' },
+  { value: 'Salud', labelKey: 'serviciosPage.categories.salud' },
+  { value: 'Arte', labelKey: 'serviciosPage.categories.arte' },
+  { value: 'Consultoría', labelKey: 'serviciosPage.categories.consultoria' },
+  { value: 'Legal', labelKey: 'serviciosPage.categories.legal' },
+  { value: 'Finanzas', labelKey: 'serviciosPage.categories.finanzas' },
+  { value: 'Gastronomía', labelKey: 'serviciosPage.categories.gastronomia' },
+  { value: 'Moda', labelKey: 'serviciosPage.categories.moda' },
+  { value: 'Fotografía', labelKey: 'serviciosPage.categories.fotografia' },
+  { value: 'Escritura', labelKey: 'serviciosPage.categories.escritura' },
+  { value: 'Coaching', labelKey: 'serviciosPage.categories.coaching' },
+  { value: 'Otro', labelKey: 'serviciosPage.categories.otro' }
+];
+
 export default function Servicios() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Categorías de profesiones
-  const professionCategories = [
-    { value: '', label: 'Todas las categorías' },
-    { value: 'Educación', label: 'Educación' },
-    { value: 'Bienestar', label: 'Bienestar' },
-    { value: 'Diseño', label: 'Diseño' },
-    { value: 'Hogar', label: 'Hogar' },
-    { value: 'Tecnología', label: 'Tecnología' },
-    { value: 'Marketing', label: 'Marketing' },
-    { value: 'Salud', label: 'Salud' },
-    { value: 'Arte', label: 'Arte' },
-    { value: 'Consultoría', label: 'Consultoría' },
-    { value: 'Legal', label: 'Legal' },
-    { value: 'Finanzas', label: 'Finanzas' },
-    { value: 'Gastronomía', label: 'Gastronomía' },
-    { value: 'Moda', label: 'Moda' },
-    { value: 'Fotografía', label: 'Fotografía' },
-    { value: 'Escritura', label: 'Escritura' },
-    { value: 'Coaching', label: 'Coaching' },
-    { value: 'Otro', label: 'Otro' }
-  ];
 
   // Cargar perfiles de usuarios
   useEffect(() => {
@@ -116,7 +117,7 @@ export default function Servicios() {
   const filteredProfiles = userProfiles;
 
   return (
-    <RequireAuth title="Servicios" sectionName="servicios">
+    <RequireAuth title={t('auth.sectionNames.servicios')} titleKey="auth.sectionNames.servicios">
     <div className="min-h-screen bg-white">
       {/* HERO con imagen */}
       <section
@@ -131,16 +132,16 @@ export default function Servicios() {
           <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white rounded-full shadow-md">
             <Briefcase className="w-4 h-4 text-[#F5C542]" />
             <span className="text-[#F5C542] text-sm font-bold uppercase tracking-wider">
-              Servicios
+              {t('serviciosPage.hero.badge')}
             </span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Servicios Compartidos
+            {t('serviciosPage.hero.title')}
           </h1>
 
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Ofrece tus habilidades y encuentra apoyo profesional.
+            {t('serviciosPage.hero.subtitle')}
           </p>
         </div>
       </section>
@@ -148,7 +149,7 @@ export default function Servicios() {
       {/* FILTROS */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F7EFE9]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">Filtros de Búsqueda</h2>
+          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">{t('serviciosPage.filters.title')}</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {/* Buscador por palabras clave */}
@@ -158,7 +159,7 @@ export default function Servicios() {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Buscar por nombre, habilidades o intereses..."
+                placeholder={t('serviciosPage.filters.searchPlaceholder')}
                 className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-[#2D5444]/20 focus:border-[#2D5444] focus:ring-2 focus:ring-[#2D5444]/20 outline-none transition-all shadow-md bg-white"
               />
             </div>
@@ -171,9 +172,9 @@ export default function Servicios() {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-[#2D5444]/20 focus:border-[#2D5444] focus:ring-2 focus:ring-[#2D5444]/20 outline-none transition-all shadow-md appearance-none bg-white"
               >
-                {professionCategories.map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
+                {CATEGORY_KEYS.map((category) => (
+                  <option key={category.value || 'all'} value={category.value}>
+                    {t(category.labelKey)}
                   </option>
                 ))}
               </select>
@@ -185,12 +186,12 @@ export default function Servicios() {
       {/* PERFILES DE USUARIOS */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">Profesionales Disponibles</h2>
+          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">{t('serviciosPage.profiles.title')}</h2>
 
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#CF3F7A] border-t-transparent mb-4" />
-              <p className="text-[#5e3920]">Cargando profesionales...</p>
+              <p className="text-[#5e3920]">{t('serviciosPage.profiles.loading')}</p>
             </div>
           ) : (
             <>
@@ -251,7 +252,7 @@ export default function Servicios() {
                         className="w-full bg-[#CF3F7A] hover:bg-[#CF3F7A]/90 text-white py-2"
                         onClick={() => navigate(`/perfil/${profile.id}`)}
                       >
-                        Ver perfil
+                        {t('serviciosPage.profiles.viewProfile')}
                       </Button>
                     </div>
                   </div>
@@ -261,9 +262,9 @@ export default function Servicios() {
               {filteredProfiles.length === 0 && (
                 <div className="text-center py-12">
                   <Users className="w-16 h-16 mx-auto mb-4 text-[#2D5444]/30" />
-                  <p className="text-[#5e3920] mb-4">No se encontraron profesionales con esos filtros</p>
+                  <p className="text-[#5e3920] mb-4">{t('serviciosPage.profiles.noUsers')}</p>
                   <Button onClick={() => { setSearchTerm(''); setSelectedCategory(''); }}>
-                    Limpiar filtros
+                    {t('serviciosPage.profiles.clearFilters')}
                   </Button>
                 </div>
               )}
@@ -281,10 +282,10 @@ export default function Servicios() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <Briefcase className="w-16 h-16 mx-auto mb-6 text-[#F5C542]" />
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            Tu conocimiento puede transformar otra vida
+            {t('serviciosPage.cta.title')}
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Comparte tus habilidades y fortalece nuestra comunidad
+            {t('serviciosPage.cta.subtitle')}
           </p>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Lock, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../lib/AuthContext';
 import Button from './Button';
 
@@ -8,6 +9,8 @@ interface RequireAuthProps {
   children: ReactNode;
   /** Título de la sección (ej: "Marketplace", "Trueque") */
   title: string;
+  /** Clave i18n para el título (ej: "auth.sectionNames.marketplace") */
+  titleKey?: string;
   /** Descripción breve para invitar a registrarse */
   description?: string;
   /** Nombre del ícono o sección para el mensaje */
@@ -18,7 +21,8 @@ interface RequireAuthProps {
  * Muestra la vista real solo si el usuario está logueado.
  * Si no está logueado, muestra una pantalla de invitación a registrarse/iniciar sesión.
  */
-export default function RequireAuth({ children, title, description, sectionName }: RequireAuthProps) {
+export default function RequireAuth({ children, title, titleKey, description, sectionName }: RequireAuthProps) {
+  const { t } = useTranslation();
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -30,7 +34,8 @@ export default function RequireAuth({ children, title, description, sectionName 
   }
 
   if (!user) {
-    const defaultDescription = `Inicia sesión o regístrate para ver el contenido de ${sectionName || title} y conectar con la comunidad Beginss.`;
+    const displayTitle = titleKey ? t(titleKey) : title;
+    const defaultDescription = t('auth.gateDescription', { section: displayTitle });
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
         <div className="max-w-lg w-full text-center">
@@ -38,7 +43,7 @@ export default function RequireAuth({ children, title, description, sectionName 
             <Lock className="w-10 h-10" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-[#1E1E1E] mb-4">
-            {title}
+            {displayTitle}
           </h1>
           <p className="text-lg text-[#5e3920] leading-relaxed mb-8">
             {description ?? defaultDescription}
@@ -46,17 +51,17 @@ export default function RequireAuth({ children, title, description, sectionName 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/registro">
               <Button variant="cta" className="w-full sm:w-auto">
-                Crear cuenta
+                {t('auth.createAccount')}
               </Button>
             </Link>
             <Link to="/login">
               <Button variant="outlined" className="w-full sm:w-auto">
-                Ya tengo cuenta
+                {t('auth.alreadyHaveAccount')}
               </Button>
             </Link>
           </div>
           <p className="mt-8 text-sm text-[#6E6E6E]">
-            Únete a la comunidad para acceder a todo el contenido
+            {t('auth.joinCommunity')}
             <ArrowRight className="inline-block w-4 h-4 ml-1 align-middle" />
           </p>
         </div>

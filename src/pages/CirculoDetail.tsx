@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Briefcase, Heart, Palette, Leaf, TreePine, ShoppingBag, X, Calendar, MapPin, ShoppingCart, Coffee, Sparkles, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
+import { Briefcase, Heart, Palette, Leaf, TreePine, ShoppingBag, X, Calendar, MapPin, ShoppingCart, Coffee, Sparkles, ArrowLeft, Lock } from 'lucide-react';
 import Button from '../components/Button';
 import FloatingElements from '../components/FloatingElements';
+import { useAuth } from '../lib/AuthContext';
 import { supabase } from '../lib/supabase';
-import { parseCategoriesFromDescription } from '../constants/circulos';
+import { parseCategoriesFromDescription, circuloIdFromTitle } from '../constants/circulos';
 
-interface CirculoData {
+interface CirculoMeta {
   id: string;
   icon: any;
-  title: string;
-  description: string;
-  tags: string[];
   color: string;
 }
 
@@ -31,64 +31,33 @@ interface ContentItem {
 
 export default function CirculoDetail() {
   const { circuloId } = useParams();
+  const { user } = useAuth();
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [activeFilter, setActiveFilter] = useState('todos');
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const circulos: Record<string, CirculoData> = {
-    'economia': {
-      id: 'economia',
-      icon: Briefcase,
-      title: 'Economía y Trabajo Colaborativo',
-      description: 'Emprendimiento, desarrollo profesional y redes de apoyo para crecer económicamente de forma consciente y colaborativa.',
-      tags: ['Emprendimiento', 'Networking', 'Mentoría'],
-      color: '#2D5444'
-    },
-    'armonia': {
-      id: 'armonia',
-      icon: Heart,
-      title: 'Bienestar y Armonía Emocional',
-      description: 'Espacios para el autocuidado, la salud mental y el bienestar emocional. Meditación, terapia y apoyo entre mujeres.',
-      tags: ['Bienestar', 'Meditación', 'Terapia'],
-      color: '#cf3f5c'
-    },
-    'arte': {
-      id: 'arte',
-      icon: Palette,
-      title: 'Arte con Sentido',
-      description: 'Creatividad que inspira y transforma. Talleres, proyectos artísticos y expresión a través del arte consciente.',
-      tags: ['Creatividad', 'Talleres', 'Expresión'],
-      color: '#9b7fbd'
-    },
-    'sostenibilidad': {
-      id: 'sostenibilidad',
-      icon: Leaf,
-      title: 'Sostenibilidad en Acción',
-      description: 'Prácticas sostenibles para el día a día. Reciclaje, zero waste y estilos de vida que cuidan el planeta.',
-      tags: ['Zero Waste', 'Eco-friendly', 'DIY'],
-      color: '#2D5444'
-    },
-    'medio-ambiente': {
-      id: 'medio-ambiente',
-      icon: TreePine,
-      title: 'Medio Ambiente',
-      description: 'Acción climática, conservación y proyectos ambientales. Juntas por un planeta más verde y saludable.',
-      tags: ['Activismo', 'Conservación', 'Educación'],
-      color: '#2D5444'
-    },
-    'consumo': {
-      id: 'consumo',
-      icon: ShoppingBag,
-      title: 'Consumo con Sentido',
-      description: 'Decisiones de compra conscientes. Apoyamos marcas éticas, comercio justo y economía circular.',
-      tags: ['Comercio Justo', 'Ético', 'Local'],
-      color: '#E2725B'
-    }
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language === 'en' ? 'en-US' : i18n.language === 'pt-BR' ? 'pt-BR' : 'es-ES';
+
+  const circulosMeta: Record<string, CirculoMeta> = {
+    'economia': { id: 'economia', icon: Briefcase, color: '#2D5444' },
+    'armonia': { id: 'armonia', icon: Heart, color: '#cf3f5c' },
+    'arte': { id: 'arte', icon: Palette, color: '#9b7fbd' },
+    'sostenibilidad': { id: 'sostenibilidad', icon: Leaf, color: '#2D5444' },
+    'medio-ambiente': { id: 'medio-ambiente', icon: TreePine, color: '#2D5444' },
+    'consumo': { id: 'consumo', icon: ShoppingBag, color: '#E2725B' }
   };
 
-  const currentCirculo = (circuloId && circulos[circuloId]) ? circulos[circuloId] : circulos['economia'];
-  const Icon = currentCirculo.icon;
+  const effectiveId = (circuloId && circulosMeta[circuloId]) ? circuloId : 'economia';
+  const meta = circulosMeta[effectiveId];
+  const Icon = meta.icon;
+  const currentCirculo = {
+    ...meta,
+    title: t(`circulosPage.circles.${effectiveId}.title`),
+    description: t(`circulosPage.circles.${effectiveId}.description`),
+    tags: t(`circulosPage.circles.${effectiveId}.tags`, { returnObjects: true }) as string[],
+  };
 
   // Cargar contenido real de la base de datos
   useEffect(() => {
@@ -178,29 +147,22 @@ export default function CirculoDetail() {
   };
 
   const filters = [
-    { id: 'todos', label: 'Todos', icon: Sparkles },
-    { id: 'producto', label: 'Productos', icon: ShoppingCart },
-    { id: 'cafecito', label: 'Cafecito', icon: Coffee },
-    { id: 'intercambio', label: 'Intercambio', icon: ShoppingBag }
+    { id: 'todos', labelKey: 'circulosPage.filters.todos', icon: Sparkles },
+    { id: 'producto', labelKey: 'circulosPage.filters.productos', icon: ShoppingCart },
+    { id: 'cafecito', labelKey: 'circulosPage.filters.cafecito', icon: Coffee },
+    { id: 'intercambio', labelKey: 'circulosPage.filters.intercambio', icon: ShoppingBag }
   ];
 
-  // Solo mostrar items que tengan la categoría del círculo actual; luego filtrar por tipo
+  // Solo mostrar items que tengan la categoría del círculo actual (por id); luego filtrar por tipo
   const itemsInCirculo = contentItems.filter((item) =>
-    item.categories.some((c) => c === currentCirculo.title)
+    item.categories.some((c) => circuloIdFromTitle(c) === effectiveId)
   );
   const filteredItems =
     activeFilter === 'todos'
       ? itemsInCirculo
       : itemsInCirculo.filter((item) => item.type === activeFilter);
 
-  const getTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      'producto': 'Producto',
-      'cafecito': 'Cafecito',
-      'intercambio': 'Intercambio'
-    };
-    return labels[type] || type;
-  };
+  const getTypeLabel = (type: string) => t(`circulosPage.typeLabels.${type}`) || type;
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
@@ -221,7 +183,7 @@ export default function CirculoDetail() {
         <div className="max-w-7xl mx-auto relative z-10">
           <Link to="/circulos" className="inline-flex items-center gap-2 mb-6 text-gray-600 hover:text-[#1E1E1E] transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Volver a Círculos</span>
+            <span className="text-sm font-medium">{t('circulosPage.backToCirculos')}</span>
           </Link>
 
           <div className="flex items-start gap-6 mb-8">
@@ -250,19 +212,20 @@ export default function CirculoDetail() {
           </div>
 
           <div className="bg-white rounded-[2rem] p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-[#1E1E1E] mb-4">Otros Círculos de Acción</h3>
+            <h3 className="text-lg font-bold text-[#1E1E1E] mb-4">{t('circulosPage.otherCirclesTitle')}</h3>
             <div className="flex flex-wrap gap-3">
-              {Object.values(circulos).filter(c => c.id !== currentCirculo.id).map((circulo) => {
+              {Object.entries(circulosMeta).filter(([id]) => id !== effectiveId).map(([id, circulo]) => {
                 const CircIcon = circulo.icon;
+                const circleTitle = t(`circulosPage.circles.${id}.title`);
                 return (
                   <Link
-                    key={circulo.id}
-                    to={`/circulos/${circulo.id}`}
+                    key={id}
+                    to={`/circulos/${id}`}
                     className="flex items-center gap-2 px-4 py-2 rounded-full border-2 hover:shadow-md transition-all"
                     style={{ borderColor: `${circulo.color}40` }}
                   >
                     <CircIcon className="w-4 h-4" style={{ color: circulo.color }} />
-                    <span className="text-sm font-medium" style={{ color: circulo.color }}>{circulo.title}</span>
+                    <span className="text-sm font-medium" style={{ color: circulo.color }}>{circleTitle}</span>
                   </Link>
                 );
               })}
@@ -275,84 +238,117 @@ export default function CirculoDetail() {
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap gap-3 mb-12 justify-center">
-            {filters.map((filter) => (
-              <button
-                key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
-                  activeFilter === filter.id
-                    ? 'text-white shadow-lg'
-                    : 'bg-white text-gray-600 hover:bg-gray-50 shadow-md border border-gray-200'
-                }`}
-                style={activeFilter === filter.id ? { backgroundColor: currentCirculo.color } : {}}
-              >
-                <filter.icon className="w-4 h-4" />
-                {filter.label}
-              </button>
-            ))}
-          </div>
-
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#e74865] border-t-transparent mb-4" />
-              <p className="text-gray-600">Cargando contenido...</p>
-            </div>
-          ) : filteredItems.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 mb-4">
-                No hay contenido disponible en esta categoría todavía
-              </p>
-              <Button onClick={() => setActiveFilter('todos')} variant="secondary">
-                Ver todo el contenido
-              </Button>
+          {!user ? (
+            <div className="min-h-[50vh] flex items-center justify-center py-12">
+              <div className="max-w-lg w-full text-center">
+                <div
+                  className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-8"
+                  style={{ backgroundColor: `${currentCirculo.color}20` }}
+                >
+                  <Lock className="w-10 h-10" style={{ color: currentCirculo.color }} />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#1E1E1E] mb-4">
+                  {t('circulosPage.gate.title')}
+                </h2>
+                <p className="text-lg text-[#5e3920] leading-relaxed mb-8">
+                  <Trans i18nKey="circulosPage.gate.description" values={{ name: currentCirculo.title }} components={{ strong: <strong /> }} />
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/registro">
+                    <Button variant="cta" className="w-full sm:w-auto">
+                      {t('circulosPage.gate.createAccount')}
+                    </Button>
+                  </Link>
+                  <Link to="/login">
+                    <Button variant="outlined" className="w-full sm:w-auto">
+                      {t('circulosPage.gate.alreadyHaveAccount')}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredItems.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => setSelectedItem(item)}
-                  className="bg-white rounded-[1.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white ${getTypeColor(item.type)}`}>
-                      {getTypeLabel(item.type)}
+            <>
+              <div className="flex flex-wrap gap-3 mb-12 justify-center">
+                {filters.map((filter) => (
+                  <button
+                    key={filter.id}
+                    onClick={() => setActiveFilter(filter.id)}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
+                      activeFilter === filter.id
+                        ? 'text-white shadow-lg'
+                        : 'bg-white text-gray-600 hover:bg-gray-50 shadow-md border border-gray-200'
+                    }`}
+                    style={activeFilter === filter.id ? { backgroundColor: currentCirculo.color } : {}}
+                  >
+                    <filter.icon className="w-4 h-4" />
+                    {t(filter.labelKey)}
+                  </button>
+                ))}
+              </div>
+
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#e74865] border-t-transparent mb-4" />
+                  <p className="text-gray-600">{t('circulosPage.loadingContent')}</p>
+                </div>
+              ) : filteredItems.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-600 mb-4">
+                    {t('circulosPage.noContent')}
+                  </p>
+                  <Button onClick={() => setActiveFilter('todos')} variant="secondary">
+                    {t('circulosPage.viewAllContent')}
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredItems.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => setSelectedItem(item)}
+                    className="bg-white rounded-[1.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white ${getTypeColor(item.type)}`}>
+                        {getTypeLabel(item.type)}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-[#1E1E1E] mb-2 group-hover:text-[#cf3f5c] transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {item.description}
+                      </p>
+                      {item.date && (
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                          <Calendar className="w-4 h-4" />
+                          <span>{new Date(item.date + 'T00:00:00').toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        </div>
+                      )}
+                      {item.location && (
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                          <MapPin className="w-4 h-4" />
+                          <span>{item.location}</span>
+                        </div>
+                      )}
+                      {item.price && (
+                        <div className="text-lg font-bold mt-3" style={{ color: currentCirculo.color }}>
+                          {item.price}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-[#1E1E1E] mb-2 group-hover:text-[#cf3f5c] transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {item.description}
-                    </p>
-                    {item.date && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>{new Date(item.date + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                      </div>
-                    )}
-                    {item.location && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                        <MapPin className="w-4 h-4" />
-                        <span>{item.location}</span>
-                      </div>
-                    )}
-                    {item.price && (
-                      <div className="text-lg font-bold mt-3" style={{ color: currentCirculo.color }}>
-                        {item.price}
-                      </div>
-                    )}
-                  </div>
+                ))}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -385,7 +381,7 @@ export default function CirculoDetail() {
               {selectedItem.date && (
                 <div className="flex items-center gap-2 text-gray-600 mb-3">
                   <Calendar className="w-5 h-5" />
-                  <span>{new Date(selectedItem.date + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <span>{new Date(selectedItem.date + 'T00:00:00').toLocaleDateString(dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
               )}
 
@@ -415,10 +411,10 @@ export default function CirculoDetail() {
               </div>
 
               <Button variant="cta" className="w-full text-lg py-4">
-                {selectedItem.type === 'producto' ? 'Ver Producto' :
-                 selectedItem.type === 'intercambio' ? 'Ver Intercambio' :
-                 selectedItem.type === 'cafecito' ? 'Unirme al Cafecito' :
-                 'Ver más información'}
+                {selectedItem.type === 'producto' ? t('circulosPage.viewProduct') :
+                 selectedItem.type === 'intercambio' ? t('circulosPage.viewIntercambio') :
+                 selectedItem.type === 'cafecito' ? t('circulosPage.joinCafecito') :
+                 t('circulosPage.viewMoreInfo')}
               </Button>
             </div>
           </div>

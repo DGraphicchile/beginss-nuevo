@@ -1,0 +1,569 @@
+{
+  "nav": {
+    "inicio": "Inicio",
+    "cafecito": "Zona Cafecito",
+    "circulos": "Círculos de acción",
+    "intercambio": "Intercambio",
+    "marketplace": "Marketplace",
+    "signOut": "Salir",
+    "login": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "myProfile": "Mi perfil",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "common": {
+    "language": "Idioma",
+    "createAccount": "Crear cuenta",
+    "login": "Iniciar sesión",
+    "alreadyHaveAccount": "Ya tengo cuenta"
+  },
+  "languageSelect": {
+    "spanish": "Español",
+    "english": "English",
+    "portugueseBR": "Português (Brasil)"
+  },
+  "footer": {
+    "tagline": "Una comunidad circular de mujeres enfocada en bienestar, sostenibilidad, arte y colaboración. Cada intercambio es una semilla que florece en comunidad.",
+    "explore": "Explorar",
+    "information": "Información",
+    "aboutUs": "Sobre nosotras",
+    "privacyPolicy": "Política de privacidad",
+    "termsAndConditions": "Términos y condiciones",
+    "copyright": "© 2026 Beginss. Todos los derechos reservados.",
+    "mobileAppSoon": "Pronto app móvil disponible"
+  },
+  "home": {
+    "hero": {
+      "badge": "Comunidad Circular",
+      "title1": "¡Crece, conecta",
+      "title2": "y transforma!",
+      "subtitle": "Únete a una comunidad donde puedes intercambiar servicios, tiempo, objetos y propuestas con mujeres reales como tú.",
+      "joinCircle": "Únete al círculo",
+      "learnMore": "Conoce más",
+      "tagline": "🔄 Intercambia servicios  🤝 Conecta con mujeres reales 💛 Haz crecer tu propósito"
+    },
+    "howItWorks": {
+      "label": "Así funciona Beginss",
+      "title": "Regístrate, explora<br />y vive la comunidad desde la app",
+      "description": "Beginss es una plataforma circular: te registras, eliges cómo participar y sigues todo desde la app. Así de simple para empezar a conectar con otras mujeres.",
+      "step1Title": "Crea tu perfil Beginss",
+      "step1Desc": "Regístrate, define tus intereses y empieza a crear conexiones de valor.",
+      "step2Title": "Explora los espacios",
+      "step2Desc": "Trueque, servicios, tiempo, propuestas… participa donde quieras.",
+      "step3Title": "Descarga la app",
+      "step3Desc": "Sigue tus actividades, conversa y genera impacto desde la app Beginss.",
+      "createProfile": "Crear mi perfil Beginss",
+      "downloadApp": "Descargar la app",
+      "appComingSoon": "App disponible muy pronto"
+    },
+    "whatYouCanDo": {
+      "title": "Qué puedes hacer en Beginss",
+      "description": "En Beginss puedes intercambiar, colaborar y encontrar apoyo real con otras mujeres. La plataforma está organizada en espacios simples para que sepas exactamente por dónde empezar.",
+      "marketplace": "Marketplace",
+      "marketplaceTitle": "Compra, vende o intercambia",
+      "marketplaceDesc": "Publica productos, servicios o talleres. Vende por dinero, intercambia por trueque o usa puntos de tiempo con otras usuarias de la comunidad.",
+      "connections": "Conexiones",
+      "connectionsTitle": "Guarda usuarias y conéctate desde tu perfil",
+      "connectionsDesc": "Añade a tu lista de conexiones a las mujeres con las que quieras seguir en contacto. Accede a tus contactos guardados desde tu perfil y conéctate cuando quieras.",
+      "collaboration": "Colaboración y propuestas",
+      "collaborationTitle": "Súmate a proyectos con propósito",
+      "collaborationDesc": "Crea o únete a iniciativas, alianzas y proyectos donde otras mujeres buscan co-crear y colaborar.",
+      "barter": "Trueque de objetos",
+      "barterTitle": "Da nueva vida a lo que ya no usas",
+      "barterDesc": "Intercambia ropa, libros, objetos y recursos con otras mujeres Beginss para que sigan circulando."
+    },
+    "communityHow": {
+      "label": "Cómo Funciona",
+      "title": "Nuestra Comunidad",
+      "description": "Descubre cómo conectar, compartir y transformar junto a otras mujeres Beginss.",
+      "step1Title": "Crea tu perfil*",
+      "step1Desc": "Basado en tus intereses, profesión y necesidades. Conecta con mujeres afines.",
+      "step2Title": "Conéctate",
+      "step2Desc": "Conoce mujeres, comparte intereses y forma redes de apoyo mutuo.",
+      "step3Title": "Intercambia",
+      "step3Desc": "Trueque de productos o servicios sin complicaciones.",
+      "step4Title": "Muestra tu valor",
+      "step4Desc": "Productos, servicios, actividades o cursos que ofreces.",
+      "step5Title": "Conecta globalmente",
+      "step5Desc": "Con personas de intereses similares, local o globalmente.",
+      "step6Title": "Organiza encuentros",
+      "step6Desc": "Chats o charlas sobre temas de interés con la comunidad.",
+      "startNow": "Comienza ahora"
+    },
+    "values": {
+      "label": "Lo que nos mueve",
+      "title": "Valores Activos",
+      "description": "Valores que guían cada acción, cada intercambio y cada conexión en Beginss",
+      "discoverCircles": "Descubre nuestros círculos",
+      "bienestar": { "name": "Bienestar", "description": "Cuidamos nuestro equilibrio personal y colectivo para crecer con armonía." },
+      "empoderamiento": { "name": "Empoderamiento", "description": "Creemos en la fuerza de cada mujer para liderar su propio camino." },
+      "generosidad": { "name": "Generosidad", "description": "Compartimos lo que sabemos y tenemos, multiplicando oportunidades." },
+      "innovacion": { "name": "Innovación", "description": "Transformamos ideas en soluciones reales que generan impacto." },
+      "naturaleza": { "name": "Naturaleza", "description": "Vivimos en conexión y respeto con el entorno que nos sostiene." },
+      "sostenibilidad": { "name": "Sostenibilidad", "description": "Construimos hoy pensando en el bienestar de mañana." },
+      "sororidad": { "name": "Sororidad", "description": "Nos apoyamos, nos escuchamos y crecemos juntas." },
+      "circularidad": { "name": "Circularidad", "description": "Lo que damos regresa transformado, fortaleciendo nuestros lazos." }
+    },
+    "womenBeginss": {
+      "label": "Propuesta de Valor",
+      "title": "Mujeres Beginss",
+      "para1": "En nuestra propuesta de valor ofrecemos un <strong>círculo vivo</strong>, donde encontrarás soluciones a tus necesidades a través de la colaboración y el intercambio de saberes.",
+      "para2": "Más que ampliar tu red, crearás lazos reales con Mujeres Beginss que comparten tus valores y están listas para impulsarte, mientras tú impulsas a otras.",
+      "joinCommunity": "Únete a la comunidad"
+    },
+    "circles": {
+      "label": "Círculos de Acción",
+      "title": "Descubre tu Círculo<br />de Acción",
+      "description": "Seis caminos para inspirarte, crecer y transformar tu vida junto a otras mujeres. Desde la economía colaborativa hasta el arte con propósito, el bienestar integral, la sostenibilidad y el consumo consciente.",
+      "description2": "Cada círculo es una oportunidad para actuar, aprender y tejer redes que impulsan un futuro más justo y solidario.",
+      "explore": "Explorar",
+      "joinToday": "Únete hoy y sé parte del cambio",
+      "worldWeWant": "Que queremos ver en el mundo",
+      "exploreAll": "Explorar todos los círculos",
+      "economia": { "title": "Economía y trabajo<br />colaborativo", "description": "Mujeres que crean, intercambian y prosperan juntas.", "tags": ["Economía circular", "Innovación", "Talleres", "Trueque", "Moda Sostenible"] },
+      "arte": { "title": "Arte con sentido", "description": "Expresamos y transformamos el mundo a través de nuestra creatividad.", "tags": ["Pintura", "Música", "Cerámica", "Fotografía", "Teatro", "Poesía"] },
+      "armonia": { "title": "Armonía emocional", "description": "Cuidamos nuestra fuerza interior y la compartimos con otras.", "tags": ["Yoga", "Meditación", "Retiros", "Terapias", "Coach", "Talleres"] },
+      "sostenibilidadAccion": { "title": "Sostenibilidad<br />en acción", "description": "Lideramos hábitos y proyectos que dejan huella positiva.", "tags": ["Sostenibilidad ambiental", "Innovación", "Impacto social", "Eco-emprendimientos"] },
+      "medioAmbiente": { "title": "Medio ambiente", "description": "Protegemos la tierra como fuente de vida y futuro.", "tags": ["Huertos urbanos", "Compostaje", "Reciclaje", "Ciudades verdes", "Autocultivo"] },
+      "consumo": { "title": "Consumo con sentido", "description": "Elegimos productos que reflejan nuestros valores y cuidan el planeta.", "tags": ["Venta a granel", "Comercio justo", "Marketplace", "Trueque", "Consumo responsable"] }
+    },
+    "explore": {
+      "label": "Explora Beginss",
+      "title": "Espacios para crecer",
+      "description": "Espacios diseñados para que compartas, aprendas y crezcas en comunidad",
+      "explore": "Explorar",
+      "marketplaceDesc": "Cada compra es apoyo, cada venta una oportunidad.",
+      "cafecitoDesc": "Conversaciones que inspiran y conectan corazones.",
+      "circulosDesc": "Espacios temáticos para profundizar y construir."
+    },
+    "cta": {
+      "title": "¿Lista para comenzar<br />tu transformación?",
+      "subtitle": "Únete a miles de mujeres que ya están creando su futuro en Beginss",
+      "joinNow": "Únete ahora"
+    }
+  },
+  "auth": {
+    "createAccount": "Crear cuenta",
+    "alreadyHaveAccount": "Ya tengo cuenta",
+    "joinCommunity": "Únete a la comunidad para acceder a todo el contenido",
+    "gateDescription": "Inicia sesión o regístrate para ver el contenido de {{section}} y conectar con la comunidad Beginss.",
+    "sectionNames": {
+      "marketplace": "Marketplace",
+      "intercambio": "Intercambio",
+      "trueque": "Trueque",
+      "conexionPropuestas": "Conexión y propuestas",
+      "servicios": "Servicios",
+      "tiempoCompartido": "Tiempo compartido"
+    }
+  },
+  "login": {
+    "welcome": "Bienvenida de vuelta",
+    "subtitle": "Lleva tu talento más lejos, <strong>publica tus eventos, talleres o charlas</strong> y conéctate con Mujeres Beginss que quieren aprender de ti.",
+    "inspire": "¡Inspira, comparte y llena tus cupos!",
+    "events": "Eventos",
+    "talks": "Charlas",
+    "community": "Comunidad",
+    "inspireChip": "Inspira",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "emailPlaceholder": "tu@email.com",
+    "passwordPlaceholder": "Tu contraseña",
+    "submit": "Entrar",
+    "submitting": "Entrando...",
+    "noAccount": "¿No tienes cuenta?",
+    "signUpHere": "Regístrate aquí",
+    "errorRequired": "Por favor completa todos los campos",
+    "errorInvalid": "Correo o contraseña incorrectos",
+    "errorGeneric": "Error al iniciar sesión. Intenta de nuevo."
+  },
+  "register": {
+    "title": "Únete a Beginss",
+    "subtitle": "<strong>Lleva tu talento más lejos</strong><br />Publica tus eventos, talleres o charlas y conéctate con Mujeres Beginss que quieren aprender de ti.",
+    "inspire": "¡Inspira, comparte y llena tus cupos!",
+    "agenda": "Agenda",
+    "promotion": "Promoción",
+    "community": "Comunidad",
+    "impact": "Impacto",
+    "collaborate": "Colabora",
+    "quality": "Calidad",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "fullNamePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@email.com",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "submit": "Crear mi cuenta",
+    "submitting": "Creando cuenta...",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "signIn": "Inicia sesión",
+    "errorPasswordLength": "La contraseña debe tener al menos 6 caracteres",
+    "errorEmailExists": "Este correo ya está registrado. Intenta iniciar sesión.",
+    "errorGeneric": "Error al crear la cuenta"
+  },
+  "cafecito": {
+    "hero": {
+      "badge": "Comunidad activa",
+      "title": "Zona Cafecito",
+      "subtitle": "Del corazón de una Mujer Beginss a otra: pausa, conexión y creación. Un rincón digital donde bajamos el ritmo para subir la inspiración.",
+      "subtitleBold": "Todo pensado para inspirarte, acompañarte y tejer juntas una red que impulsa sueños y crea impacto real."
+    },
+    "sectionConnect": {
+      "title": "¡Un espacio para conectar y disfrutar juntas!",
+      "description": "Encontrar nuevas amigas y compartir experiencias, hacer planes o simplemente conversar."
+    },
+    "searchPlaceholder": "Buscador Cafecito",
+    "virtualTitle": "Cafecitos Virtuales",
+    "presencialTitle": "Cafecitos Presenciales",
+    "viewList": "Ver lista",
+    "viewMap": "Ver mapa",
+    "badgeVirtual": "Virtual",
+    "badgePresencial": "Presencial",
+    "participants": "participantes",
+    "participantsConfirmed": "participantes confirmados",
+    "loading": "Cargando cafecitos...",
+    "emptySearch": "No se encontraron cafecitos con ese término de búsqueda",
+    "clearSearch": "Limpiar búsqueda",
+    "ctaOrganize": {
+      "title": "¿Quieres organizar tu propio Cafecito?",
+      "description": "Crea un espacio para conectar con otras mujeres de la comunidad"
+    },
+    "createCafecito": "Crear Cafecito",
+    "ctaShare": {
+      "title": "¿Lista para compartir tu historia?",
+      "subtitle": "Cada experiencia inspira, cada conversación conecta. Únete a miles de mujeres que comparten y crecen juntas."
+    },
+    "joinCommunity": "Únete a la comunidad",
+    "detailVirtual": "Encuentro Virtual",
+    "viewDetails": "Ver detalles",
+    "yourLocation": "Tu ubicación",
+    "loginToJoin": "Inicia sesión para inscribirte",
+    "alreadyRegistered": "Ya me inscribí",
+    "spotsFull": "Cupos llenos",
+    "joinThisCafecito": "Unirme a este Cafecito",
+    "joining": "Inscribiendo...",
+    "modal": {
+      "createTitle": "Crear Cafecito",
+      "selectEventType": "Selecciona el tipo de evento",
+      "typePresencial": "Presencial",
+      "typeVirtual": "Virtual",
+      "typePresencialDesc": "Encuentro en un lugar físico",
+      "typeVirtualDesc": "Encuentro virtual",
+      "changeType": "← Cambiar tipo",
+      "online": "Online",
+      "categoriesLabel": "Categorías * (puedes elegir varias)",
+      "selected": "Seleccionadas",
+      "nameLabel": "Nombre del Cafecito *",
+      "namePlaceholder": "Ej: Cafecito de Emprendimiento",
+      "imageLabel": "Imagen",
+      "changeImage": "Cambiar imagen",
+      "uploadImage": "Haz clic para subir una imagen",
+      "uploadImageHint": "PNG, JPG hasta 5MB",
+      "tagsLabel": "Etiquetas",
+      "tagPlaceholder": "Escribe una etiqueta y presiona Enter",
+      "add": "Agregar",
+      "dateLabel": "Fecha *",
+      "timeLabel": "Hora *",
+      "addressLabel": "Dirección *",
+      "addressPlaceholder": "Ej: Calle 123, Bogotá",
+      "eventUrlLabel": "URL del evento *",
+      "eventUrlPlaceholder": "https://meet.google.com/...",
+      "maxAttendeesLabel": "Máximo de asistentes *",
+      "maxAttendeesPlaceholder": "Ej: 20",
+      "descriptionLabel": "Descripción *",
+      "descriptionPlaceholder": "Describe tu Cafecito...",
+      "cancel": "Cancelar"
+    },
+    "toasts": {
+      "requiredFields": "Por favor, completa todos los campos requeridos.",
+      "addressRequired": "Por favor, ingresa la dirección del evento.",
+      "urlRequired": "Por favor, ingresa la URL del evento virtual.",
+      "uploadError": "Error al subir la imagen: {{message}}. Se usará una imagen por defecto.",
+      "updated": "Cafecito actualizado.",
+      "created": "Cafecito creado exitosamente!",
+      "createError": "Error al crear el cafecito: {{message}}. Verifica que todos los campos estén completos e intenta de nuevo.",
+      "noSpots": "No hay cupos disponibles.",
+      "joinError": "No se pudo completar la inscripción. Intenta de nuevo."
+    },
+    "defaultHostName": "Usuario Beginss",
+    "cards": {
+      "card1": {
+        "title": "Cafecito: Emprendimiento Femenino",
+        "description": "Conversemos sobre los retos y alegrías de emprender siendo mujer. Comparte tu experiencia y aprende de otras.",
+        "hostName": "María González",
+        "hostBio": "Emprendedora y coach de negocios",
+        "location": ""
+      },
+      "card2": {
+        "title": "Cafecito en el Parque",
+        "description": "Encuentro presencial para conocernos y compartir un café al aire libre. Ideal para hacer nuevas amigas.",
+        "hostName": "Laura Pérez",
+        "hostBio": "Amante del café y las buenas conversaciones",
+        "location": "Parque El Virrey, Bogotá"
+      },
+      "card3": {
+        "title": "Cafecito: Bienestar y Autocuidado",
+        "description": "Hablemos sobre prácticas de autocuidado y bienestar mental. Un espacio seguro para compartir y aprender.",
+        "hostName": "Camila Flores",
+        "hostBio": "Psicóloga y facilitadora de círculos de mujeres",
+        "location": ""
+      },
+      "card4": {
+        "title": "Cafecito Literario",
+        "description": "Compartamos nuestras lecturas favoritas y recomendaciones. Para amantes de los libros y las buenas historias.",
+        "hostName": "Daniela Ortiz",
+        "hostBio": "Escritora y promotora de lectura",
+        "location": "Café Literario, Chapinero"
+      },
+      "card5": {
+        "title": "Cafecito: Creatividad y Arte",
+        "description": "Un espacio para explorar nuestra creatividad juntas. Comparte tus proyectos artísticos y encuentra inspiración.",
+        "hostName": "Ana Silva",
+        "hostBio": "Artista plástica y facilitadora creativa",
+        "location": ""
+      },
+      "card6": {
+        "title": "Brunch Beginss",
+        "description": "Encuentro especial de brunch para conectar, conversar y disfrutar. Trae tu platillo favorito para compartir.",
+        "hostName": "Valentina Cruz",
+        "hostBio": "Food blogger y amante de los encuentros",
+        "location": "Zona T, Bogotá"
+      }
+    }
+  },
+  "circulosPage": {
+    "hero": {
+      "badge": "Círculos de Acción",
+      "title": "Descubre tu Círculo<br />de Acción",
+      "description": "Seis caminos para inspirarte, crecer y transformar tu vida junto a otras mujeres. Desde la economía colaborativa hasta el arte con propósito, el bienestar integral, la sostenibilidad y el consumo consciente.",
+      "description2": "Cada círculo es una oportunidad para actuar, aprender y tejer redes que impulsan un futuro más justo y solidario."
+    },
+    "explore": "Explorar",
+    "cta": {
+      "joinToday": "Únete hoy y sé parte del cambio",
+      "worldWeWant": "Que queremos ver en el mundo",
+      "createProfileNow": "Crear mi perfil ahora",
+      "exploreMarketplace": "Explorar Marketplace"
+    },
+    "backToCirculos": "Volver a Círculos",
+    "otherCirclesTitle": "Otros Círculos de Acción",
+    "filters": {
+      "todos": "Todos",
+      "productos": "Productos",
+      "cafecito": "Cafecito",
+      "intercambio": "Intercambio"
+    },
+    "typeLabels": {
+      "producto": "Producto",
+      "cafecito": "Cafecito",
+      "intercambio": "Intercambio"
+    },
+    "gate": {
+      "title": "Contenido del círculo",
+      "description": "Inicia sesión o regístrate para ver el contenido de <strong>{{name}}</strong> y explorar productos, cafecitos e intercambios de la comunidad.",
+      "createAccount": "Crear cuenta",
+      "alreadyHaveAccount": "Ya tengo cuenta"
+    },
+    "loadingContent": "Cargando contenido...",
+    "noContent": "No hay contenido disponible en esta categoría todavía",
+    "viewAllContent": "Ver todo el contenido",
+    "viewProduct": "Ver Producto",
+    "viewIntercambio": "Ver Intercambio",
+    "joinCafecito": "Unirme al Cafecito",
+    "viewMoreInfo": "Ver más información",
+    "circles": {
+      "economia": { "title": "Economía y Trabajo Colaborativo", "description": "Emprendimiento, desarrollo profesional y redes de apoyo para crecer económicamente de forma consciente y colaborativa.", "tags": ["Emprendimiento", "Networking", "Mentoría"] },
+      "armonia": { "title": "Bienestar y Armonía Emocional", "description": "Espacios para el autocuidado, la salud mental y el bienestar emocional. Meditación, terapia y apoyo entre mujeres.", "tags": ["Bienestar", "Meditación", "Terapia"] },
+      "arte": { "title": "Arte con Sentido", "description": "Creatividad que inspira y transforma. Talleres, proyectos artísticos y expresión a través del arte consciente.", "tags": ["Creatividad", "Talleres", "Expresión"] },
+      "sostenibilidad": { "title": "Sostenibilidad en Acción", "description": "Prácticas sostenibles para el día a día. Reciclaje, zero waste y estilos de vida que cuidan el planeta.", "tags": ["Zero Waste", "Eco-friendly", "DIY"] },
+      "medio-ambiente": { "title": "Medio Ambiente", "description": "Acción climática, conservación y proyectos ambientales. Juntas por un planeta más verde y saludable.", "tags": ["Activismo", "Conservación", "Educación"] },
+      "consumo": { "title": "Consumo con Sentido", "description": "Decisiones de compra conscientes. Apoyamos marcas éticas, comercio justo y economía circular.", "tags": ["Comercio Justo", "Ético", "Local"] }
+    }
+  },
+  "intercambioPage": {
+    "hero": {
+      "badge": "Economía Circular",
+      "title": "Intercambio",
+      "subtitle1": "Aquí, cada intercambio es una oportunidad y cada conexión, un impulso.",
+      "subtitle2": "Conectamos desde la generosidad: damos, recibimos y crecemos juntas."
+    },
+    "sectionConnect": {
+      "title": "Intercambia conexiones con sentido",
+      "platformTitle": "Plataforma de intercambio",
+      "platformDescription": "Una plataforma para que mujeres intercambien conocimientos, productos y servicios, conectando con otras de su ciudad o LATAM para crear alianzas y proyectos."
+    },
+    "exploreSection": {
+      "title": "Explora las formas de intercambio",
+      "subtitle": "Elige la modalidad que más se ajuste a lo que buscas o necesitas"
+    },
+    "explore": "Explorar",
+    "cards": {
+      "conexion": {
+        "title": "Conexión y propuestas",
+        "description": "Encuentra colaboradoras para proyectos, crea alianzas estratégicas y haz networking significativo."
+      },
+      "servicios": {
+        "title": "Servicios",
+        "description": "Ofrece tus habilidades profesionales o encuentra los servicios que necesitas dentro de la comunidad."
+      }
+    },
+    "cta": {
+      "title": "¿Lista para comenzar a intercambiar?",
+      "subtitle": "Únete a cientos de mujeres que ya están creando una economía más justa y colaborativa",
+      "createAccount": "Crear cuenta y empezar"
+    }
+  },
+  "marketplacePage": {
+    "hero": {
+      "badge": "Marketplace consciente",
+      "title": "Marketplace de",
+      "titleHighlight": "Mujeres Beginss",
+      "subtitle": "Cada compra es un acto de apoyo y cada venta, una oportunidad para crecer.",
+      "subtitleBold": "Compra con impacto. Vende con sentido. Crezcamos juntas."
+    },
+    "searchPlaceholder": "Busca productos, servicios o emprendedoras...",
+    "publishProduct": "Publicar mi producto",
+    "joinToSell": "Únete para vender",
+    "viewMarketplace": "Marketplace",
+    "viewTrueque": "Trueque",
+    "categoriesAll": "Todos",
+    "loadingProducts": "Cargando productos...",
+    "badgeTrueque": "Trueque",
+    "badgeMarketplace": "Marketplace",
+    "oneCategory": "1 categoría",
+    "nCategories": "{{n}} categorías",
+    "noProducts": "No hay productos disponibles",
+    "noTrueques": "No hay trueques disponibles",
+    "cta": {
+      "title": "¿Lista para vender o intercambiar?",
+      "subtitle": "Publica tus productos o servicios y conecta con miles de mujeres que valoran el comercio consciente.",
+      "publishFirst": "Publicar mi primer producto",
+      "createAccountSell": "Crear cuenta y vender"
+    },
+    "modal": {
+      "title": "Publicar producto",
+      "selectType": "Selecciona el tipo de producto",
+      "marketplaceLabel": "Marketplace",
+      "marketplaceDesc": "Venta de productos y servicios",
+      "truequeLabel": "Trueque",
+      "truequeDesc": "Intercambio sin dinero",
+      "changeType": "← Cambiar tipo",
+      "categoriesLabel": "Categorías * (puedes elegir varias)",
+      "selected": "Seleccionadas",
+      "productNameLabel": "Nombre del producto *",
+      "productNamePlaceholder": "Ej: Set de Cosmética Natural",
+      "truequeTitleLabel": "Título del trueque *",
+      "truequeTitlePlaceholder": "Ej: Intercambio de servicios de diseño",
+      "tagsLabel": "Etiquetas",
+      "tagPlaceholder": "Escribe una etiqueta y presiona Enter",
+      "add": "Agregar",
+      "imagesLabel": "Imágenes del producto",
+      "uploadImages": "Haz clic para subir imágenes",
+      "uploadHint": "PNG, JPG hasta 5MB (máx. 6 imágenes)",
+      "deliveryAddressLabel": "Dirección de entrega *",
+      "exchangeAddressLabel": "Dirección de intercambio *",
+      "addressPlaceholder": "Ej: Calle 123, Bogotá",
+      "offerTypeLabel": "Tipo de oferta *",
+      "offer": "Ofrecer",
+      "search": "Buscar",
+      "quantityLabel": "Cantidad",
+      "quantityPlaceholder": "Ej: 1, 2, 5...",
+      "priceLabel": "Precio *",
+      "pricePlaceholder": "Ej: 45000",
+      "descriptionLabel": "Descripción *",
+      "descriptionPlaceholder": "Describe tu producto o trueque...",
+      "cancel": "Cancelar",
+      "publish": "Publicar producto"
+    },
+    "detail": {
+      "description": "Descripción",
+      "quantity": "Cantidad",
+      "unit": "unidad",
+      "units": "unidades",
+      "deliveryAddress": "Dirección de entrega",
+      "exchangeAddress": "Dirección de intercambio",
+      "tags": "Etiquetas",
+      "moreImages": "Más imágenes",
+      "alreadyInterested": "✓ Ya mostraste interés",
+      "saving": "Guardando...",
+      "meInteresa": "Me interesa",
+      "contact": "Contactar",
+      "noContact": "El vendedor no ha proporcionado un número de contacto"
+    },
+    "toasts": {
+      "loginRequired": "Debes iniciar sesión para publicar un producto",
+      "uploadError": "Error al subir las imágenes. Intenta de nuevo.",
+      "createError": "Error al crear el producto. Intenta de nuevo.",
+      "published": "Producto publicado exitosamente",
+      "publishError": "Error al publicar el producto. Intenta de nuevo.",
+      "interestError": "No se pudo registrar tu interés.",
+      "interestSaved": "¡Interés guardado! Aparecerá en tu perfil en \"Me interesó\"."
+    }
+  },
+  "conexionPropuestasPage": {
+    "hero": {
+      "badge": "Colaboración",
+      "title": "Conexión y Propuestas",
+      "subtitle": "Encuentra colaboradoras y proyectos afines a tu propósito."
+    },
+    "filters": {
+      "title": "Filtros de Búsqueda",
+      "selectCountry": "Selecciona un país",
+      "selectCity": "Selecciona una ciudad"
+    },
+    "profiles": {
+      "title": "Usuarios para conectar y proponer",
+      "loading": "Cargando usuarios...",
+      "viewProfile": "Ver perfil",
+      "noUsers": "No se encontraron usuarios con esos filtros",
+      "clearFilters": "Limpiar filtros"
+    },
+    "cta": {
+      "title": "Las mejores ideas se construyen en conjunto",
+      "subtitle": "Encuentra tu próxima socia, colaboradora o mentora"
+    },
+    "other": "Otro"
+  },
+  "serviciosPage": {
+    "hero": {
+      "badge": "Servicios",
+      "title": "Servicios Compartidos",
+      "subtitle": "Ofrece tus habilidades y encuentra apoyo profesional."
+    },
+    "filters": {
+      "title": "Filtros de Búsqueda",
+      "searchPlaceholder": "Buscar por nombre, habilidades o intereses..."
+    },
+    "categories": {
+      "all": "Todas las categorías",
+      "educacion": "Educación",
+      "bienestar": "Bienestar",
+      "diseno": "Diseño",
+      "hogar": "Hogar",
+      "tecnologia": "Tecnología",
+      "marketing": "Marketing",
+      "salud": "Salud",
+      "arte": "Arte",
+      "consultoria": "Consultoría",
+      "legal": "Legal",
+      "finanzas": "Finanzas",
+      "gastronomia": "Gastronomía",
+      "moda": "Moda",
+      "fotografia": "Fotografía",
+      "escritura": "Escritura",
+      "coaching": "Coaching",
+      "otro": "Otro"
+    },
+    "profiles": {
+      "title": "Profesionales Disponibles",
+      "loading": "Cargando profesionales...",
+      "viewProfile": "Ver perfil",
+      "noUsers": "No se encontraron profesionales con esos filtros",
+      "clearFilters": "Limpiar filtros"
+    },
+    "cta": {
+      "title": "Tu conocimiento puede transformar otra vida",
+      "subtitle": "Comparte tus habilidades y fortalece nuestra comunidad"
+    }
+  }
+}

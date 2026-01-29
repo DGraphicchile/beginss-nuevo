@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Heart, Leaf, Sparkles, Users, ArrowRight, Gift, Lightbulb, TreePine, Handshake, Star, TrendingUp, Infinity, UserPlus, Repeat, Store, Globe, MessageCircle, CheckCircle2, Circle } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
+import { Heart, Leaf, Sparkles, Users, ArrowRight, Gift, Lightbulb, TreePine, Handshake, Star, TrendingUp, Infinity, UserPlus, Repeat, Store, Globe, MessageCircle, Circle } from 'lucide-react';
 import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
 import { useAuth } from '../lib/AuthContext';
@@ -7,17 +8,17 @@ import { useAuth } from '../lib/AuthContext';
 const APP_DOWNLOAD_URL = import.meta.env.VITE_APP_DOWNLOAD_URL || '';
 
 export default function Home() {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const valores = [
-    { icon: Heart, name: 'Bienestar', color: '#2D5444', description: 'Cuidamos nuestro equilibrio personal y colectivo para crecer con armonía.' },
-    { icon: TrendingUp, name: 'Empoderamiento', color: '#cf3f5c', description: 'Creemos en la fuerza de cada mujer para liderar su propio camino.' },
-    { icon: Gift, name: 'Generosidad', color: '#F5C542', description: 'Compartimos lo que sabemos y tenemos, multiplicando oportunidades.' },
-    { icon: Lightbulb, name: 'Innovación', color: '#E2725B', description: 'Transformamos ideas en soluciones reales que generan impacto.' },
-    { icon: TreePine, name: 'Naturaleza', color: '#2D5444', description: 'Vivimos en conexión y respeto con el entorno que nos sostiene.' },
-    { icon: Leaf, name: 'Sostenibilidad', color: '#1E1E1E', description: 'Construimos hoy pensando en el bienestar de mañana.' },
-    { icon: Handshake, name: 'Sororidad', color: '#cf3f5c', description: 'Nos apoyamos, nos escuchamos y crecemos juntas.' },
-    { icon: Infinity, name: 'Circularidad', color: '#F5C542', description: 'Lo que damos regresa transformado, fortaleciendo nuestros lazos.' },
-  ];
+  const valueKeys = ['bienestar', 'empoderamiento', 'generosidad', 'innovacion', 'naturaleza', 'sostenibilidad', 'sororidad', 'circularidad'] as const;
+  const valueIcons = [Heart, TrendingUp, Gift, Lightbulb, TreePine, Leaf, Handshake, Infinity];
+  const valueColors = ['#2D5444', '#cf3f5c', '#F5C542', '#E2725B', '#2D5444', '#1E1E1E', '#cf3f5c', '#F5C542'];
+  const valores = valueKeys.map((key, i) => ({
+    icon: valueIcons[i],
+    nameKey: `home.values.${key}.name`,
+    descKey: `home.values.${key}.description`,
+    color: valueColors[i],
+  }));
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
@@ -34,32 +35,25 @@ export default function Home() {
   <div className="relative z-10 px-4 sm:px-6 lg:px-8 w-full">
     <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
       
-      {/* Label */}
       <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 bg-[#CF3F7A] rounded-full shadow-md">
         <Circle className="w-3 h-3 fill-white text-white" />
         <span className="text-white text-xs font-bold uppercase tracking-wider">
-          Comunidad Circular
+          {t('home.hero.badge')}
         </span>
       </div>
-
-      {/* Título */}
       <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-        ¡Crece, conecta
+        {t('home.hero.title1')}
         <br />
-        y transforma!
+        {t('home.hero.title2')}
       </h1>
-
-      {/* Texto descriptivo */}
       <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl drop-shadow">
-        Únete a una comunidad donde puedes intercambiar servicios, tiempo, objetos y propuestas con mujeres reales como tú.
+        {t('home.hero.subtitle')}
       </p>
-
-      {/* Botones */}
       {!user && (
         <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
           <Link to="/registro">
             <Button variant="cta" className="w-full sm:w-auto">
-              Únete al círculo
+              {t('home.hero.joinCircle')}
             </Button>
           </Link>
           <Link to="/valores">
@@ -67,13 +61,11 @@ export default function Home() {
               variant="outlined"
               className="w-full sm:w-auto !bg-white !border-white !text-[#2D5444] hover:!bg-[#1E1E1E] hover:!text-white hover:!border-[#1E1E1E]"
             >
-              Conoce más
+              {t('home.hero.learnMore')}
             </Button>
           </Link>
         </div>
       )}
-
-      {/* Logo */}
       <div className="mb-10">
         <img
           src="/logo-hor-beige.svg"
@@ -81,11 +73,9 @@ export default function Home() {
           className="w-48 md:w-56 lg:w-64 mx-auto drop-shadow-lg"
         />
       </div>
-
-      {/* Línea decorativa */}
       <div className="flex items-center gap-4 justify-center">
         <div className="w-16 h-0.5 bg-[#F5C542]"></div>
-        <p className="text-white/70 text-sm">🔄 Intercambia servicios  🤝 Conecta con mujeres reales 💛 Haz crecer tu propósito</p>
+        <p className="text-white/70 text-sm">{t('home.hero.tagline')}</p>
       </div>
     </div>
   </div>
@@ -116,74 +106,46 @@ export default function Home() {
 </div>
 
 
-    {/* ======== COLUMNA DERECHA — TEXTO + PASOS ======== */}
     <div>
-      {/* Label */}
       <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-white shadow-sm">
         <span className="h-2 w-2 rounded-full bg-[#CF3F7A]" />
         <span className="text-xs font-semibold tracking-[0.18em] uppercase text-[#2D5444]">
-          Así funciona Beginss
+          {t('home.howItWorks.label')}
         </span>
       </div>
-
-      {/* Título */}
       <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1E1E1E] leading-tight mb-4">
-        Regístrate, explora<br />y vive la comunidad desde la app
+        <Trans i18nKey="home.howItWorks.title" components={{ br: <br /> }} />
       </h2>
-
       <p className="text-[15px] sm:text-base text-[#3C3C3C] leading-relaxed mb-8">
-        Beginss es una plataforma circular: te registras, eliges cómo participar y sigues todo 
-        desde la app. Así de simple para empezar a conectar con otras mujeres.
+        {t('home.howItWorks.description')}
       </p>
-
-      {/* ===== PASOS ===== */}
       <div className="space-y-6">
-        
-        {/* Paso 1 */}
         <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#F5C542]/30 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
-          <div className="w-10 h-10 rounded-full bg-[#F5C542] text-[#1E1E1E] flex items-center justify-center font-bold">
-            1
-          </div>
+          <div className="w-10 h-10 rounded-full bg-[#F5C542] text-[#1E1E1E] flex items-center justify-center font-bold">1</div>
           <div>
-            <h3 className="font-semibold text-[#2D5444] text-lg">Crea tu perfil Beginss</h3>
-            <p className="text-[#5e3920] text-sm leading-relaxed">
-              Regístrate, define tus intereses y empieza a crear conexiones de valor.
-            </p>
+            <h3 className="font-semibold text-[#2D5444] text-lg">{t('home.howItWorks.step1Title')}</h3>
+            <p className="text-[#5e3920] text-sm leading-relaxed">{t('home.howItWorks.step1Desc')}</p>
           </div>
         </div>
-
-        {/* Paso 2 */}
         <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#b2d9d9]/40 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
-          <div className="w-10 h-10 rounded-full bg-[#2D5444] text-white flex items-center justify-center font-bold">
-            2
-          </div>
+          <div className="w-10 h-10 rounded-full bg-[#2D5444] text-white flex items-center justify-center font-bold">2</div>
           <div>
-            <h3 className="font-semibold text-[#2D5444] text-lg">Explora los espacios</h3>
-            <p className="text-[#5e3920] text-sm leading-relaxed">
-              Trueque, servicios, tiempo, propuestas… participa donde quieras.
-            </p>
+            <h3 className="font-semibold text-[#2D5444] text-lg">{t('home.howItWorks.step2Title')}</h3>
+            <p className="text-[#5e3920] text-sm leading-relaxed">{t('home.howItWorks.step2Desc')}</p>
           </div>
         </div>
-
-        {/* Paso 3 */}
         <div className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-[#CF3F7A]/30 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
-          <div className="w-10 h-10 rounded-full bg-[#CF3F7A] text-white flex items-center justify-center font-bold">
-            3
-          </div>
+          <div className="w-10 h-10 rounded-full bg-[#CF3F7A] text-white flex items-center justify-center font-bold">3</div>
           <div>
-            <h3 className="font-semibold text-[#2D5444] text-lg">Descarga la app</h3>
-            <p className="text-[#5e3920] text-sm leading-relaxed">
-              Sigue tus actividades, conversa y genera impacto desde la app Beginss.
-            </p>
+            <h3 className="font-semibold text-[#2D5444] text-lg">{t('home.howItWorks.step3Title')}</h3>
+            <p className="text-[#5e3920] text-sm leading-relaxed">{t('home.howItWorks.step3Desc')}</p>
           </div>
         </div>
       </div>
-
-      {/* CTA */}
       {!user && (
         <div className="mt-10 flex flex-col sm:flex-row gap-4">
           <Button variant="cta" className="px-8 py-3 text-base sm:text-lg">
-            Crear mi perfil Beginss
+            {t('home.howItWorks.createProfile')}
           </Button>
           {APP_DOWNLOAD_URL && (
             <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer">
@@ -191,17 +153,15 @@ export default function Home() {
                 variant="outlined"
                 className="px-8 py-3 text-base sm:text-lg !bg-white !border-[#2D5444] !text-[#2D5444] hover:!bg-[#2D5444] hover:!text-white"
               >
-                Descargar la app
+                {t('home.howItWorks.downloadApp')}
               </Button>
             </a>
           )}
         </div>
       )}
-
-      {/* Mensaje de disponibilidad - solo si aún no hay URL de descarga */}
       {!APP_DOWNLOAD_URL && (
         <p className="mt-6 text-center text-sm text-[#6E6E6E] italic">
-          App disponible muy pronto
+          {t('home.howItWorks.appComingSoon')}
         </p>
       )}
 
@@ -269,78 +229,45 @@ export default function Home() {
       </div>
     </div>
 
-    {/* Columna derecha: texto */}
-<div className="max-w-xl">
+    <div className="max-w-xl">
   <h2 className="text-5xl sm:text-6xl font-extrabold leading-tight text-[#1E1E1E]">
-    Qué puedes hacer en Beginss
+    {t('home.whatYouCanDo.title')}
   </h2>
-
   <p className="mt-6 text-[17px] leading-7 text-[#3C3C3C]">
-    En Beginss puedes intercambiar, colaborar y encontrar apoyo real con otras mujeres.
-    La plataforma está organizada en espacios simples para que sepas exactamente por
-    dónde empezar.
+    {t('home.whatYouCanDo.description')}
   </p>
-
-  {/* 4 lógicas principales */}
   <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-    {/* Marketplace */}
-    <div className="group rounded-2xl bg-white/95 border border-[#F5C542]/30 p-5 shadow-sm 
-                    transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
+    <div className="group rounded-2xl bg-white/95 border border-[#F5C542]/30 p-5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
       <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#856019]">
         <span className="h-2.5 w-2.5 rounded-full bg-[#F5C542]" />
-        Marketplace
+        {t('home.whatYouCanDo.marketplace')}
       </span>
-      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">
-        Compra, vende o intercambia
-      </h3>
-      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">
-        Publica productos, servicios o talleres. Vende por dinero, intercambia por trueque o usa puntos de tiempo con otras usuarias de la comunidad.
-      </p>
+      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">{t('home.whatYouCanDo.marketplaceTitle')}</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">{t('home.whatYouCanDo.marketplaceDesc')}</p>
     </div>
-
-    {/* Conexiones */}
-    <div className="group rounded-2xl bg-white/95 border border-[#b2d9d9]/40 p-5 shadow-sm 
-                    transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
+    <div className="group rounded-2xl bg-white/95 border border-[#b2d9d9]/40 p-5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
       <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#1F4138]">
         <span className="h-2.5 w-2.5 rounded-full bg-[#b2d9d9]" />
-        Conexiones
+        {t('home.whatYouCanDo.connections')}
       </span>
-      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">
-        Guarda usuarias y conéctate desde tu perfil
-      </h3>
-      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">
-        Añade a tu lista de conexiones a las mujeres con las que quieras seguir en contacto. Accede a tus contactos guardados desde tu perfil y conéctate cuando quieras.
-      </p>
+      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">{t('home.whatYouCanDo.connectionsTitle')}</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">{t('home.whatYouCanDo.connectionsDesc')}</p>
     </div>
-
-    {/* Colaboración y propuestas */}
-    <div className="group rounded-2xl bg-white/95 border border-[#CF3F7A]/30 p-5 shadow-sm 
-                    transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
+    <div className="group rounded-2xl bg-white/95 border border-[#CF3F7A]/30 p-5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
       <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8C234D]">
         <span className="h-2.5 w-2.5 rounded-full bg-[#CF3F7A]" />
-        Colaboración y propuestas
+        {t('home.whatYouCanDo.collaboration')}
       </span>
-      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">
-        Súmate a proyectos con propósito
-      </h3>
-      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">
-        Crea o únete a iniciativas, alianzas y proyectos donde otras mujeres buscan co-crear y colaborar.
-      </p>
+      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">{t('home.whatYouCanDo.collaborationTitle')}</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">{t('home.whatYouCanDo.collaborationDesc')}</p>
     </div>
-
-    {/* Trueque de objetos */}
-    <div className="group rounded-2xl bg-white/95 border border-[#2D5444]/25 p-5 shadow-sm 
-                    transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
+    <div className="group rounded-2xl bg-white/95 border border-[#2D5444]/25 p-5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl">
       <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#2D5444]">
         <span className="h-2.5 w-2.5 rounded-full bg-[#2D5444]" />
-        Trueque de objetos
+        {t('home.whatYouCanDo.barter')}
       </span>
-      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">
-        Da nueva vida a lo que ya no usas
-      </h3>
-      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">
-        Intercambia ropa, libros, objetos y recursos con otras mujeres Beginss para que sigan circulando.
-      </p>
+      <h3 className="mt-3 text-lg font-semibold text-[#2D5444]">{t('home.whatYouCanDo.barterTitle')}</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#3C3C3C]">{t('home.whatYouCanDo.barterDesc')}</p>
     </div>
   </div>
 </div>
@@ -400,13 +327,13 @@ export default function Home() {
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200">
               <div className="w-2 h-2 bg-[#2D5444] rounded-full"></div>
-              <span className="text-[#1E1E1E] text-xs font-bold uppercase tracking-wider">Cómo Funciona</span>
+              <span className="text-[#1E1E1E] text-xs font-bold uppercase tracking-wider">{t('home.communityHow.label')}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
-              Nuestra Comunidad
+              {t('home.communityHow.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Descubre cómo conectar, compartir y transformar junto a otras mujeres Beginss.
+              {t('home.communityHow.description')}
             </p>
           </div>
 
@@ -426,10 +353,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
-                        Crea tu perfil*
+                        {t('home.communityHow.step1Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        Basado en tus intereses, profesión y necesidades. Conecta con mujeres afines.
+                        {t('home.communityHow.step1Desc')}
                       </p>
                     </div>
                   </div>
@@ -458,10 +385,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white mb-3">
-                        Conéctate
+                        {t('home.communityHow.step2Title')}
                       </h3>
                       <p className="text-white/90 leading-relaxed">
-                        Conoce mujeres, comparte intereses y forma redes de apoyo mutuo.
+                        {t('home.communityHow.step2Desc')}
                       </p>
                     </div>
                   </div>
@@ -493,10 +420,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white mb-3">
-                        Intercambia
+                        {t('home.communityHow.step3Title')}
                       </h3>
                       <p className="text-white/90 leading-relaxed">
-                        Trueque de productos o servicios sin complicaciones.
+                        {t('home.communityHow.step3Desc')}
                       </p>
                     </div>
                   </div>
@@ -526,10 +453,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
-                        Muestra tu valor
+                        {t('home.communityHow.step4Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        Productos, servicios, actividades o cursos que ofreces.
+                        {t('home.communityHow.step4Desc')}
                       </p>
                     </div>
                   </div>
@@ -561,10 +488,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
-                        Conecta globalmente
+                        {t('home.communityHow.step5Title')}
                       </h3>
                       <p className="text-[#1E1E1E]/80 leading-relaxed">
-                        Con personas de intereses similares, local o globalmente.
+                        {t('home.communityHow.step5Desc')}
                       </p>
                     </div>
                   </div>
@@ -593,10 +520,10 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
-                        Organiza encuentros
+                        {t('home.communityHow.step6Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        Chats o charlas sobre temas de interés con la comunidad.
+                        {t('home.communityHow.step6Desc')}
                       </p>
                     </div>
                   </div>
@@ -619,7 +546,7 @@ export default function Home() {
             <div className="text-center mt-16">
               <Link to="/registro">
                 <Button variant="primary" className="text-lg">
-                  Comienza ahora
+                  {t('home.communityHow.startNow')}
                 </Button>
               </Link>
             </div>
@@ -680,25 +607,22 @@ export default function Home() {
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-[#E2725B] text-white rounded-full">
               <Star className="w-3 h-3 fill-white" />
-              <span className="text-xs font-bold uppercase tracking-wider">Lo que nos mueve</span>
+              <span className="text-xs font-bold uppercase tracking-wider">{t('home.values.label')}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
-              Valores Activos
+              {t('home.values.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Valores que guían cada acción, cada intercambio y cada conexión en Beginss
+              {t('home.values.description')}
             </p>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {valores.map((valor, index) => (
               <div
                 key={index}
                 className="group relative bg-[#FAFAFA] rounded-[2rem] p-8 text-center hover:shadow-xl transition-all cursor-pointer"
               >
-                {/* Decorative circle */}
                 <div className="absolute top-2 right-2 w-8 h-8 border-2 rounded-full opacity-0 group-hover:opacity-20 transition-opacity" style={{ borderColor: valor.color }}></div>
-
                 <div className="relative z-10">
                   <div
                     className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
@@ -707,20 +631,19 @@ export default function Home() {
                     <valor.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="font-bold text-[#1E1E1E] text-lg mb-3">
-                    {valor.name}
+                    {t(valor.nameKey)}
                   </h3>
                   <p className="text-sm text-gray-600 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {valor.description}
+                    {t(valor.descKey)}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-
           <div className="text-center">
             <Link to="/circulos">
               <Button variant="primary">
-                Descubre nuestros círculos
+                {t('home.values.discoverCircles')}
               </Button>
             </Link>
           </div>
@@ -742,30 +665,25 @@ export default function Home() {
             <div className="relative order-2 lg:order-1">
               <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-[#cf3f5c] rounded-full">
                 <Star className="w-3 h-3 fill-white text-white" />
-                <span className="text-white text-xs font-bold uppercase tracking-wider">Propuesta de Valor</span>
+                <span className="text-white text-xs font-bold uppercase tracking-wider">{t('home.womenBeginss.label')}</span>
               </div>
-
               <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-8 leading-tight">
-                Mujeres Beginss
+                {t('home.womenBeginss.title')}
               </h2>
-
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                En nuestra propuesta de valor ofrecemos un <span className="font-bold text-[#2D5444]">círculo vivo</span>, donde encontrarás soluciones a tus necesidades a través de la colaboración y el intercambio de saberes.
+                <Trans i18nKey="home.womenBeginss.para1" components={{ strong: <span className="font-bold text-[#2D5444]" /> }} />
               </p>
-
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                Más que ampliar tu red, crearás lazos reales con Mujeres Beginss que comparten tus valores y están listas para impulsarte, mientras tú impulsas a otras.
+                {t('home.womenBeginss.para2')}
               </p>
-
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-0.5 bg-[#E2725B]"></div>
                 <Heart className="w-5 h-5 text-[#E2725B]" />
               </div>
-
               {!user && (
                 <Link to="/registro">
                   <Button variant="primary" className="text-lg">
-                    Únete a la comunidad
+                    {t('home.womenBeginss.joinCommunity')}
                   </Button>
                 </Link>
               )}
@@ -817,16 +735,16 @@ export default function Home() {
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-[#2D5444] text-white rounded-full">
               <Infinity className="w-3 h-3" />
-              <span className="text-xs font-bold uppercase tracking-wider">Círculos de Acción</span>
+              <span className="text-xs font-bold uppercase tracking-wider">{t('home.circles.label')}</span>
             </div>
             <h2 className="text-5xl md:text-7xl font-bold text-[#1E1E1E] mb-8 leading-tight">
-              Descubre tu Círculo<br />de Acción
+              <Trans i18nKey="home.circles.title" components={{ br: <br /> }} />
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-4">
-              Seis caminos para inspirarte, crecer y transformar tu vida junto a otras mujeres. Desde la economía colaborativa hasta el arte con propósito, el bienestar integral, la sostenibilidad y el consumo consciente.
+              {t('home.circles.description')}
             </p>
             <p className="text-lg text-gray-500 max-w-3xl mx-auto">
-              Cada círculo es una oportunidad para actuar, aprender y tejer redes que impulsan un futuro más justo y solidario.
+              {t('home.circles.description2')}
             </p>
           </div>
 
@@ -835,32 +753,27 @@ export default function Home() {
             {/* Circle 1 - Economia */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#2D5444] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#2D5444] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#2D5444] transition-colors">
-                  Economía y trabajo<br />colaborativo
+                  <Trans i18nKey="home.circles.economia.title" components={{ br: <br /> }} />
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Mujeres que crean, intercambian y prosperan juntas.
+                  {t('home.circles.economia.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Economía circular', 'Innovación', 'Talleres', 'Trueque', 'Moda Sostenible'].map((item, i) => (
+                    {(t('home.circles.economia.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#2D5444]/10 text-[#2D5444] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#2D5444] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -873,32 +786,27 @@ export default function Home() {
             {/* Circle 2 - Arte */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E2725B] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#E2725B] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#E2725B] transition-colors">
-                  Arte con sentido
+                  {t('home.circles.arte.title')}
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Expresamos y transformamos el mundo a través de nuestra creatividad.
+                  {t('home.circles.arte.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Pintura', 'Música', 'Cerámica', 'Fotografía', 'Teatro', 'Poesía'].map((item, i) => (
+                    {(t('home.circles.arte.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#E2725B]/10 text-[#E2725B] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#E2725B] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -911,32 +819,27 @@ export default function Home() {
             {/* Circle 3 - Armonia */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#F5C542] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#F5C542] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Heart className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#F5C542] transition-colors">
-                  Armonía emocional
+                  {t('home.circles.armonia.title')}
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Cuidamos nuestra fuerza interior y la compartimos con otras.
+                  {t('home.circles.armonia.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Yoga', 'Meditación', 'Retiros', 'Terapias', 'Coach', 'Talleres'].map((item, i) => (
+                    {(t('home.circles.armonia.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#F5C542]/10 text-[#1E1E1E] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#F5C542] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -949,32 +852,27 @@ export default function Home() {
             {/* Circle 4 - Sostenibilidad */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#cf3f5c] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#cf3f5c] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Lightbulb className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#cf3f5c] transition-colors">
-                  Sostenibilidad<br />en acción
+                  <Trans i18nKey="home.circles.sostenibilidadAccion.title" components={{ br: <br /> }} />
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Lideramos hábitos y proyectos que dejan huella positiva.
+                  {t('home.circles.sostenibilidadAccion.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Sostenibilidad ambiental', 'Innovación', 'Impacto social', 'Eco-emprendimientos'].map((item, i) => (
+                    {(t('home.circles.sostenibilidadAccion.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#cf3f5c]/10 text-[#cf3f5c] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#cf3f5c] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -987,32 +885,27 @@ export default function Home() {
             {/* Circle 5 - Medio Ambiente */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#2D5444] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#2D5444] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <TreePine className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#2D5444] transition-colors">
-                  Medio ambiente
+                  {t('home.circles.medioAmbiente.title')}
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Protegemos la tierra como fuente de vida y futuro.
+                  {t('home.circles.medioAmbiente.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Huertos urbanos', 'Compostaje', 'Reciclaje', 'Ciudades verdes', 'Autocultivo'].map((item, i) => (
+                    {(t('home.circles.medioAmbiente.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#2D5444]/10 text-[#2D5444] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#2D5444] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -1025,32 +918,27 @@ export default function Home() {
             {/* Circle 6 - Consumo */}
             <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E2725B] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
-
               <div className="relative">
                 <div className="w-16 h-16 bg-[#E2725B] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Leaf className="w-8 h-8 text-white" />
                 </div>
-
                 <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#E2725B] transition-colors">
-                  Consumo con sentido
+                  {t('home.circles.consumo.title')}
                 </h3>
-
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Elegimos productos que reflejan nuestros valores y cuidan el planeta.
+                  {t('home.circles.consumo.description')}
                 </p>
-
                 <div className="space-y-2 mb-6 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500">
                   <div className="flex flex-wrap gap-2">
-                    {['Venta a granel', 'Comercio justo', 'Marketplace', 'Trueque', 'Consumo responsable'].map((item, i) => (
+                    {(t('home.circles.consumo.tags', { returnObjects: true }) as string[]).map((item, i) => (
                       <span key={i} className="text-xs bg-[#E2725B]/10 text-[#E2725B] px-3 py-1 rounded-full font-medium">
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center text-[#E2725B] font-semibold opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
-                  <span>Explorar</span>
+                  <span>{t('home.circles.explore')}</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>
               </div>
@@ -1079,14 +967,14 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-3xl md:text-4xl font-bold text-[#1E1E1E] mb-4">
-                  Únete hoy y sé parte del cambio
+                  {t('home.circles.joinToday')}
                 </h3>
                 <p className="text-xl text-[#1E1E1E] mb-8">
-                  Que queremos ver en el mundo
+                  {t('home.circles.worldWeWant')}
                 </p>
                 <Link to="/circulos">
                   <Button variant="secondary" className="text-lg bg-[#1E1E1E] text-white hover:bg-[#000000] border-[#1E1E1E]">
-                    Explorar todos los círculos
+                    {t('home.circles.exploreAll')}
                   </Button>
                 </Link>
               </div>
@@ -1105,21 +993,20 @@ export default function Home() {
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-[#2D5444] text-white rounded-full">
               <Globe className="w-3 h-3" />
-              <span className="text-xs font-bold uppercase tracking-wider">Explora Beginss</span>
+              <span className="text-xs font-bold uppercase tracking-wider">{t('home.explore.label')}</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
-              Espacios para crecer
+              {t('home.explore.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Espacios diseñados para que compartas, aprendas y crezcas en comunidad
+              {t('home.explore.description')}
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { link: '/marketplace', img: 'https://images.pexels.com/photos/6169668/pexels-photo-6169668.jpeg?auto=compress&cs=tinysrgb&w=600', icon: Leaf, color: '#2D5444', title: 'Marketplace', desc: 'Cada compra es apoyo, cada venta una oportunidad.' },
-              { link: '/cafecito', img: '/2.jpg', icon: MessageCircle, color: '#cf3f5c', title: 'Cafecito', desc: 'Conversaciones que inspiran y conectan corazones.' },
-              { link: '/circulos', img: '/3.jpg', icon: Users, color: '#F5C542', title: 'Círculos', desc: 'Espacios temáticos para profundizar y construir.' }
+              { link: '/marketplace', img: 'https://images.pexels.com/photos/6169668/pexels-photo-6169668.jpeg?auto=compress&cs=tinysrgb&w=600', icon: Leaf, color: '#2D5444', titleKey: 'nav.marketplace', descKey: 'home.explore.marketplaceDesc' },
+              { link: '/cafecito', img: '/2.jpg', icon: MessageCircle, color: '#cf3f5c', titleKey: 'nav.cafecito', descKey: 'home.explore.cafecitoDesc' },
+              { link: '/circulos', img: '/3.jpg', icon: Users, color: '#F5C542', titleKey: 'nav.circulos', descKey: 'home.explore.circulosDesc' }
             ].map((space, index) => (
               <Link key={index} to={space.link} className="group">
                 <div className="relative bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all">
@@ -1127,7 +1014,7 @@ export default function Home() {
                     <div className="absolute inset-0 group-hover:bg-black/10 transition-all z-10"></div>
                     <img
                       src={space.img}
-                      alt={space.title}
+                      alt={t(space.titleKey)}
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -1136,13 +1023,13 @@ export default function Home() {
                       <space.icon className="w-7 h-7 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
-                      {space.title}
+                      {t(space.titleKey)}
                     </h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">
-                      {space.desc}
+                      {t(space.descKey)}
                     </p>
                     <div className="flex items-center font-semibold group-hover:translate-x-2 transition-transform" style={{ color: space.color }}>
-                      <span>Explorar</span>
+                      <span>{t('home.explore.explore')}</span>
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </div>
                   </div>
@@ -1182,15 +1069,15 @@ export default function Home() {
               </div>
 
               <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-8 leading-tight">
-                ¿Lista para comenzar<br />tu transformación?
+                <Trans i18nKey="home.cta.title" components={{ br: <br /> }} />
               </h2>
               <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-                Únete a miles de mujeres que ya están creando su futuro en Beginss
+                {t('home.cta.subtitle')}
               </p>
               {!user && (
                 <Link to="/registro">
                   <Button variant="cta" className="text-lg">
-                    Únete ahora
+                    {t('home.cta.joinNow')}
                   </Button>
                 </Link>
               )}

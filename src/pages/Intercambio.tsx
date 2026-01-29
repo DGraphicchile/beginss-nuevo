@@ -1,35 +1,26 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Repeat, Users, Briefcase, Sparkles, Heart, ArrowRight } from 'lucide-react';
 import FloatingElements from '../components/FloatingElements';
 import RequireAuth from '../components/RequireAuth';
 import { useAuth } from '../lib/AuthContext';
 
-export default function Intercambio() {
-  const { user } = useAuth();
+const CARDS_CONFIG = [
+  { id: 'conexion', link: '/intercambio/conexion-propuestas', icon: Users, color: '#cf3f5c', image: '/conexion-propuestas.jpg' },
+  { id: 'servicios', link: '/intercambio/servicios', icon: Briefcase, color: '#2D5444', image: '/servicios-intercambio.jpg' }
+];
 
-  const cards = [
-    {
-      id: 'conexion',
-      link: '/intercambio/conexion-propuestas',
-      icon: Users,
-      title: 'Conexión y propuestas',
-      description: 'Encuentra colaboradoras para proyectos, crea alianzas estratégicas y haz networking significativo.',
-      color: '#cf3f5c',
-      image: '/conexion-propuestas.jpg'
-    },
-    {
-      id: 'servicios',
-      link: '/intercambio/servicios',
-      icon: Briefcase,
-      title: 'Servicios',
-      description: 'Ofrece tus habilidades profesionales o encuentra los servicios que necesitas dentro de la comunidad.',
-      color: '#2D5444',
-      image: '/servicios-intercambio.jpg'
-    }
-  ];
+export default function Intercambio() {
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const cards = CARDS_CONFIG.map((c) => ({
+    ...c,
+    title: t(`intercambioPage.cards.${c.id}.title`),
+    description: t(`intercambioPage.cards.${c.id}.description`),
+  }));
 
   return (
-    <RequireAuth title="Intercambio" sectionName="intercambio">
+    <RequireAuth title="Intercambio" titleKey="auth.sectionNames.intercambio" sectionName="intercambio">
     <div className="min-h-screen">
        <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
   <div className="absolute inset-0">
@@ -48,20 +39,20 @@ export default function Intercambio() {
       <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
         <Repeat className="w-4 h-4 text-[#F5C542]" />
         <span className="text-[#1E1E1E] text-sm font-bold uppercase tracking-wider">
-          Economía Circular
+          {t('intercambioPage.hero.badge')}
         </span>
       </div>
 
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-        Intercambio
+        {t('intercambioPage.hero.title')}
       </h1>
 
       <div className="max-w-4xl mx-auto mb-8">
         <p className="text-2xl md:text-3xl text-white font-semibold mb-6 leading-relaxed drop-shadow-md">
-          Aquí, cada intercambio es una oportunidad y cada conexión, un impulso.
+          {t('intercambioPage.hero.subtitle1')}
         </p>
         <p className="text-xl text-white/90 leading-relaxed drop-shadow-md">
-          Conectamos desde la generosidad: damos, recibimos y crecemos juntas.
+          {t('intercambioPage.hero.subtitle2')}
         </p>
       </div>
     </div>
@@ -86,7 +77,7 @@ export default function Intercambio() {
                     <Heart className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-3xl font-bold text-[#1E1E1E]">
-                    Intercambia conexiones con sentido
+                    {t('intercambioPage.sectionConnect.title')}
                   </h2>
                 </div>
               </div>
@@ -100,10 +91,10 @@ export default function Intercambio() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-[#1E1E1E] mb-2">
-                      Plataforma de intercambio
+                      {t('intercambioPage.sectionConnect.platformTitle')}
                     </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Una plataforma para que mujeres intercambien conocimientos, productos y servicios, conectando con otras de su ciudad o LATAM para crear alianzas y proyectos.
+                      {t('intercambioPage.sectionConnect.platformDescription')}
                     </p>
                   </div>
                 </div>
@@ -118,10 +109,10 @@ export default function Intercambio() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-4">
-              Explora las formas de intercambio
+              {t('intercambioPage.exploreSection.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Elige la modalidad que más se ajuste a lo que buscas o necesitas
+              {t('intercambioPage.exploreSection.subtitle')}
             </p>
           </div>
 
@@ -155,7 +146,7 @@ export default function Intercambio() {
                   </p>
 
                   <div className="flex items-center font-semibold group-hover:translate-x-2 transition-transform" style={{ color: card.color }}>
-                    <span>Explorar</span>
+                    <span>{t('intercambioPage.explore')}</span>
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </div>
                 </div>
@@ -181,15 +172,15 @@ export default function Intercambio() {
             className="w-16 h-16 mx-auto mb-6"
           />
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#ffffff' }}>
-            ¿Lista para comenzar a intercambiar?
+            {t('intercambioPage.cta.title')}
           </h2>
           <p className="text-xl mb-8 text-white/90 leading-relaxed">
-            Únete a cientos de mujeres que ya están creando una economía más justa y colaborativa
+            {t('intercambioPage.cta.subtitle')}
           </p>
           {!user && (
             <Link to="/registro">
               <button className="px-8 py-4 bg-white text-[#2D5444] rounded-full font-bold text-lg hover:bg-[#F7EFE9] transition-colors shadow-2xl">
-                Crear cuenta y empezar
+                {t('intercambioPage.cta.createAccount')}
               </button>
             </Link>
           )}

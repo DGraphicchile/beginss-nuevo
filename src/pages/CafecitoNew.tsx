@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Search, MapPin, Users, Video, Clock, Coffee, Plus, X, Upload, Calendar, List } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -39,11 +40,17 @@ interface CafecitoEvent {
   participants: number;
   maxParticipants: number;
   image: string;
+  /** Si existe, la card usa textos traducidos desde cafecito.cards.<key> */
+  translationKey?: string;
 }
 
+const dateLocaleMap: Record<string, string> = { es: 'es-ES', en: 'en-US', 'pt-BR': 'pt-BR' };
+
 export default function CafecitoNew() {
+  const { t, i18n } = useTranslation();
   const { user, profile } = useAuth();
   const { showToast } = useToast();
+  const dateLocale = dateLocaleMap[i18n.language] || 'es-ES';
   const location = useLocation();
   const editEventId = (location.state as { editEventId?: string } | null)?.editEventId;
   const [searchTerm, setSearchTerm] = useState('');
@@ -158,8 +165,9 @@ export default function CafecitoNew() {
       setSelectedCafecito(prev => prev ? { ...prev, participants: prev.participants + 1 } : null);
       setMyRegisteredEventIds(prev => new Set([...prev, selectedCafecito.id]));
     } catch (err: unknown) {
-      const msg = err && typeof err === 'object' && 'message' in err ? String((err as { message: string }).message) : 'Error al inscribirse';
-      showToast(msg.includes('cupos') ? 'No hay cupos disponibles.' : 'No se pudo completar la inscripción. Intenta de nuevo.', msg.includes('cupos') ? 'warning' : 'error');
+      const msg = err && typeof err === 'object' && 'message' in err ? String((err as { message: string }).message) : '';
+      const isFull = msg.toLowerCase().includes('cupos') || msg.toLowerCase().includes('full') || msg.toLowerCase().includes('spots');
+      showToast(isFull ? t('cafecito.toasts.noSpots') : t('cafecito.toasts.joinError'), isFull ? 'warning' : 'error');
     } finally {
       setJoiningEventId(null);
     }
@@ -300,7 +308,7 @@ export default function CafecitoNew() {
             category: category,
             tags: tags,
             host: {
-              name: event.host_name || 'Usuario Beginss',
+              name: event.host_name || t('cafecito.defaultHostName'),
               avatar: event.host_avatar_url || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop',
               bio: event.host_bio || '',
             },
@@ -321,6 +329,7 @@ export default function CafecitoNew() {
   const mockCafecitos: CafecitoEvent[] = [
     {
       id: '1',
+      translationKey: 'card1',
       title: 'Cafecito: Emprendimiento Femenino',
       description: 'Conversemos sobre los retos y alegrías de emprender siendo mujer. Comparte tu experiencia y aprende de otras.',
       type: 'virtual',
@@ -337,6 +346,7 @@ export default function CafecitoNew() {
     },
     {
       id: '2',
+      translationKey: 'card2',
       title: 'Cafecito en el Parque',
       description: 'Encuentro presencial para conocernos y compartir un café al aire libre. Ideal para hacer nuevas amigas.',
       type: 'presencial',
@@ -354,6 +364,7 @@ export default function CafecitoNew() {
     },
     {
       id: '3',
+      translationKey: 'card3',
       title: 'Cafecito: Bienestar y Autocuidado',
       description: 'Hablemos sobre prácticas de autocuidado y bienestar mental. Un espacio seguro para compartir y aprender.',
       type: 'virtual',
@@ -370,6 +381,7 @@ export default function CafecitoNew() {
     },
     {
       id: '4',
+      translationKey: 'card4',
       title: 'Cafecito Literario',
       description: 'Compartamos nuestras lecturas favoritas y recomendaciones. Para amantes de los libros y las buenas historias.',
       type: 'presencial',
@@ -387,6 +399,7 @@ export default function CafecitoNew() {
     },
     {
       id: '5',
+      translationKey: 'card5',
       title: 'Cafecito: Creatividad y Arte',
       description: 'Un espacio para explorar nuestra creatividad juntas. Comparte tus proyectos artísticos y encuentra inspiración.',
       type: 'virtual',
@@ -403,6 +416,7 @@ export default function CafecitoNew() {
     },
     {
       id: '6',
+      translationKey: 'card6',
       title: 'Brunch Beginss',
       description: 'Encuentro especial de brunch para conectar, conversar y disfrutar. Trae tu platillo favorito para compartir.',
       type: 'presencial',
@@ -422,11 +436,25 @@ export default function CafecitoNew() {
 
   // Usar cafecitos de la base de datos, o mock si no hay
   const allCafecitos = cafecitos.length > 0 ? cafecitos : mockCafecitos;
-  
-  const filteredCafecitos = allCafecitos.filter(cafecito =>
-    cafecito.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cafecito.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  const getCardTitle = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.title`) : c.title;
+  const getCardDescription = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.description`) : c.description;
+  const getCardHostName = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.hostName`) : c.host.name;
+  const getCardHostBio = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.hostBio`) : c.host.bio;
+  const getCardLocation = (c: CafecitoEvent) => {
+    if (c.translationKey && c.type === 'presencial') {
+      const loc = t(`cafecito.cards.${c.translationKey}.location`);
+      return loc || c.location;
+    }
+    return c.location;
+  };
+
+  const filteredCafecitos = allCafecitos.filter(cafecito => {
+    const title = getCardTitle(cafecito);
+    const description = getCardDescription(cafecito);
+    return title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      description.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const virtualCafecitos = filteredCafecitos.filter(c => c.type === 'virtual');
   const presencialCafecitos = filteredCafecitos.filter(c => c.type === 'presencial');
@@ -436,7 +464,7 @@ export default function CafecitoNew() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#e74865] border-t-transparent mb-4" />
-          <p className="text-gray-600">Cargando cafecitos...</p>
+          <p className="text-gray-600">{t('cafecito.loading')}</p>
         </div>
       </div>
     );
@@ -444,23 +472,23 @@ export default function CafecitoNew() {
 
   const handleCreateCafecito = async () => {
     if (!user || !profile || !eventType) {
-      showToast('Por favor, completa todos los campos requeridos.', 'warning');
+      showToast(t('cafecito.toasts.requiredFields'), 'warning');
       return;
     }
 
     // Validar campos requeridos
     if (formData.categories.length === 0 || !formData.name || !formData.date || !formData.time || !formData.maxAttendees || !formData.description) {
-      showToast('Por favor, completa todos los campos requeridos.', 'warning');
+      showToast(t('cafecito.toasts.requiredFields'), 'warning');
       return;
     }
 
     if (eventType === 'presencial' && !formData.address) {
-      showToast('Por favor, ingresa la dirección del evento.', 'warning');
+      showToast(t('cafecito.toasts.addressRequired'), 'warning');
       return;
     }
 
     if (eventType === 'virtual' && !formData.eventUrl) {
-      showToast('Por favor, ingresa la URL del evento virtual.', 'warning');
+      showToast(t('cafecito.toasts.urlRequired'), 'warning');
       return;
     }
 
@@ -485,7 +513,7 @@ export default function CafecitoNew() {
 
           if (uploadError) {
             console.error('Error uploading image:', uploadError);
-            showToast(`Error al subir la imagen: ${uploadError.message}. Se usará una imagen por defecto.`, 'error');
+            showToast(t('cafecito.toasts.uploadError', { message: uploadError.message }), 'error');
             // Continuar con imagen por defecto si falla la subida
           } else {
             console.log('Image uploaded successfully:', uploadData);
@@ -504,7 +532,7 @@ export default function CafecitoNew() {
           }
         } catch (uploadErr: any) {
           console.error('Exception uploading image:', uploadErr);
-          showToast(`Error al procesar la imagen: ${uploadErr?.message || 'Error desconocido'}. Se usará una imagen por defecto.`, 'error');
+          showToast(t('cafecito.toasts.uploadError', { message: uploadErr?.message || 'Error desconocido' }), 'error');
           // Continuar con imagen por defecto
         }
       } else {
@@ -529,7 +557,7 @@ export default function CafecitoNew() {
         event_time: formData.time,
         max_participants: parseInt(formData.maxAttendees),
         image_url: imageUrl,
-        host_name: (profile.full_name || 'Usuario Beginss').trim(),
+        host_name: (profile.full_name || t('cafecito.defaultHostName')).trim(),
       };
       if (!editingEventId) eventData.participants_count = 0;
 
@@ -550,7 +578,7 @@ export default function CafecitoNew() {
           .eq('id', editingEventId)
           .select()
           .single();
-        if (updateError) throw new Error(`Error al actualizar el cafecito: ${updateError.message}`);
+        if (updateError) throw new Error(updateError.message);
         newEvent = updated;
       } else {
         const { data: inserted, error: eventError } = await supabase
@@ -558,7 +586,7 @@ export default function CafecitoNew() {
           .insert([eventData])
           .select()
           .single();
-        if (eventError) throw new Error(`Error al guardar el cafecito: ${eventError.message}`);
+        if (eventError) throw new Error(eventError.message);
         newEvent = inserted;
         try {
           await supabase.from('user_activities').insert([{
@@ -590,15 +618,20 @@ export default function CafecitoNew() {
         maxAttendees: '',
         description: '',
       });
-      showToast(editingEventId ? 'Cafecito actualizado.' : 'Cafecito creado exitosamente!', 'success');
+      showToast(editingEventId ? t('cafecito.toasts.updated') : t('cafecito.toasts.created'), 'success');
     } catch (error: any) {
       console.error('Error creating cafecito:', error);
-      const errorMessage = error?.message || 'Error desconocido al crear el cafecito';
-      showToast(`Error al crear el cafecito: ${errorMessage}. Verifica que todos los campos estén completos e intenta de nuevo.`, 'error');
+      const errorMessage = error?.message || '';
+      showToast(t('cafecito.toasts.createError', { message: errorMessage }), 'error');
     }
   };
 
-  const CafecitoCard = ({ cafecito }: { cafecito: CafecitoEvent }) => (
+  const CafecitoCard = ({ cafecito }: { cafecito: CafecitoEvent }) => {
+    const title = getCardTitle(cafecito);
+    const description = getCardDescription(cafecito);
+    const hostName = getCardHostName(cafecito);
+    const hostBio = getCardHostBio(cafecito);
+    return (
     <div
       onClick={() => setSelectedCafecito(cafecito)}
       className="bg-white rounded-[1.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group"
@@ -606,7 +639,7 @@ export default function CafecitoNew() {
       <div className="relative h-48 overflow-hidden">
         <img
           src={cafecito.image}
-          alt={cafecito.title}
+          alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           onError={(e) => {
             console.error('Error loading image:', cafecito.image);
@@ -618,23 +651,23 @@ export default function CafecitoNew() {
           {cafecito.type === 'virtual' ? (
             <Badge variant="celeste" className="flex items-center gap-1">
               <Video className="w-3 h-3" />
-              Virtual
+              {t('cafecito.badgeVirtual')}
             </Badge>
           ) : (
             <span className="inline-block px-3 py-1 rounded-[20px] text-sm font-medium bg-[#e74865] text-white flex items-center gap-1">
               <MapPin className="w-3 h-3" />
-              Presencial
+              {t('cafecito.badgePresencial')}
             </span>
           )}
         </div>
         <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-xl font-bold text-white mb-1">{cafecito.title}</h3>
+          <h3 className="text-xl font-bold text-white mb-1">{title}</h3>
         </div>
       </div>
 
       <div className="p-6">
         <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-          {cafecito.description}
+          {description}
         </p>
 
         {cafecito.tags && cafecito.tags.length > 0 && (
@@ -653,28 +686,29 @@ export default function CafecitoNew() {
         <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
           <img
             src={cafecito.host.avatar}
-            alt={cafecito.host.name}
+            alt={hostName}
             className="w-10 h-10 rounded-full object-cover"
           />
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-[#1E1E1E] text-sm">{cafecito.host.name}</p>
-            <p className="text-xs text-gray-500 truncate">{cafecito.host.bio}</p>
+            <p className="font-semibold text-[#1E1E1E] text-sm">{hostName}</p>
+            <p className="text-xs text-gray-500 truncate">{hostBio}</p>
           </div>
         </div>
 
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-[#F5C542]" />
-            <span>{new Date(cafecito.date).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })} - {cafecito.time}</span>
+            <span>{new Date(cafecito.date).toLocaleDateString(dateLocale, { weekday: 'short', day: 'numeric', month: 'short' })} - {cafecito.time}</span>
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-[#2D5444]" />
-            <span>{cafecito.participants}/{cafecito.maxParticipants} participantes</span>
+            <span>{cafecito.participants}/{cafecito.maxParticipants} {t('cafecito.participants')}</span>
           </div>
         </div>
       </div>
     </div>
   );
+  };
 
   return (
     <div className="min-h-screen">
@@ -694,16 +728,16 @@ export default function CafecitoNew() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
               <Coffee className="w-4 h-4 text-[#e74865]" />
-              <span className="text-[#3E6049] text-sm font-semibold">Comunidad activa</span>
+              <span className="text-[#3E6049] text-sm font-semibold">{t('cafecito.hero.badge')}</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
-              Zona Cafecito
+              {t('cafecito.hero.title')}
             </h1>
 
             <p className="text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
-              Del corazón de una Mujer Beginss a otra: pausa, conexión y creación. Un rincón digital donde bajamos el ritmo para subir la inspiración.{' '}
-              <span className="font-semibold text-[#b2d9d9]">Todo pensado para inspirarte, acompañarte y tejer juntas una red que impulsa sueños y crea impacto real.</span>
+              {t('cafecito.hero.subtitle')}{' '}
+              <span className="font-semibold text-[#b2d9d9]">{t('cafecito.hero.subtitleBold')}</span>
             </p>
           </div>
         </div>
@@ -728,10 +762,10 @@ export default function CafecitoNew() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-4">
-              ¡Un espacio para conectar y disfrutar juntas!
+              {t('cafecito.sectionConnect.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Encontrar nuevas amigas y compartir experiencias, hacer planes o simplemente conversar.
+              {t('cafecito.sectionConnect.description')}
             </p>
           </div>
 
@@ -740,7 +774,7 @@ export default function CafecitoNew() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscador Cafecito"
+                placeholder={t('cafecito.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all text-lg"
@@ -756,7 +790,7 @@ export default function CafecitoNew() {
                   <div className="w-12 h-12 bg-[#b2d9d9] rounded-xl flex items-center justify-center">
                     <Video className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-3xl font-bold text-[#1E1E1E]">Cafecitos Virtuales</h3>
+                  <h3 className="text-3xl font-bold text-[#1E1E1E]">{t('cafecito.virtualTitle')}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {virtualCafecitos.map((cafecito) => (
@@ -773,7 +807,7 @@ export default function CafecitoNew() {
                     <div className="w-12 h-12 bg-[#cf3f5c] rounded-xl flex items-center justify-center">
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold text-[#1E1E1E]">Cafecitos Presenciales</h3>
+                    <h3 className="text-3xl font-bold text-[#1E1E1E]">{t('cafecito.presencialTitle')}</h3>
                   </div>
                   <Button
                     variant="secondary"
@@ -783,12 +817,12 @@ export default function CafecitoNew() {
                     {showMapView ? (
                       <>
                         <List className="w-4 h-4" />
-                        Ver lista
+                        {t('cafecito.viewList')}
                       </>
                     ) : (
                       <>
                         <MapPin className="w-4 h-4" />
-                        Ver mapa
+                        {t('cafecito.viewMap')}
                       </>
                     )}
                   </Button>
@@ -824,17 +858,17 @@ export default function CafecitoNew() {
                             <Marker key={cafecito.id} position={coords}>
                               <Popup>
                                 <div className="p-2 min-w-[200px]">
-                                  <h4 className="font-bold text-sm mb-1">{cafecito.title}</h4>
-                                  <p className="text-xs text-gray-600 mb-2 line-clamp-2">{cafecito.description.substring(0, 100)}...</p>
-                                  {cafecito.location && (
+                                  <h4 className="font-bold text-sm mb-1">{getCardTitle(cafecito)}</h4>
+                                  <p className="text-xs text-gray-600 mb-2 line-clamp-2">{getCardDescription(cafecito).substring(0, 100)}...</p>
+                                  {(getCardLocation(cafecito) || cafecito.location) && (
                                     <p className="text-xs text-gray-500 flex items-center gap-1 mb-2">
                                       <MapPin className="w-3 h-3" />
-                                      {cafecito.location}
+                                      {getCardLocation(cafecito) || cafecito.location}
                                     </p>
                                   )}
                                   <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                                     <Users className="w-3 h-3" />
-                                    <span>{cafecito.participants}/{cafecito.maxParticipants} participantes</span>
+                                    <span>{cafecito.participants}/{cafecito.maxParticipants} {t('cafecito.participants')}</span>
                                   </div>
                                   <button
                                     onClick={() => {
@@ -843,7 +877,7 @@ export default function CafecitoNew() {
                                     }}
                                     className="mt-2 text-xs text-[#e74865] hover:underline font-semibold"
                                   >
-                                    Ver detalles
+                                    {t('cafecito.viewDetails')}
                                   </button>
                                 </div>
                               </Popup>
@@ -854,7 +888,7 @@ export default function CafecitoNew() {
                           <Marker position={userLocation}>
                             <Popup>
                               <div className="p-2">
-                                <p className="text-sm font-semibold">Tu ubicación</p>
+                                <p className="text-sm font-semibold">{t('cafecito.yourLocation')}</p>
                               </div>
                             </Popup>
                           </Marker>
@@ -877,10 +911,10 @@ export default function CafecitoNew() {
               <div className="text-center py-12">
                 <Coffee className="w-16 h-16 mx-auto mb-4 text-gray-400" />
                 <p className="text-gray-600 mb-4">
-                  No se encontraron cafecitos con ese término de búsqueda
+                  {t('cafecito.emptySearch')}
                 </p>
                 <Button onClick={() => setSearchTerm('')} variant="secondary">
-                  Limpiar búsqueda
+                  {t('cafecito.clearSearch')}
                 </Button>
               </div>
             )}
@@ -890,10 +924,10 @@ export default function CafecitoNew() {
             <div className="mt-16 text-center">
               <div className="bg-gradient-to-br from-[#e74865]/10 to-[#b2d9d9]/10 rounded-[2rem] p-12">
                 <h3 className="text-3xl font-bold text-[#1E1E1E] mb-4">
-                  ¿Quieres organizar tu propio Cafecito?
+                  {t('cafecito.ctaOrganize.title')}
                 </h3>
                 <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                  Crea un espacio para conectar con otras mujeres de la comunidad
+                  {t('cafecito.ctaOrganize.description')}
                 </p>
                 <Button 
                   variant="cta" 
@@ -901,7 +935,7 @@ export default function CafecitoNew() {
                   onClick={() => setShowCreateModal(true)}
                 >
                   <Plus className="w-5 h-5" />
-                  Crear Cafecito
+                  {t('cafecito.createCafecito')}
                 </Button>
               </div>
             </div>
@@ -925,34 +959,40 @@ export default function CafecitoNew() {
             className="w-16 h-16 mx-auto mb-6"
           />
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#b2d9d9' }}>
-            ¿Lista para compartir tu historia?
+            {t('cafecito.ctaShare.title')}
           </h2>
           <p className="text-xl mb-8 text-white/90 leading-relaxed">
-            Cada experiencia inspira, cada conversación conecta. Únete a miles de mujeres que comparten y crecen juntas.
+            {t('cafecito.ctaShare.subtitle')}
           </p>
           {user ? (
             <Link to="/circulos">
               <Button variant="cta" className="bg-white text-[#e74865] hover:bg-gray-50 text-lg px-8 py-4 shadow-2xl">
-                Únete a la comunidad
+                {t('cafecito.joinCommunity')}
               </Button>
             </Link>
           ) : (
             <Link to="/registro">
               <Button variant="cta" className="bg-white text-[#e74865] hover:bg-gray-50 text-lg px-8 py-4 shadow-2xl">
-                Únete a la comunidad
+                {t('cafecito.joinCommunity')}
               </Button>
             </Link>
           )}
         </div>
       </section>
 
-      {selectedCafecito && (
+      {selectedCafecito && (() => {
+        const detailTitle = getCardTitle(selectedCafecito);
+        const detailDescription = getCardDescription(selectedCafecito);
+        const detailHostName = getCardHostName(selectedCafecito);
+        const detailHostBio = getCardHostBio(selectedCafecito);
+        const detailLocation = getCardLocation(selectedCafecito);
+        return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCafecito(null)}>
           <div className="bg-white rounded-[2rem] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="relative">
               <img
                 src={selectedCafecito.image}
-                alt={selectedCafecito.title}
+                alt={detailTitle}
                 className="w-full h-64 object-cover rounded-t-[2rem]"
               />
               <button
@@ -967,37 +1007,37 @@ export default function CafecitoNew() {
               <div className="flex items-center gap-4 mb-6">
                 <img
                   src={selectedCafecito.host.avatar}
-                  alt={selectedCafecito.host.name}
+                  alt={detailHostName}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="font-bold text-[#1E1E1E]">{selectedCafecito.host.name}</h3>
-                  <p className="text-sm text-gray-600">{selectedCafecito.host.bio}</p>
+                  <h3 className="font-bold text-[#1E1E1E]">{detailHostName}</h3>
+                  <p className="text-sm text-gray-600">{detailHostBio}</p>
                 </div>
               </div>
 
-              <h2 className="text-3xl font-bold text-[#1E1E1E] mb-4">{selectedCafecito.title}</h2>
-              <p className="text-lg text-gray-600 leading-relaxed mb-6">{selectedCafecito.description}</p>
+              <h2 className="text-3xl font-bold text-[#1E1E1E] mb-4">{detailTitle}</h2>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">{detailDescription}</p>
 
               <div className="space-y-3 mb-6 text-gray-600">
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-[#F5C542]" />
-                  <span>{new Date(selectedCafecito.date).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} - {selectedCafecito.time}</span>
+                  <span>{new Date(selectedCafecito.date).toLocaleDateString(dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} - {selectedCafecito.time}</span>
                 </div>
                 {selectedCafecito.type === 'virtual' ? (
                   <div className="flex items-center gap-3">
                     <Video className="w-5 h-5 text-[#b2d9d9]" />
-                    <span>Encuentro Virtual</span>
+                    <span>{t('cafecito.detailVirtual')}</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-[#cf3f5c]" />
-                    <span>{selectedCafecito.location}</span>
+                    <span>{detailLocation}</span>
                   </div>
                 )}
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-[#2D5444]" />
-                  <span>{selectedCafecito.participants}/{selectedCafecito.maxParticipants} participantes confirmados</span>
+                  <span>{selectedCafecito.participants}/{selectedCafecito.maxParticipants} {t('cafecito.participantsConfirmed')}</span>
                 </div>
               </div>
 
@@ -1006,12 +1046,12 @@ export default function CafecitoNew() {
                 const isFull = selectedCafecito.participants >= selectedCafecito.maxParticipants;
                 const canJoin = user && !isRegistered && !isFull;
                 const label = !user
-                  ? 'Inicia sesión para inscribirte'
+                  ? t('cafecito.loginToJoin')
                   : isRegistered
-                    ? 'Ya me inscribí'
+                    ? t('cafecito.alreadyRegistered')
                     : isFull
-                      ? 'Cupos llenos'
-                      : 'Unirme a este Cafecito';
+                      ? t('cafecito.spotsFull')
+                      : t('cafecito.joinThisCafecito');
                 return (
                   <Button
                     variant="cta"
@@ -1019,14 +1059,15 @@ export default function CafecitoNew() {
                     disabled={!canJoin || !!joiningEventId}
                     onClick={canJoin ? handleJoinCafecito : undefined}
                   >
-                    {joiningEventId === selectedCafecito.id ? 'Inscribiendo...' : label}
+                    {joiningEventId === selectedCafecito.id ? t('cafecito.joining') : label}
                   </Button>
                 );
               })()}
             </div>
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Modal para crear Cafecito */}
       {showCreateModal && (
@@ -1050,7 +1091,7 @@ export default function CafecitoNew() {
         }}>
           <div className="bg-white rounded-[2rem] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-[2rem] z-10">
-              <h2 className="text-2xl font-bold text-[#1E1E1E]">Crear Cafecito</h2>
+              <h2 className="text-2xl font-bold text-[#1E1E1E]">{t('cafecito.modal.createTitle')}</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
@@ -1080,23 +1121,23 @@ export default function CafecitoNew() {
               {/* Selección de tipo */}
               {!eventType ? (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-4">Selecciona el tipo de evento</h3>
+                  <h3 className="text-lg font-semibold text-[#1E1E1E] mb-4">{t('cafecito.modal.selectEventType')}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       onClick={() => setEventType('presencial')}
                       className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#cf3f5c] hover:bg-[#cf3f5c]/5 transition-all text-left"
                     >
                       <MapPin className="w-8 h-8 text-[#cf3f5c] mb-3" />
-                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">Presencial</h4>
-                      <p className="text-gray-600">Encuentro en un lugar físico</p>
+                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">{t('cafecito.modal.typePresencial')}</h4>
+                      <p className="text-gray-600">{t('cafecito.modal.typePresencialDesc')}</p>
                     </button>
                     <button
                       onClick={() => setEventType('virtual')}
                       className="p-6 border-2 border-gray-200 rounded-2xl hover:border-[#b2d9d9] hover:bg-[#b2d9d9]/5 transition-all text-left"
                     >
                       <Video className="w-8 h-8 text-[#b2d9d9] mb-3" />
-                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">Virtual</h4>
-                      <p className="text-gray-600">Encuentro virtual</p>
+                      <h4 className="text-xl font-bold text-[#1E1E1E] mb-2">{t('cafecito.modal.typeVirtual')}</h4>
+                      <p className="text-gray-600">{t('cafecito.modal.typeVirtualDesc')}</p>
                     </button>
                   </div>
                 </div>
@@ -1107,17 +1148,17 @@ export default function CafecitoNew() {
                       onClick={() => setEventType(null)}
                       className="text-[#e74865] hover:text-[#cf3f5c] transition-colors"
                     >
-                      ← Cambiar tipo
+                      {t('cafecito.modal.changeType')}
                     </button>
                     <Badge variant={eventType === 'presencial' ? 'pink' : 'celeste'} className="flex items-center gap-2">
                       {eventType === 'presencial' ? <MapPin className="w-4 h-4" /> : <Video className="w-4 h-4" />}
-                      {eventType === 'presencial' ? 'Presencial' : 'Online'}
+                      {eventType === 'presencial' ? t('cafecito.modal.typePresencial') : t('cafecito.modal.online')}
                     </Badge>
                   </div>
 
                   {/* Categorías (Círculos de acción) - multi-select */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Categorías * (puedes elegir varias)</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.categoriesLabel')}</label>
                     <div className="border-2 border-gray-200 rounded-2xl p-4 focus-within:border-[#e74865] focus-within:ring-2 focus-within:ring-[#e74865]/20 transition-all max-h-48 overflow-y-auto">
                       {CATEGORIAS_TITULOS.map((titulo) => (
                         <label key={titulo} className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2">
@@ -1139,26 +1180,26 @@ export default function CafecitoNew() {
                     </div>
                     {formData.categories.length > 0 && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Seleccionadas: {formData.categories.join(', ')}
+                        {t('cafecito.modal.selected')}: {formData.categories.join(', ')}
                       </p>
                     )}
                   </div>
 
                   {/* Nombre */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Nombre del Cafecito *</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.nameLabel')}</label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Ej: Cafecito de Emprendimiento"
+                      placeholder={t('cafecito.modal.namePlaceholder')}
                       className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all"
                     />
                   </div>
 
                   {/* Imagen */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Imagen</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.imageLabel')}</label>
                     <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center">
                       {formData.imagePreview ? (
                         <div className="relative">
@@ -1169,14 +1210,14 @@ export default function CafecitoNew() {
                             }}
                             className="text-sm text-[#e74865] hover:text-[#cf3f5c]"
                           >
-                            Cambiar imagen
+                            {t('cafecito.modal.changeImage')}
                           </button>
                         </div>
                       ) : (
                         <label className="cursor-pointer">
                           <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                          <p className="text-gray-600 mb-2">Haz clic para subir una imagen</p>
-                          <p className="text-sm text-gray-400">PNG, JPG hasta 5MB</p>
+                          <p className="text-gray-600 mb-2">{t('cafecito.modal.uploadImage')}</p>
+                          <p className="text-sm text-gray-400">{t('cafecito.modal.uploadImageHint')}</p>
                           <input
                             type="file"
                             accept="image/*"
@@ -1195,7 +1236,7 @@ export default function CafecitoNew() {
 
                   {/* Etiquetas */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Etiquetas</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.tagsLabel')}</label>
                     <div className="flex flex-wrap gap-2 mb-3">
                       {formData.tags.map((tag, idx) => (
                         <span
@@ -1229,7 +1270,7 @@ export default function CafecitoNew() {
                             });
                           }
                         }}
-                        placeholder="Escribe una etiqueta y presiona Enter"
+                        placeholder={t('cafecito.modal.tagPlaceholder')}
                         className="flex-1 px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all"
                       />
                       <Button
@@ -1244,7 +1285,7 @@ export default function CafecitoNew() {
                           }
                         }}
                       >
-                        Agregar
+                        {t('cafecito.modal.add')}
                       </Button>
                     </div>
                   </div>
@@ -1252,7 +1293,7 @@ export default function CafecitoNew() {
                   {/* Fecha y Hora */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Fecha *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.dateLabel')}</label>
                       <input
                         type="date"
                         value={formData.date}
@@ -1261,7 +1302,7 @@ export default function CafecitoNew() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Hora *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.timeLabel')}</label>
                       <input
                         type="time"
                         value={formData.time}
@@ -1274,23 +1315,23 @@ export default function CafecitoNew() {
                   {/* Dirección o URL según el tipo */}
                   {eventType === 'presencial' ? (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Dirección *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.addressLabel')}</label>
                       <input
                         type="text"
                         value={formData.address}
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                        placeholder="Ej: Calle 123, Bogotá"
+                        placeholder={t('cafecito.modal.addressPlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all"
                       />
                     </div>
                   ) : eventType === 'virtual' ? (
                     <div>
-                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">URL del evento *</label>
+                      <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.eventUrlLabel')}</label>
                       <input
                         type="url"
                         value={formData.eventUrl}
                         onChange={(e) => setFormData({ ...formData, eventUrl: e.target.value })}
-                        placeholder="https://meet.google.com/..."
+                        placeholder={t('cafecito.modal.eventUrlPlaceholder')}
                         className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all"
                       />
                     </div>
@@ -1298,12 +1339,12 @@ export default function CafecitoNew() {
 
                   {/* Máximo de asistentes */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Máximo de asistentes *</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.maxAttendeesLabel')}</label>
                     <input
                       type="number"
                       value={formData.maxAttendees}
                       onChange={(e) => setFormData({ ...formData, maxAttendees: e.target.value })}
-                      placeholder="Ej: 20"
+                      placeholder={t('cafecito.modal.maxAttendeesPlaceholder')}
                       min="1"
                       className="w-full px-4 py-3 rounded-full border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all"
                     />
@@ -1311,11 +1352,11 @@ export default function CafecitoNew() {
 
                   {/* Descripción */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">Descripción *</label>
+                    <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.descriptionLabel')}</label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Describe tu Cafecito..."
+                      placeholder={t('cafecito.modal.descriptionPlaceholder')}
                       rows={4}
                       className="w-full px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-[#e74865] focus:ring-2 focus:ring-[#e74865]/20 outline-none transition-all resize-none"
                     />
@@ -1345,7 +1386,7 @@ export default function CafecitoNew() {
                       }}
                       className="flex-1"
                     >
-                      Cancelar
+                      {t('cafecito.modal.cancel')}
                     </Button>
                     <Button
                       variant="cta"
@@ -1353,7 +1394,7 @@ export default function CafecitoNew() {
                       className="flex-1"
                       disabled={formData.categories.length === 0 || !formData.name || !formData.date || !formData.time || !formData.maxAttendees || !formData.description || (eventType === 'presencial' && !formData.address) || (eventType === 'virtual' && !formData.eventUrl)}
                     >
-                      Crear Cafecito
+                      {t('cafecito.createCafecito')}
                     </Button>
                   </div>
                 </>
