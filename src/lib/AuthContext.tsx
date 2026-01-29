@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase, Profile } from './supabase';
+import { supabase, supabaseConfigured, Profile } from './supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -22,6 +22,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     // Verificar sesión existente de Supabase
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -31,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setLoading(false);
       }
-    });
+    }).catch(() => setLoading(false));
 
     // Escuchar cambios en el estado de autenticación
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -107,6 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
+    if (!supabaseConfigured) {
+      return { error: new Error('Supabase no está configurado. Añade VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en .env') };
+    }
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -170,6 +178,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
+    if (!supabaseConfigured) {
+      return { error: new Error('Supabase no está configurado. Añade VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en .env') };
+    }
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -190,7 +201,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (supabaseConfigured) {
+      await supabase.auth.signOut();
+    }
     setProfile(null);
     setUser(null);
     setSession(null);
