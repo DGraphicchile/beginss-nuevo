@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Repeat, Users, Briefcase, Sparkles, Heart, ArrowRight } from 'lucide-react';
 import FloatingElements from '../components/FloatingElements';
-import RequireAuth from '../components/RequireAuth';
 import { useAuth } from '../lib/AuthContext';
 
 const CARDS_CONFIG = [
@@ -20,9 +19,8 @@ export default function Intercambio() {
   }));
 
   return (
-    <RequireAuth title="Intercambio" titleKey="auth.sectionNames.intercambio" sectionName="intercambio">
-    <div className="min-h-screen">
-       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div className="min-h-screen overflow-x-hidden">
+       <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
   <div className="absolute inset-0">
     <img
       src="/trendy-and-interracial-group-of-girlfriends-lookin-2024-11-15-08-57-27-utc.jpg"
@@ -34,24 +32,24 @@ export default function Intercambio() {
 
   <FloatingElements />
 
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="text-center mb-12">
-      <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
-        <Repeat className="w-4 h-4 text-[#F5C542]" />
-        <span className="text-[#1E1E1E] text-sm font-bold uppercase tracking-wider">
+  <div className="max-w-7xl mx-auto relative z-10 w-full">
+    <div className="text-center mb-8 sm:mb-12">
+      <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
+        <Repeat className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F5C542]" />
+        <span className="text-[#1E1E1E] text-xs sm:text-sm font-bold uppercase tracking-wider">
           {t('intercambioPage.hero.badge')}
         </span>
       </div>
 
-      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
         {t('intercambioPage.hero.title')}
       </h1>
 
-      <div className="max-w-4xl mx-auto mb-8">
-        <p className="text-2xl md:text-3xl text-white font-semibold mb-6 leading-relaxed drop-shadow-md">
+      <div className="max-w-4xl mx-auto mb-6 sm:mb-8">
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-semibold mb-4 sm:mb-6 leading-relaxed drop-shadow-md">
           {t('intercambioPage.hero.subtitle1')}
         </p>
-        <p className="text-xl text-white/90 leading-relaxed drop-shadow-md">
+        <p className="text-base sm:text-lg lg:text-xl text-white/90 leading-relaxed drop-shadow-md">
           {t('intercambioPage.hero.subtitle2')}
         </p>
       </div>
@@ -62,21 +60,21 @@ export default function Intercambio() {
 
 
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
         <div className="absolute top-20 right-10 w-3 h-3 bg-[#F5C542] rounded-full"></div>
         <div className="absolute bottom-40 left-10 w-2 h-2 bg-[#cf3f5c] rounded-full"></div>
         <div className="absolute top-1/2 right-1/4 w-20 h-20 border-4 border-[#2D5444] rounded-full opacity-5"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-12 sm:mb-20">
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-72 h-72 bg-[#F5C542]/10 rounded-full blur-3xl" />
-              <div className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-2 border-[#F5C542]/20">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-[#F5C542] rounded-2xl flex items-center justify-center shadow-md">
-                    <Heart className="w-8 h-8 text-white" />
+              <div className="relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-6 lg:p-8 shadow-2xl border-2 border-[#F5C542]/20">
+                <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#F5C542] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
+                    <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold text-[#1E1E1E]">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E]">
                     {t('intercambioPage.sectionConnect.title')}
                   </h2>
                 </div>
@@ -105,25 +103,25 @@ export default function Intercambio() {
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#FAFAFA] to-white">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#FAFAFA] to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-3 sm:mb-4">
               {t('intercambioPage.exploreSection.title')}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               {t('intercambioPage.exploreSection.subtitle')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {cards.map((card) => (
               <Link
                 key={card.id}
                 to={card.link}
-                className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+                className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all"
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-52 sm:h-60 lg:h-64 overflow-hidden">
                   <img
                     src={card.image}
                     alt={card.title}
@@ -140,14 +138,14 @@ export default function Intercambio() {
                   </div>
                 </div>
 
-                <div className="p-8">
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                <div className="p-5 sm:p-6 lg:p-8">
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6">
                     {card.description}
                   </p>
 
-                  <div className="flex items-center font-semibold group-hover:translate-x-2 transition-transform" style={{ color: card.color }}>
+                  <div className="flex items-center font-semibold text-sm sm:text-base group-hover:translate-x-2 transition-transform" style={{ color: card.color }}>
                     <span>{t('intercambioPage.explore')}</span>
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                   </div>
                 </div>
               </Link>
@@ -187,6 +185,5 @@ export default function Intercambio() {
         </div>
       </section>
     </div>
-    </RequireAuth>
   );
 }

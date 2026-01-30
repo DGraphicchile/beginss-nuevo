@@ -36,7 +36,7 @@ function AppContent() {
   return (
     <>
       <ScrollToTop />
-      <div className="min-h-screen bg-[#FAF7F2]">
+      <div className="min-h-screen bg-[#FAF7F2] overflow-x-hidden max-w-[100vw]">
         <Navbar />
         <Routes>
             <Route path="/" element={<Home />} />

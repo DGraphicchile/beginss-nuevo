@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, MapPin, Users, Video, Clock, Coffee, Plus, X, Upload, Calendar, List } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Search, MapPin, Users, Video, Clock, Coffee, Plus, X, Upload, List } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import WaveDivider from '../components/WaveDivider';
@@ -13,38 +10,95 @@ import { useAuth } from '../lib/AuthContext';
 import { useToast } from '../lib/ToastContext';
 import { supabase } from '../lib/supabase';
 import { CIRCULOS_CATEGORIAS, parseCategoriesFromDescription } from '../constants/circulos';
+import type { CafecitoEvent } from '../types/cafecito';
 
-// Fix para los iconos de Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
-
-interface CafecitoEvent {
-  id: string;
-  title: string;
-  description: string;
-  type: 'virtual' | 'presencial';
-  date: string;
-  time: string;
-  location?: string;
-  category?: string;
-  tags?: string[];
-  host: {
-    name: string;
-    avatar: string;
-    bio: string;
-  };
-  participants: number;
-  maxParticipants: number;
-  image: string;
-  /** Si existe, la card usa textos traducidos desde cafecito.cards.<key> */
-  translationKey?: string;
-}
+const CafecitoMapView = lazy(() => import('../components/CafecitoMapView'));
 
 const dateLocaleMap: Record<string, string> = { es: 'es-ES', en: 'en-US', 'pt-BR': 'pt-BR' };
+
+const MOCK_CAFECITOS: CafecitoEvent[] = [
+  {
+    id: '1',
+    translationKey: 'card1',
+    title: 'Cafecito: Emprendimiento Femenino',
+    description: 'Conversemos sobre los retos y alegrías de emprender siendo mujer. Comparte tu experiencia y aprende de otras.',
+    type: 'virtual',
+    date: '2025-11-18',
+    time: '18:00',
+    host: { name: 'María González', avatar: 'https://images.pexels.com/photos/3768689/pexels-photo-3768689.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Emprendedora y coach de negocios' },
+    participants: 8,
+    maxParticipants: 15,
+    image: 'https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    id: '2',
+    translationKey: 'card2',
+    title: 'Cafecito en el Parque',
+    description: 'Encuentro presencial para conocernos y compartir un café al aire libre. Ideal para hacer nuevas amigas.',
+    type: 'presencial',
+    date: '2025-11-20',
+    time: '16:00',
+    location: 'Parque El Virrey, Bogotá',
+    host: { name: 'Laura Pérez', avatar: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Amante del café y las buenas conversaciones' },
+    participants: 6,
+    maxParticipants: 10,
+    image: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    id: '3',
+    translationKey: 'card3',
+    title: 'Cafecito: Bienestar y Autocuidado',
+    description: 'Hablemos sobre prácticas de autocuidado y bienestar mental. Un espacio seguro para compartir y aprender.',
+    type: 'virtual',
+    date: '2025-11-22',
+    time: '19:00',
+    host: { name: 'Camila Flores', avatar: 'https://images.pexels.com/photos/3822621/pexels-photo-3822621.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Psicóloga y facilitadora de círculos de mujeres' },
+    participants: 12,
+    maxParticipants: 20,
+    image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    id: '4',
+    translationKey: 'card4',
+    title: 'Cafecito Literario',
+    description: 'Compartamos nuestras lecturas favoritas y recomendaciones. Para amantes de los libros y las buenas historias.',
+    type: 'presencial',
+    date: '2025-11-25',
+    time: '17:00',
+    location: 'Café Literario, Chapinero',
+    host: { name: 'Daniela Ortiz', avatar: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Escritora y promotora de lectura' },
+    participants: 5,
+    maxParticipants: 12,
+    image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    id: '5',
+    translationKey: 'card5',
+    title: 'Cafecito: Creatividad y Arte',
+    description: 'Un espacio para explorar nuestra creatividad juntas. Comparte tus proyectos artísticos y encuentra inspiración.',
+    type: 'virtual',
+    date: '2025-11-27',
+    time: '20:00',
+    host: { name: 'Ana Silva', avatar: 'https://images.pexels.com/photos/4587979/pexels-photo-4587979.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Artista plástica y facilitadora creativa' },
+    participants: 10,
+    maxParticipants: 18,
+    image: 'https://images.pexels.com/photos/1269968/pexels-photo-1269968.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    id: '6',
+    translationKey: 'card6',
+    title: 'Brunch Beginss',
+    description: 'Encuentro especial de brunch para conectar, conversar y disfrutar. Trae tu platillo favorito para compartir.',
+    type: 'presencial',
+    date: '2025-11-30',
+    time: '11:00',
+    location: 'Zona T, Bogotá',
+    host: { name: 'Valentina Cruz', avatar: 'https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=100', bio: 'Food blogger y amante de los encuentros' },
+    participants: 8,
+    maxParticipants: 15,
+    image: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=600'
+  }
+];
 
 export default function CafecitoNew() {
   const { t, i18n } = useTranslation();
@@ -63,6 +117,7 @@ export default function CafecitoNew() {
   const [myRegisteredEventIds, setMyRegisteredEventIds] = useState<Set<string>>(new Set());
   const [joiningEventId, setJoiningEventId] = useState<string | null>(null);
   const [showMapView, setShowMapView] = useState(false);
+  const [showFeatureImageModal, setShowFeatureImageModal] = useState(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [cafecitoCoordinates, setCafecitoCoordinates] = useState<Record<string, [number, number]>>({});
   const [formData, setFormData] = useState({
@@ -175,7 +230,7 @@ export default function CafecitoNew() {
 
   // Bloquear scroll del body cuando algún modal está abierto
   useEffect(() => {
-    const modalOpen = !!selectedCafecito || showCreateModal;
+    const modalOpen = !!selectedCafecito || showCreateModal || showFeatureImageModal;
     if (modalOpen) {
       const scrollY = window.scrollY;
       document.body.style.position = 'fixed';
@@ -199,7 +254,7 @@ export default function CafecitoNew() {
       document.body.style.right = '';
       document.body.style.overflow = '';
     };
-  }, [selectedCafecito, showCreateModal]);
+  }, [selectedCafecito, showCreateModal, showFeatureImageModal]);
 
   // Obtener ubicación del usuario
   useEffect(() => {
@@ -271,31 +326,28 @@ export default function CafecitoNew() {
       setLoading(true);
       const { data, error } = await supabase
         .from('cafecito_events')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('id, title, description, type, event_date, event_time, location, image_url, host_name, host_avatar_url, host_bio, participants_count, max_participants')
+        .order('created_at', { ascending: false })
+        .limit(100);
 
       if (error) throw error;
 
       if (data) {
         const formattedCafecitos: CafecitoEvent[] = data.map((event: any) => {
-          // Extraer categorías de la descripción (pueden ser varias separadas por coma)
           const categoriesParsed = parseCategoriesFromDescription(event.description || '');
           const category = categoriesParsed.length > 0 ? categoriesParsed.join(', ') : undefined;
           let cleanDescription = (event.description || '')
             .replace(/\[Categoría:\s*[^\]]+\]\s*\n?\n?/gi, '')
             .trim();
 
-          // Extraer etiquetas de la descripción si existen
           let tags: string[] | undefined;
           const tagsMatch = cleanDescription.match(/Etiquetas:\s*([^\n]+)/);
           if (tagsMatch) {
-            tags = tagsMatch[1].split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-            // Remover las etiquetas de la descripción
+            tags = tagsMatch[1].split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0);
             cleanDescription = cleanDescription.replace(/\n?\n?Etiquetas:\s*[^\n]+/, '').trim();
           }
 
           const imageUrl = event.image_url || 'https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=600';
-          console.log(`Loading cafecito ${event.id}: image_url =`, imageUrl);
 
           return {
             id: event.id,
@@ -326,116 +378,8 @@ export default function CafecitoNew() {
     }
   };
 
-  const mockCafecitos: CafecitoEvent[] = [
-    {
-      id: '1',
-      translationKey: 'card1',
-      title: 'Cafecito: Emprendimiento Femenino',
-      description: 'Conversemos sobre los retos y alegrías de emprender siendo mujer. Comparte tu experiencia y aprende de otras.',
-      type: 'virtual',
-      date: '2025-11-18',
-      time: '18:00',
-      host: {
-        name: 'María González',
-        avatar: 'https://images.pexels.com/photos/3768689/pexels-photo-3768689.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Emprendedora y coach de negocios'
-      },
-      participants: 8,
-      maxParticipants: 15,
-      image: 'https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      id: '2',
-      translationKey: 'card2',
-      title: 'Cafecito en el Parque',
-      description: 'Encuentro presencial para conocernos y compartir un café al aire libre. Ideal para hacer nuevas amigas.',
-      type: 'presencial',
-      date: '2025-11-20',
-      time: '16:00',
-      location: 'Parque El Virrey, Bogotá',
-      host: {
-        name: 'Laura Pérez',
-        avatar: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Amante del café y las buenas conversaciones'
-      },
-      participants: 6,
-      maxParticipants: 10,
-      image: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      id: '3',
-      translationKey: 'card3',
-      title: 'Cafecito: Bienestar y Autocuidado',
-      description: 'Hablemos sobre prácticas de autocuidado y bienestar mental. Un espacio seguro para compartir y aprender.',
-      type: 'virtual',
-      date: '2025-11-22',
-      time: '19:00',
-      host: {
-        name: 'Camila Flores',
-        avatar: 'https://images.pexels.com/photos/3822621/pexels-photo-3822621.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Psicóloga y facilitadora de círculos de mujeres'
-      },
-      participants: 12,
-      maxParticipants: 20,
-      image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      id: '4',
-      translationKey: 'card4',
-      title: 'Cafecito Literario',
-      description: 'Compartamos nuestras lecturas favoritas y recomendaciones. Para amantes de los libros y las buenas historias.',
-      type: 'presencial',
-      date: '2025-11-25',
-      time: '17:00',
-      location: 'Café Literario, Chapinero',
-      host: {
-        name: 'Daniela Ortiz',
-        avatar: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Escritora y promotora de lectura'
-      },
-      participants: 5,
-      maxParticipants: 12,
-      image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      id: '5',
-      translationKey: 'card5',
-      title: 'Cafecito: Creatividad y Arte',
-      description: 'Un espacio para explorar nuestra creatividad juntas. Comparte tus proyectos artísticos y encuentra inspiración.',
-      type: 'virtual',
-      date: '2025-11-27',
-      time: '20:00',
-      host: {
-        name: 'Ana Silva',
-        avatar: 'https://images.pexels.com/photos/4587979/pexels-photo-4587979.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Artista plástica y facilitadora creativa'
-      },
-      participants: 10,
-      maxParticipants: 18,
-      image: 'https://images.pexels.com/photos/1269968/pexels-photo-1269968.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      id: '6',
-      translationKey: 'card6',
-      title: 'Brunch Beginss',
-      description: 'Encuentro especial de brunch para conectar, conversar y disfrutar. Trae tu platillo favorito para compartir.',
-      type: 'presencial',
-      date: '2025-11-30',
-      time: '11:00',
-      location: 'Zona T, Bogotá',
-      host: {
-        name: 'Valentina Cruz',
-        avatar: 'https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=100',
-        bio: 'Food blogger y amante de los encuentros'
-      },
-      participants: 8,
-      maxParticipants: 15,
-      image: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
   // Usar cafecitos de la base de datos, o mock si no hay
-  const allCafecitos = cafecitos.length > 0 ? cafecitos : mockCafecitos;
+  const allCafecitos = cafecitos.length > 0 ? cafecitos : MOCK_CAFECITOS;
 
   const getCardTitle = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.title`) : c.title;
   const getCardDescription = (c: CafecitoEvent) => c.translationKey ? t(`cafecito.cards.${c.translationKey}.description`) : c.description;
@@ -712,7 +656,14 @@ export default function CafecitoNew() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Hero: altura adaptativa (16:9 en desktop, min 65vh en móvil) y contenido compacto */}
+      <section
+        className="relative overflow-hidden flex items-center justify-center w-full px-3 sm:px-6 lg:px-8"
+        style={{
+          minHeight: '65vh',
+          height: 'max(65vh, min(100vh, 56.25vw))',
+        }}
+      >
         <div className="absolute inset-0">
           <img
             src="/2.jpg"
@@ -724,18 +675,18 @@ export default function CafecitoNew() {
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
-              <Coffee className="w-4 h-4 text-[#e74865]" />
-              <span className="text-[#3E6049] text-sm font-semibold">{t('cafecito.hero.badge')}</span>
+        <div className="max-w-7xl mx-auto relative z-10 w-full h-full flex items-center justify-center pt-14 pb-4 sm:py-6">
+          <div className="text-center w-full max-h-full overflow-y-auto">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 px-3 sm:px-5 py-1.5 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg shrink-0">
+              <Coffee className="w-3 h-3 sm:w-4 sm:h-4 text-[#e74865]" />
+              <span className="text-[#3E6049] text-xs sm:text-sm font-semibold">{t('cafecito.hero.badge')}</span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-lg shrink-0">
               {t('cafecito.hero.title')}
             </h1>
 
-            <p className="text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white mb-3 sm:mb-4 md:mb-6 max-w-3xl mx-auto leading-snug drop-shadow-md shrink-0">
               {t('cafecito.hero.subtitle')}{' '}
               <span className="font-semibold text-[#b2d9d9]">{t('cafecito.hero.subtitleBold')}</span>
             </p>
@@ -745,26 +696,63 @@ export default function CafecitoNew() {
 
       <WaveDivider color="#FAF7F2" />
 
-      {/* Sección de imagen destacada */}
-<section className="py-6 px-6 flex justify-center items-center">
-  <div className="max-w-5xl w-full rounded-[2rem] overflow-hidden shadow-md">
-    <img
-      src="recurso-cafecito-1.svg"
-      alt={t('cafecito.aria.featureImage')}
-      className="w-full h-auto object-cover rounded-[2rem]"
-    />
-  </div>
+      {/* Sección de imagen destacada: pegada al hero (margin negativo sobre la onda) */}
+<section className="-mt-8 sm:-mt-12 lg:-mt-16 pt-0 pb-2 sm:pb-3 px-2 sm:px-6 flex justify-center items-center overflow-hidden">
+  <button
+            type="button"
+            onClick={() => setShowFeatureImageModal(true)}
+            className="w-full max-w-5xl rounded-[2rem] overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e74865] focus-visible:ring-offset-2"
+            aria-label={t('cafecito.aria.featureImageExpand')}
+          >
+    <div className="w-full min-h-[200px] sm:min-h-[260px] md:min-h-0 flex items-center">
+      <img
+        src="/recurso-cafecito-1.svg"
+        alt={t('cafecito.aria.featureImage')}
+        className="w-full h-auto min-h-[200px] sm:min-h-[260px] md:min-h-0 object-contain object-center rounded-[2rem]"
+      />
+    </div>
+  </button>
 </section>
+
+      {/* Modal imagen destacada */}
+      {showFeatureImageModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm"
+          onClick={() => setShowFeatureImageModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('cafecito.aria.featureImageModal')}
+        >
+          <button
+            type="button"
+            onClick={() => setShowFeatureImageModal(false)}
+            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#1E1E1E] flex items-center justify-center shadow-lg transition-colors"
+            aria-label={t('cafecito.aria.closeModal')}
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <div
+            className="relative max-w-6xl w-full max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src="/recurso-cafecito-1.svg"
+              alt={t('cafecito.aria.featureImage')}
+              className="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
 
 
 
       <section className="section-spacing px-4 sm:px-6 lg:px-8 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1E1E1E] mb-4">
               {t('cafecito.sectionConnect.title')}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               {t('cafecito.sectionConnect.description')}
             </p>
           </div>
@@ -786,13 +774,13 @@ export default function CafecitoNew() {
           <div className="space-y-16">
             {virtualCafecitos.length > 0 && (
               <div>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-12 h-12 bg-[#b2d9d9] rounded-xl flex items-center justify-center">
-                    <Video className="w-6 h-6 text-white" />
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#b2d9d9] rounded-xl flex items-center justify-center">
+                    <Video className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <h3 className="text-3xl font-bold text-[#1E1E1E]">{t('cafecito.virtualTitle')}</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E]">{t('cafecito.virtualTitle')}</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {virtualCafecitos.map((cafecito) => (
                     <CafecitoCard key={cafecito.id} cafecito={cafecito} />
                   ))}
@@ -802,12 +790,12 @@ export default function CafecitoNew() {
 
             {presencialCafecitos.length > 0 && (
               <div>
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#cf3f5c] rounded-xl flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#cf3f5c] rounded-xl flex items-center justify-center">
+                      <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold text-[#1E1E1E]">{t('cafecito.presencialTitle')}</h3>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E]">{t('cafecito.presencialTitle')}</h3>
                   </div>
                   <Button
                     variant="secondary"
@@ -828,77 +816,29 @@ export default function CafecitoNew() {
                   </Button>
                 </div>
                 {showMapView ? (
-                  <div className="h-[600px] rounded-2xl overflow-hidden border-2 border-gray-200">
-                    {(userLocation || Object.keys(cafecitoCoordinates).length > 0) && (() => {
-                      // Calcular el centro del mapa basado en las coordenadas disponibles
-                      let mapCenter: [number, number] = userLocation || [4.7110, -74.0721];
-                      const availableCoords = presencialCafecitos
-                        .map(c => cafecitoCoordinates[c.id])
-                        .filter((c): c is [number, number] => c !== undefined);
-                      
-                      if (availableCoords.length > 0) {
-                        const avgLat = availableCoords.reduce((sum, [lat]) => sum + lat, 0) / availableCoords.length;
-                        const avgLng = availableCoords.reduce((sum, [, lng]) => sum + lng, 0) / availableCoords.length;
-                        mapCenter = userLocation ? userLocation : [avgLat, avgLng];
-                      }
-                      
-                      return (
-                        <MapContainer
-                          center={mapCenter}
-                          zoom={userLocation ? 12 : 11}
-                          style={{ height: '100%', width: '100%' }}
-                        >
-                        <TileLayer
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        />
-                        {presencialCafecitos.map((cafecito) => {
-                          const coords = cafecitoCoordinates[cafecito.id] || [4.7110, -74.0721];
-                          return (
-                            <Marker key={cafecito.id} position={coords}>
-                              <Popup>
-                                <div className="p-2 min-w-[200px]">
-                                  <h4 className="font-bold text-sm mb-1">{getCardTitle(cafecito)}</h4>
-                                  <p className="text-xs text-gray-600 mb-2 line-clamp-2">{getCardDescription(cafecito).substring(0, 100)}...</p>
-                                  {(getCardLocation(cafecito) || cafecito.location) && (
-                                    <p className="text-xs text-gray-500 flex items-center gap-1 mb-2">
-                                      <MapPin className="w-3 h-3" />
-                                      {getCardLocation(cafecito) || cafecito.location}
-                                    </p>
-                                  )}
-                                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                                    <Users className="w-3 h-3" />
-                                    <span>{cafecito.participants}/{cafecito.maxParticipants} {t('cafecito.participants')}</span>
-                                  </div>
-                                  <button
-                                    onClick={() => {
-                                      setSelectedCafecito(cafecito);
-                                      setShowMapView(false);
-                                    }}
-                                    className="mt-2 text-xs text-[#e74865] hover:underline font-semibold"
-                                  >
-                                    {t('cafecito.viewDetails')}
-                                  </button>
-                                </div>
-                              </Popup>
-                            </Marker>
-                          );
-                        })}
-                        {userLocation && (
-                          <Marker position={userLocation}>
-                            <Popup>
-                              <div className="p-2">
-                                <p className="text-sm font-semibold">{t('cafecito.yourLocation')}</p>
-                              </div>
-                            </Popup>
-                          </Marker>
-                        )}
-                      </MapContainer>
-                      );
-                    })()}
+                  <div className="h-[400px] sm:h-[500px] lg:h-[600px] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-gray-200">
+                    <Suspense fallback={
+                      <div className="h-full w-full flex items-center justify-center bg-gray-100">
+                        <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#e74865] border-t-transparent" />
+                      </div>
+                    }>
+                      <CafecitoMapView
+                        presencialCafecitos={presencialCafecitos}
+                        cafecitoCoordinates={cafecitoCoordinates}
+                        userLocation={userLocation}
+                        getCardTitle={getCardTitle}
+                        getCardDescription={getCardDescription}
+                        getCardLocation={getCardLocation}
+                        onSelectCafecito={(c) => {
+                          setSelectedCafecito(c);
+                          setShowMapView(false);
+                        }}
+                        t={t}
+                      />
+                    </Suspense>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {presencialCafecitos.map((cafecito) => (
                       <CafecitoCard key={cafecito.id} cafecito={cafecito} />
                     ))}
@@ -921,12 +861,12 @@ export default function CafecitoNew() {
           </div>
 
           {user && (
-            <div className="mt-16 text-center">
-              <div className="bg-gradient-to-br from-[#e74865]/10 to-[#b2d9d9]/10 rounded-[2rem] p-12">
-                <h3 className="text-3xl font-bold text-[#1E1E1E] mb-4">
+            <div className="mt-10 sm:mt-16 text-center">
+              <div className="bg-gradient-to-br from-[#e74865]/10 to-[#b2d9d9]/10 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-10 lg:p-12">
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] mb-4">
                   {t('cafecito.ctaOrganize.title')}
                 </h3>
-                <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto">
                   {t('cafecito.ctaOrganize.description')}
                 </p>
                 <Button 

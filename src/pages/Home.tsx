@@ -22,51 +22,56 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      {/* Hero Section */}
-{/* Hero Section */}
-<section
-  className="relative text-white bg-cover bg-center bg-no-repeat overflow-hidden flex items-center justify-center min-h-screen"
-  style={{ backgroundImage: "url('/hero-home-3.jpg')" }}
->
+      {/* Hero Section: altura adaptativa para mantener relación de aspecto y reducir recorte */}
+      <section
+        className="relative text-white bg-no-repeat overflow-hidden flex items-center justify-center w-full"
+        style={{
+          backgroundImage: "url('/hero-home-3.jpg')",
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          /* Móvil: al menos 65vh. Desktop: altura 16:9 (56.25vw), sin superar 100vh. Así la imagen se corta menos y mantiene proporción. */
+          minHeight: '65vh',
+          height: 'max(65vh, min(100vh, 56.25vw))',
+        }}
+      >
   {/* Capa de oscurecimiento para legibilidad */}
-  <div className="absolute inset-0 bg-black/30"></div>
+  <div className="absolute inset-0 bg-black/30" />
 
-  {/* Contenido principal */}
-  <div className="relative z-10 px-4 sm:px-6 lg:px-8 w-full">
-    <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
-      
-      <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 bg-[#CF3F7A] rounded-full shadow-md">
-        <Circle className="w-3 h-3 fill-white text-white" />
-        <span className="text-white text-xs font-bold uppercase tracking-wider">
+  {/* Contenido principal: compacto y responsive para caber en la altura del hero */}
+  <div className="relative z-10 px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-center pt-14 pb-4 sm:py-6">
+    <div className="max-w-4xl mx-auto flex flex-col items-center text-center w-full max-h-full overflow-y-auto">
+      <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
+        <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
+        <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
           {t('home.hero.badge')}
         </span>
       </div>
-      <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-lg shrink-0">
         {t('home.hero.title1')}
         <br />
         {t('home.hero.title2')}
       </h1>
-      <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl drop-shadow">
+      <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-3 sm:mb-4 md:mb-6 leading-snug max-w-2xl drop-shadow shrink-0">
         {t('home.hero.subtitle')}
       </p>
       {!user && (
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-3 sm:mb-4 md:mb-6 justify-center shrink-0">
           <Link to="/registro">
-            <Button variant="cta" className="w-full sm:w-auto">
+            <Button variant="cta" className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-2.5 px-5 sm:px-6">
               {t('home.hero.joinCircle')}
             </Button>
           </Link>
         </div>
       )}
-      <div className="mb-10">
+      <div className="mb-3 sm:mb-4 md:mb-6 shrink-0">
         <img
           src="/logo-hor-beige.svg"
           alt="Beginss Logo"
-          className="w-48 md:w-56 lg:w-64 mx-auto drop-shadow-lg"
+          className="w-28 sm:w-36 md:w-44 lg:w-52 xl:w-64 h-auto mx-auto drop-shadow-lg max-w-[90vw]"
         />
       </div>
-      <div className="flex items-center justify-center text-center">
-        <p className="text-white/70 text-sm">{t('home.hero.tagline')}</p>
+      <div className="flex items-center justify-center text-center shrink-0">
+        <p className="text-white/70 text-xs sm:text-sm">{t('home.hero.tagline')}</p>
       </div>
     </div>
   </div>
@@ -82,7 +87,7 @@ export default function Home() {
 <section className="bg-[#fef4ef] py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
   <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-<div className="relative w-full max-w-xl mx-auto">
+<div className="relative w-full max-w-xl mx-auto overflow-hidden">
   {/* Fondo rosado: mismo tamaño aprox, solo asomado arriba y derecha */}
   <div
     className="absolute -right-3 -top-3 w-[102%] h-[102%] bg-[#CF3F7A] rounded-[2rem] rotate-2 pointer-events-none"
@@ -221,7 +226,7 @@ export default function Home() {
     </div>
 
     <div className="max-w-xl">
-  <h2 className="text-5xl sm:text-6xl font-extrabold leading-tight text-[#1E1E1E]">
+  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-[#1E1E1E]">
     {t('home.whatYouCanDo.title')}
   </h2>
   <p className="mt-6 text-[17px] leading-7 text-[#3C3C3C]">
@@ -268,11 +273,11 @@ export default function Home() {
 </section>
 
 {/* Banner decorativo tipo Beginss */}
-<section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#fef4ef]">
+<section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#fef4ef] overflow-hidden">
   <div className="max-w-7xl mx-auto relative">
 
     {/* Contenedor principal del banner */}
-    <div className="relative h-[160px] md:h-[200px] rounded-[2rem] overflow-hidden shadow-xl bg-gray-200">
+    <div className="relative h-[160px] md:h-[200px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-xl bg-gray-200">
 
       {/* Imagen de fondo */}
       <div
@@ -286,19 +291,19 @@ export default function Home() {
 
     {/* Íconos decorativos */}
 
-    {/* Izquierda */}
-    <div className="absolute left-[-20px] top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
-      <Sparkles className="w-6 h-6 text-[#CF3F7A]" />
+    {/* Izquierda — ocultos en móvil para evitar overflow */}
+    <div className="hidden sm:flex absolute left-[-20px] top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg items-center justify-center">
+      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-[#CF3F7A]" />
     </div>
 
     {/* Derecha arriba */}
-    <div className="absolute right-[-20px] top-[25%] w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
-      <Heart className="w-6 h-6 text-[#F5C542]" />
+    <div className="hidden sm:flex absolute right-[-20px] top-[25%] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg items-center justify-center">
+      <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-[#F5C542]" />
     </div>
 
     {/* Derecha abajo */}
-    <div className="absolute right-[-20px] bottom-[25%] w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
-      <Users className="w-6 h-6 text-[#2D5444]" />
+    <div className="hidden sm:flex absolute right-[-20px] bottom-[25%] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg items-center justify-center">
+      <Users className="w-5 h-5 sm:w-6 sm:h-6 text-[#2D5444]" />
     </div>
   </div>
 </section>
@@ -320,30 +325,30 @@ export default function Home() {
               <div className="w-2 h-2 bg-[#2D5444] rounded-full"></div>
               <span className="text-[#1E1E1E] text-xs font-bold uppercase tracking-wider">{t('home.communityHow.label')}</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
               {t('home.communityHow.title')}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {t('home.communityHow.description')}
             </p>
           </div>
 
           {/* Asymmetric layout */}
-          <div className="space-y-16">
+          <div className="space-y-10 sm:space-y-16">
             {/* Row 1 - Offset layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="relative">
                 <div className="absolute -top-6 -left-6 w-16 h-16 bg-[#F5C542] rounded-full opacity-20"></div>
                 <div className="absolute top-4 right-4 w-8 h-8 bg-[#F5C542] rounded-full flex items-center justify-center z-10">
                   <UserPlus className="w-4 h-4 text-[#1E1E1E]" />
                 </div>
-                <div className="relative bg-white rounded-[2.5rem] p-8 shadow-lg">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-[#F5C542] rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-[#1E1E1E]">1</span>
+                <div className="relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-[#F5C542] rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-[#1E1E1E]">1</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3">
                         {t('home.communityHow.step1Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
@@ -354,7 +359,7 @@ export default function Home() {
                   <img
                     src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=600"
                     alt="Crea perfil"
-                    className="w-full h-56 object-cover rounded-2xl mt-6"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6"
                   />
                   <div className="absolute bottom-8 right-8 flex gap-2">
                     <div className="w-2 h-2 bg-[#F5C542] rounded-full"></div>
@@ -369,13 +374,13 @@ export default function Home() {
                 <div className="absolute -top-4 left-8 w-10 h-10 bg-white rounded-xl flex items-center justify-center z-10 shadow-md">
                   <Users className="w-5 h-5 text-[#2D5444]" />
                 </div>
-                <div className="relative bg-[#2D5444] rounded-[2.5rem] p-8 shadow-lg">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-white rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-[#2D5444]">2</span>
+                <div className="relative bg-[#2D5444] rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-[#2D5444]">2</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3">
                         {t('home.communityHow.step2Title')}
                       </h3>
                       <p className="text-white/90 leading-relaxed">
@@ -386,7 +391,7 @@ export default function Home() {
                   <img
                     src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600"
                     alt="Conecta"
-                    className="w-full h-56 object-cover rounded-2xl mt-6 opacity-90"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6 opacity-90"
                   />
                   <div className="absolute -bottom-3 left-10 flex gap-1.5">
                     <div className="w-1.5 h-1.5 bg-[#F5C542] rounded-full"></div>
@@ -398,19 +403,19 @@ export default function Home() {
             </div>
 
             {/* Row 2 - Offset opposite */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="relative md:-translate-y-12">
                 <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-[#cf3f5c] rounded-full opacity-20"></div>
                 <div className="absolute top-6 right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center z-10 shadow-lg">
                   <Repeat className="w-6 h-6 text-[#cf3f5c]" />
                 </div>
-                <div className="relative bg-[#cf3f5c] rounded-[2.5rem] p-8 shadow-lg">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-white rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-[#cf3f5c]">3</span>
+                <div className="relative bg-[#cf3f5c] rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-[#cf3f5c]">3</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3">
                         {t('home.communityHow.step3Title')}
                       </h3>
                       <p className="text-white/90 leading-relaxed">
@@ -421,7 +426,7 @@ export default function Home() {
                   <img
                     src="/shopkeepers-filling-reusable-bags-with-food-in-zer-2025-04-25-18-19-29-utc.jpg"
                     alt="Intercambia"
-                    className="w-full h-56 object-cover rounded-2xl mt-6"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6"
                   />
                   <div className="absolute bottom-6 left-8">
                     <div className="flex gap-2">
@@ -437,13 +442,13 @@ export default function Home() {
                 <div className="absolute -top-3 right-10 w-10 h-10 bg-[#2D5444] rounded-2xl flex items-center justify-center z-10 rotate-12 shadow-md">
                   <Store className="w-5 h-5 text-white" />
                 </div>
-                <div className="relative bg-white rounded-[2.5rem] p-8 shadow-lg">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-[#2D5444] rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-white">4</span>
+                <div className="relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-[#2D5444] rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-white">4</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3">
                         {t('home.communityHow.step4Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
@@ -454,7 +459,7 @@ export default function Home() {
                   <img
                     src="https://images.pexels.com/photos/4498220/pexels-photo-4498220.jpeg?auto=compress&cs=tinysrgb&w=600"
                     alt="Muestra"
-                    className="w-full h-56 object-cover rounded-2xl mt-6"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6"
                   />
                   <div className="absolute bottom-10 right-6 flex flex-col gap-2">
                     <div className="w-2 h-2 bg-[#2D5444] rounded-full"></div>
@@ -466,19 +471,19 @@ export default function Home() {
             </div>
 
             {/* Row 3 - Cards 5 & 6 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               <div className="relative">
                 <div className="absolute -top-4 -left-4 w-20 h-20 bg-[#F5C542] rounded-full opacity-20"></div>
                 <div className="absolute bottom-8 right-8 w-10 h-10 bg-[#1E1E1E] rounded-xl flex items-center justify-center z-10 rotate-12 shadow-md">
                   <Globe className="w-5 h-5 text-white" />
                 </div>
-                <div className="relative bg-[#F5C542] rounded-[2.5rem] p-8 shadow-lg">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-[#1E1E1E] rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-white">5</span>
+                <div className="relative bg-[#F5C542] rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-[#1E1E1E] rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-white">5</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3">
                         {t('home.communityHow.step5Title')}
                       </h3>
                       <p className="text-[#1E1E1E]/80 leading-relaxed">
@@ -489,7 +494,7 @@ export default function Home() {
                   <img
                     src="/a-happy-teenager-is-standing-and-holding-vegetable-2025-03-16-09-38-27-utc.jpg"
                     alt="Conecta"
-                    className="w-full h-56 object-cover rounded-2xl mt-6"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6"
                   />
                   <div className="absolute -bottom-2 left-12 flex gap-2">
                     <div className="w-2 h-2 bg-[#1E1E1E] rounded-full"></div>
@@ -504,13 +509,13 @@ export default function Home() {
                 <div className="absolute -top-3 left-10 w-10 h-10 bg-[#cf3f5c] rounded-2xl flex items-center justify-center z-10 shadow-md">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
-                <div className="relative bg-white rounded-[2.5rem] p-8 shadow-lg border border-gray-100">
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-[#cf3f5c] rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-white">6</span>
+                <div className="relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-[#cf3f5c] rounded-xl sm:rounded-2xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-white">6</span>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-[#1E1E1E] mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3">
                         {t('home.communityHow.step6Title')}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
@@ -521,7 +526,7 @@ export default function Home() {
                   <img
                     src="/funny-asian-and-caucasian-woman-with-disposable-cu-2025-03-25-02-22-12-utc.jpg"
                     alt="Organiza"
-                    className="w-full h-56 object-cover rounded-2xl mt-6"
+                    className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-xl sm:rounded-2xl mt-4 sm:mt-6"
                   />
                   <div className="absolute bottom-8 right-6 flex flex-col gap-2">
                     <div className="w-2 h-2 bg-[#cf3f5c] rounded-full"></div>
@@ -600,28 +605,28 @@ export default function Home() {
               <Star className="w-3 h-3 fill-white" />
               <span className="text-xs font-bold uppercase tracking-wider">{t('home.values.label')}</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E1E1E] mb-6 mt-6">
               {t('home.values.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {t('home.values.description')}
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
             {valores.map((valor, index) => (
               <div
                 key={index}
-                className="group relative bg-[#FAFAFA] rounded-[2rem] p-8 text-center hover:shadow-xl transition-all cursor-pointer"
+                className="group relative bg-[#FAFAFA] rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-6 lg:p-8 text-center hover:shadow-xl transition-all cursor-pointer"
               >
                 <div className="absolute top-2 right-2 w-8 h-8 border-2 rounded-full opacity-0 group-hover:opacity-20 transition-opacity" style={{ borderColor: valor.color }}></div>
                 <div className="relative z-10">
                   <div
-                    className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
+                    className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: valor.color }}
                   >
-                    <valor.icon className="w-8 h-8 text-white" />
+                    <valor.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   </div>
-                  <h3 className="font-bold text-[#1E1E1E] text-lg mb-3">
+                  <h3 className="font-bold text-[#1E1E1E] text-sm sm:text-base lg:text-lg mb-2 sm:mb-3">
                     {t(valor.nameKey)}
                   </h3>
                   <p className="text-sm text-gray-600 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -658,7 +663,7 @@ export default function Home() {
                 <Star className="w-3 h-3 fill-white text-white" />
                 <span className="text-white text-xs font-bold uppercase tracking-wider">{t('home.womenBeginss.label')}</span>
               </div>
-              <h2 className="text-5xl md:text-6xl font-bold text-[#1E1E1E] mb-8 leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E1E1E] mb-6 sm:mb-8 leading-tight">
                 {t('home.womenBeginss.title')}
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
@@ -699,7 +704,7 @@ export default function Home() {
                   <img
   src="/close-friends-sharing-a-joyful-embrace-outdoors-2025-02-22-01-38-17-utc.jpg"
   alt="Mujeres Beginss"
-  className="w-full h-[500px] object-cover"
+  className="w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[500px] object-cover"
 />
                 </div>
                 {/* Decorative dots */}
@@ -728,7 +733,7 @@ export default function Home() {
               <Infinity className="w-3 h-3" />
               <span className="text-xs font-bold uppercase tracking-wider">{t('home.circles.label')}</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-bold text-[#1E1E1E] mb-8 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#1E1E1E] mb-6 sm:mb-8 leading-tight">
               <Trans i18nKey="home.circles.title" components={{ br: <br /> }} />
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-4">
@@ -740,15 +745,15 @@ export default function Home() {
           </div>
 
           {/* Interactive Circles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {/* Circle 1 - Economia */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#2D5444] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
-                <div className="w-16 h-16 bg-[#2D5444] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
-                  <TrendingUp className="w-8 h-8 text-white" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#2D5444] rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform shadow-md">
+                  <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#2D5444] transition-colors">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3 sm:mb-4 group-hover:text-[#2D5444] transition-colors">
                   <Trans i18nKey="home.circles.economia.title" components={{ br: <br /> }} />
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
@@ -775,13 +780,13 @@ export default function Home() {
             </div>
 
             {/* Circle 2 - Arte */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E2725B] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
-                <div className="w-16 h-16 bg-[#E2725B] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
-                  <Sparkles className="w-8 h-8 text-white" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#E2725B] rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform shadow-md">
+                  <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-[#1E1E1E] mb-4 group-hover:text-[#E2725B] transition-colors">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1E1E] mb-3 sm:mb-4 group-hover:text-[#E2725B] transition-colors">
                   {t('home.circles.arte.title')}
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
@@ -808,7 +813,7 @@ export default function Home() {
             </div>
 
             {/* Circle 3 - Armonia */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#F5C542] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-[#F5C542] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
@@ -841,7 +846,7 @@ export default function Home() {
             </div>
 
             {/* Circle 4 - Sostenibilidad */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#cf3f5c] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-[#cf3f5c] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
@@ -874,7 +879,7 @@ export default function Home() {
             </div>
 
             {/* Circle 5 - Medio Ambiente */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#2D5444] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-[#2D5444] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
@@ -907,7 +912,7 @@ export default function Home() {
             </div>
 
             {/* Circle 6 - Consumo */}
-            <div className="group relative bg-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
+            <div className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E2725B] rounded-full opacity-0 group-hover:opacity-10 transition-opacity blur-2xl"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-[#E2725B] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">

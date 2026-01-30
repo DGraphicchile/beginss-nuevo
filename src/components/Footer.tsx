@@ -6,14 +6,14 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-[#FAF7F2] border-t border-[#7CA982]/20">
-      <div className="max-w-7xl mx-auto px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-[#FAF7F2] border-t border-[#7CA982]/20 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
-              <img src="/logo-beginns-full.svg" alt="Beginss" className="h-12" />
+              <img src="/logo-beginns-full.svg" alt="Beginss" className="h-10 sm:h-12 w-auto max-w-[200px] object-contain" />
             </div>
-            <p className="text-[#5F5F5F] text-base mb-6 max-w-md leading-relaxed">
+            <p className="text-[#5F5F5F] text-sm sm:text-base mb-6 max-w-md leading-relaxed">
               {t('footer.tagline')}
             </p>
             <a
@@ -64,12 +64,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#7CA982]/20 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-[#8E8E8E]">
+        <div className="border-t border-[#7CA982]/20 mt-6 sm:mt-8 pt-6 sm:pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <p className="text-xs sm:text-sm text-[#8E8E8E]">
               {t('footer.copyright')}
             </p>
-            <p className="text-sm text-[#8E8E8E]">
+            <p className="text-xs sm:text-sm text-[#8E8E8E]">
               {t('footer.mobileAppSoon')}
             </p>
           </div>

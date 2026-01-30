@@ -40,6 +40,11 @@
     --px: clamp(16px, 4vw, 32px);
   }
 
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   body {
     font-family: 'Lato', 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -48,6 +53,8 @@
     color: var(--black-warm);
     font-size: clamp(16px, 1.2vw, 18px);
     line-height: 1.6;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   h1, h2, h3, h4, h5, h6 {

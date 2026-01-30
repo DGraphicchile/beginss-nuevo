@@ -10,7 +10,7 @@ import Badge from '../components/Badge';
 import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
 import FloatingElements from '../components/FloatingElements';
-import RequireAuth from '../components/RequireAuth';
+import AuthGateSection from '../components/AuthGateSection';
 
 interface Product extends MarketplaceListing {
   profiles?: {
@@ -70,6 +70,11 @@ export default function Marketplace() {
   }, [user]);
 
   const loadProducts = async () => {
+    if (!user) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       let query = supabase
@@ -339,10 +344,9 @@ export default function Marketplace() {
   });
 
   return (
-    <RequireAuth title="Marketplace" titleKey="auth.sectionNames.marketplace" sectionName="marketplace">
-    <div className="min-h-screen">
-      <section className="relative min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh] pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 min-h-[70vh] sm:min-h-[75vh] lg:min-h-[80vh]">
+    <div className="min-h-screen overflow-x-hidden">
+      <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[65vh] xl:min-h-[70vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 min-h-[50vh] sm:min-h-[55vh] lg:min-h-[65vh] xl:min-h-[70vh]">
           <img
             src="/mujeresmarketplace-66.jpg"
             alt="Beginss Community"
@@ -353,47 +357,47 @@ export default function Marketplace() {
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
-              <ShoppingBag className="w-4 h-4 text-[#7CA982]" />
-              <span className="text-[#3E6049] text-sm font-semibold">{t('marketplacePage.hero.badge')}</span>
+        <div className="max-w-7xl mx-auto relative z-10 w-full">
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7CA982]" />
+              <span className="text-[#3E6049] text-xs sm:text-sm font-semibold">{t('marketplacePage.hero.badge')}</span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
               {t('marketplacePage.hero.title')}{' '}
               <span className="text-[#b2d9d9]">{t('marketplacePage.hero.titleHighlight')}</span>
             </h1>
 
-            <p className="text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            <p className="text-base sm:text-lg lg:text-xl text-white mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               {t('marketplacePage.hero.subtitle')}{' '}
               <span className="font-semibold text-[#b2d9d9]">{t('marketplacePage.hero.subtitleBold')}</span>
             </p>
 
-            <div className="max-w-2xl mx-auto mb-8">
+            <div className="max-w-2xl mx-auto mb-6 sm:mb-8">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8E8E8E]" />
+                <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#8E8E8E]" />
                 <input
                   type="text"
                   placeholder={t('marketplacePage.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:outline-none text-[#5F5F5F] shadow-lg"
+                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 rounded-full border-2 border-gray-200 focus:border-[#7CA982] focus:outline-none text-sm sm:text-base text-[#5F5F5F] shadow-lg"
                 />
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               {user ? (
                 <Button 
                   variant="primary" 
-                  className="text-lg px-8 py-4"
+                  className="text-sm sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
                   onClick={() => setShowModal(true)}
                 >
                   {t('marketplacePage.publishProduct')}
                 </Button>
               ) : (
-                <Button variant="primary" className="text-lg px-8 py-4">
+                <Button variant="primary" className="text-sm sm:text-lg px-6 sm:px-8 py-3 sm:py-4">
                   {t('marketplacePage.joinToSell')}
                 </Button>
               )}
@@ -405,13 +409,13 @@ export default function Marketplace() {
       <WaveDivider color="#FAF7F2" />
 
       {/* Selector Marketplace/Trueque */}
-      <section className="pt-8 pb-12 px-4 sm:px-6 lg:px-8 bg-[#FAF7F2]">
+      <section className="pt-6 sm:pt-8 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex bg-white rounded-full p-2 shadow-lg">
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <div className="inline-flex flex-wrap justify-center gap-2 sm:gap-0 bg-white rounded-full p-2 shadow-lg">
               <button
                 onClick={() => setViewMode('marketplace')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
+                className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                   viewMode === 'marketplace'
                     ? 'bg-[#7CA982] text-white shadow-md'
                     : 'text-[#5F5F5F] hover:bg-gray-50'
@@ -422,7 +426,7 @@ export default function Marketplace() {
               </button>
               <button
                 onClick={() => setViewMode('trueque')}
-                className={`px-8 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
+                className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
                   viewMode === 'trueque'
                     ? 'bg-[#F5C542] text-white shadow-md'
                     : 'text-[#5F5F5F] hover:bg-gray-50'
@@ -435,30 +439,32 @@ export default function Marketplace() {
           </div>
 
           {/* Categorías */}
-          <div className="flex flex-wrap gap-3 mb-8 justify-center">
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-8 justify-center">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 rounded-full text-xs sm:text-sm lg:text-base font-medium transition-all ${
                   activeCategory === category.id
                     ? 'bg-[#7CA982] text-white shadow-lg'
                     : 'bg-white text-[#5F5F5F] hover:bg-gray-50 shadow-md'
                 }`}
               >
-                <category.icon className="w-4 h-4" />
-                {category.label}
+                <category.icon className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+                <span className="whitespace-nowrap">{category.label}</span>
               </button>
             ))}
           </div>
 
           {/* Productos */}
-          {loading ? (
+          {!user ? (
+            <AuthGateSection titleKey="auth.sectionNames.marketplace" />
+          ) : loading ? (
             <div className="text-center py-12">
               <p className="text-[#6E6E6E]">{t('marketplacePage.loadingProducts')}</p>
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
@@ -1174,6 +1180,5 @@ export default function Marketplace() {
         </div>
       )}
     </div>
-    </RequireAuth>
   );
 }

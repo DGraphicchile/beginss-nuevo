@@ -310,6 +310,9 @@
     "aria": {
       "heroImage": "Beginss Community",
       "featureImage": "Cafecito Beginss",
+      "featureImageExpand": "View image in detail",
+      "featureImageModal": "Image detail view",
+      "closeModal": "Close",
       "ctaIcon": "Beginss icon"
     },
     "toasts": {

@@ -5,7 +5,7 @@ import { Briefcase, MapPin, Search, Users, Phone } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import FloatingElements from '../components/FloatingElements';
-import RequireAuth from '../components/RequireAuth';
+import AuthGateSection from '../components/AuthGateSection';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { Profile } from '../lib/supabase';
@@ -57,6 +57,11 @@ export default function Servicios() {
   }, [searchTerm, selectedCategory, user]);
 
   const loadUserProfiles = async () => {
+    if (!user) {
+      setUserProfiles([]);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       let query = supabase
@@ -117,39 +122,38 @@ export default function Servicios() {
   const filteredProfiles = userProfiles;
 
   return (
-    <RequireAuth title={t('auth.sectionNames.servicios')} titleKey="auth.sectionNames.servicios">
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* HERO con imagen */}
       <section
-        className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-top bg-no-repeat"
+        className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-top bg-no-repeat"
         style={{ backgroundImage: "url('/hero-servicios.jpg')" }}
       >
         {/* overlay */}
         <div className="absolute inset-0 bg-black/35" />
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10 text-center text-white">
-          <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white rounded-full shadow-md">
-            <Briefcase className="w-4 h-4 text-[#F5C542]" />
-            <span className="text-[#F5C542] text-sm font-bold uppercase tracking-wider">
+        <div className="max-w-7xl mx-auto relative z-10 text-center text-white w-full">
+          <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white rounded-full shadow-md">
+            <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F5C542]" />
+            <span className="text-[#F5C542] text-xs sm:text-sm font-bold uppercase tracking-wider">
               {t('serviciosPage.hero.badge')}
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
             {t('serviciosPage.hero.title')}
           </h1>
 
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
             {t('serviciosPage.hero.subtitle')}
           </p>
         </div>
       </section>
 
       {/* FILTROS */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F7EFE9]">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-[#F7EFE9]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">{t('serviciosPage.filters.title')}</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#2D5444] text-center mb-8 sm:mb-12">{t('serviciosPage.filters.title')}</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {/* Buscador por palabras clave */}
@@ -184,18 +188,20 @@ export default function Servicios() {
       </section>
 
       {/* PERFILES DE USUARIOS */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-[#2D5444] text-center mb-12">{t('serviciosPage.profiles.title')}</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#2D5444] text-center mb-8 sm:mb-12">{t('serviciosPage.profiles.title')}</h2>
 
-          {loading ? (
+          {!user ? (
+            <AuthGateSection titleKey="auth.sectionNames.servicios" />
+          ) : loading ? (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#CF3F7A] border-t-transparent mb-4" />
               <p className="text-[#5e3920]">{t('serviciosPage.profiles.loading')}</p>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {filteredProfiles.map((profile) => (
                   <div
                     key={profile.id}
@@ -280,16 +286,15 @@ export default function Servicios() {
       >
         <div className="absolute inset-0 bg-black/40" />
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <Briefcase className="w-16 h-16 mx-auto mb-6 text-[#F5C542]" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+          <Briefcase className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 text-[#F5C542]" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white">
             {t('serviciosPage.cta.title')}
           </h2>
-          <p className="text-xl mb-8 text-white/90">
+          <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 text-white/90">
             {t('serviciosPage.cta.subtitle')}
           </p>
         </div>
       </section>
     </div>
-    </RequireAuth>
   );
 }
