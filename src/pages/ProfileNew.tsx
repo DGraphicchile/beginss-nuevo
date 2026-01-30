@@ -878,61 +878,74 @@ export default function ProfileNew() {
     setStories(updatedStories);
   };
 
-  const toggleInterest = (interest: string) => {
-    if (formData.interests.includes(interest)) {
-      setFormData({
-        ...formData,
-        interests: formData.interests.filter(i => i !== interest)
-      });
-    } else {
-      setFormData({
-        ...formData,
-        interests: [...formData.interests, interest]
-      });
+  const persistInterests = async (newInterests: string[]) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('profiles')
+      .update({ interests: newInterests, updated_at: new Date().toISOString() })
+      .eq('id', user.id);
+    if (error) {
+      console.error('Error guardando intereses:', error);
+      showToast('No se pudieron guardar los intereses. Intenta de nuevo.', 'error');
     }
   };
 
-  const handleAddCustomInterest = () => {
+  const toggleInterest = async (interest: string) => {
+    const newInterests = formData.interests.includes(interest)
+      ? formData.interests.filter(i => i !== interest)
+      : [...formData.interests, interest];
+    setFormData({ ...formData, interests: newInterests });
+    await persistInterests(newInterests);
+  };
+
+  const handleAddCustomInterest = async () => {
     const trimmed = customInterest.trim();
-    if (trimmed && !formData.interests.includes(trimmed)) {
-      setFormData({
-        ...formData,
-        interests: [...formData.interests, trimmed]
-      });
-      setCustomInterest('');
+    if (!trimmed || formData.interests.includes(trimmed)) return;
+    const newInterests = [...formData.interests, trimmed];
+    setFormData({ ...formData, interests: newInterests });
+    setCustomInterest('');
+    await persistInterests(newInterests);
+  };
+
+  const handleRemoveInterest = async (interest: string) => {
+    const newInterests = formData.interests.filter(i => i !== interest);
+    setFormData({ ...formData, interests: newInterests });
+    await persistInterests(newInterests);
+  };
+
+  const persistSkills = async (newSkills: string[]) => {
+    if (!user) return;
+    const { error } = await supabase
+      .from('profiles')
+      .update({ skills: newSkills, updated_at: new Date().toISOString() })
+      .eq('id', user.id);
+    if (error) {
+      console.error('Error guardando habilidades:', error);
+      showToast('No se pudieron guardar las habilidades. Intenta de nuevo.', 'error');
     }
   };
 
-  const handleRemoveInterest = (interest: string) => {
-    setFormData({
-      ...formData,
-      interests: formData.interests.filter(i => i !== interest)
-    });
+  const toggleSkill = async (skill: string) => {
+    const newSkills = formData.skills.includes(skill)
+      ? formData.skills.filter(s => s !== skill)
+      : [...formData.skills, skill];
+    setFormData({ ...formData, skills: newSkills });
+    await persistSkills(newSkills);
   };
 
-  const toggleSkill = (skill: string) => {
-    if (formData.skills.includes(skill)) {
-      setFormData({
-        ...formData,
-        skills: formData.skills.filter(s => s !== skill)
-      });
-    } else {
-      setFormData({
-        ...formData,
-        skills: [...formData.skills, skill]
-      });
-    }
-  };
-
-  const handleAddCustomSkill = () => {
+  const handleAddCustomSkill = async () => {
     const trimmed = customInterest.trim();
-    if (trimmed && !formData.skills.includes(trimmed)) {
-      setFormData({
-        ...formData,
-        skills: [...formData.skills, trimmed]
-      });
-      setCustomInterest('');
-    }
+    if (!trimmed || formData.skills.includes(trimmed)) return;
+    const newSkills = [...formData.skills, trimmed];
+    setFormData({ ...formData, skills: newSkills });
+    setCustomInterest('');
+    await persistSkills(newSkills);
+  };
+
+  const handleRemoveSkill = async (skill: string) => {
+    const newSkills = formData.skills.filter(s => s !== skill);
+    setFormData({ ...formData, skills: newSkills });
+    await persistSkills(newSkills);
   };
 
   const handleConnect = async () => {
@@ -973,13 +986,6 @@ export default function ProfileNew() {
       navigator.clipboard.writeText(connectedPhoneNumber);
       showToast('Número copiado al portapapeles', 'success');
     }
-  };
-
-  const handleRemoveSkill = (skill: string) => {
-    setFormData({
-      ...formData,
-      skills: formData.skills.filter(s => s !== skill)
-    });
   };
 
   const getTagColor = (tag: string, index: number) => {

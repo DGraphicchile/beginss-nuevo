@@ -797,23 +797,26 @@ export default function CafecitoNew() {
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E]">{t('cafecito.presencialTitle')}</h3>
                   </div>
-                  <Button
-                    variant="secondary"
-                    onClick={() => setShowMapView(!showMapView)}
-                    className="flex items-center gap-2"
-                  >
-                    {showMapView ? (
-                      <>
-                        <List className="w-4 h-4" />
-                        {t('cafecito.viewList')}
-                      </>
-                    ) : (
-                      <>
-                        <MapPin className="w-4 h-4" />
-                        {t('cafecito.viewMap')}
-                      </>
-                    )}
-                  </Button>
+                  {/* Botón de mapa temporalmente oculto — reactivar cuando corresponda */}
+                  {false && (
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowMapView(!showMapView)}
+                      className="flex items-center gap-2"
+                    >
+                      {showMapView ? (
+                        <>
+                          <List className="w-4 h-4" />
+                          {t('cafecito.viewList')}
+                        </>
+                      ) : (
+                        <>
+                          <MapPin className="w-4 h-4" />
+                          {t('cafecito.viewMap')}
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
                 {showMapView ? (
                   <div className="h-[400px] sm:h-[500px] lg:h-[600px] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-gray-200">
