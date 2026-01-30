@@ -175,7 +175,37 @@
     "signUpHere": "Sign up here",
     "errorRequired": "Please fill in all fields",
     "errorInvalid": "Incorrect email or password",
-    "errorGeneric": "Error logging in. Please try again."
+    "errorGeneric": "Error logging in. Please try again.",
+    "forgotPassword": "Forgot your password?"
+  },
+  "forgotPassword": {
+    "title": "Recover password",
+    "subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "submit": "Send link",
+    "sending": "Sending...",
+    "backToLogin": "Back to log in",
+    "successMessage": "Check your email. If an account exists with that address, you'll receive a link to reset your password.",
+    "checkSpam": "If you don't see it, check your spam folder.",
+    "errorRequired": "Please enter your email.",
+    "errorGeneric": "We couldn't send the link. Check the email and try again."
+  },
+  "resetPassword": {
+    "title": "New password",
+    "subtitle": "Choose a secure password of at least 6 characters.",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "At least 6 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat password",
+    "submit": "Save password",
+    "saving": "Saving...",
+    "backToLogin": "Back to log in",
+    "loading": "Verifying link...",
+    "errorPasswordLength": "Password must be at least 6 characters.",
+    "errorMismatch": "Passwords do not match.",
+    "errorGeneric": "Could not update password. Please try again.",
+    "successLogin": "Password updated. You can now log in with your new password."
   },
   "register": {
     "title": "Join Beginss",
@@ -244,6 +274,8 @@
     "joining": "Registering...",
     "modal": {
       "createTitle": "Create Cafecito",
+      "editTitle": "Edit Cafecito",
+      "saveChanges": "Save changes",
       "selectEventType": "Select the event type",
       "typePresencial": "In-person",
       "typeVirtual": "Virtual",
@@ -259,6 +291,7 @@
       "changeImage": "Change image",
       "uploadImage": "Click to upload an image",
       "uploadImageHint": "PNG, JPG up to 5MB",
+      "imagePreviewAlt": "Image preview",
       "tagsLabel": "Tags",
       "tagPlaceholder": "Type a tag and press Enter",
       "add": "Add",
@@ -274,6 +307,11 @@
       "descriptionPlaceholder": "Describe your Cafecito...",
       "cancel": "Cancel"
     },
+    "aria": {
+      "heroImage": "Beginss Community",
+      "featureImage": "Cafecito Beginss",
+      "ctaIcon": "Beginss icon"
+    },
     "toasts": {
       "requiredFields": "Please complete all required fields.",
       "addressRequired": "Please enter the event address.",
@@ -283,7 +321,8 @@
       "created": "Cafecito created successfully!",
       "createError": "Error creating cafecito: {{message}}. Check that all fields are complete and try again.",
       "noSpots": "No spots available.",
-      "joinError": "Could not complete registration. Please try again."
+      "joinError": "Could not complete registration. Please try again.",
+      "unknownError": "Unknown error"
     },
     "defaultHostName": "Beginss User",
     "cards": {

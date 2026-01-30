@@ -17,10 +17,11 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
+    lng: 'es',
     fallbackLng: 'es',
     supportedLngs: ['es', 'en', 'pt-BR'],
     detection: {
-      order: ['querystring', 'localStorage', 'navigator'],
+      order: ['localStorage', 'querystring'],
       lookupQuerystring: 'lng',
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage'],

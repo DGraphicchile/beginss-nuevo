@@ -26,24 +26,22 @@ export default function Register() {
     }
     const { error } = await signUp(email, password, fullName);
     if (error) {
-      if (error.message?.includes('already registered') || error.message?.includes('already exists') || error.code === '23505') {
+      const msg = typeof error?.message === 'string' ? error.message : '';
+      const isEmailExists =
+        msg.toLowerCase().includes('already registered') ||
+        msg.toLowerCase().includes('already exists') ||
+        msg.toLowerCase().includes('user already registered') ||
+        (error as { code?: string }).code === '23505';
+      if (isEmailExists) {
         setError(t('register.errorEmailExists'));
-      } else if (error.code === 'PGRST301' || error.status === 409) {
-        setTimeout(() => {
-          setLoading(false);
-          navigate('/perfil');
-        }, 500);
-        return;
       } else {
         setError(t('register.errorGeneric'));
       }
       setLoading(false);
-    } else {
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/perfil');
-      }, 500);
+      return;
     }
+    setLoading(false);
+    navigate('/perfil');
   };
 
   return (

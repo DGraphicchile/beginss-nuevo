@@ -11,6 +11,11 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   loading: boolean;
   refreshProfile: () => Promise<void>;
+  /** true cuando el usuario llegó desde el enlace de recuperación de contraseña */
+  isPasswordRecovery: boolean;
+  clearPasswordRecovery: () => void;
+  resetPasswordForEmail: (email: string) => Promise<{ error: any }>;
+  updatePassword: (newPassword: string) => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
 
   useEffect(() => {
     if (!supabaseConfigured) {
@@ -39,7 +45,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }).catch(() => setLoading(false));
 
     // Escuchar cambios en el estado de autenticación
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsPasswordRecovery(true);
+      }
       (async () => {
         setSession(session);
         setUser(session?.user ?? null);
@@ -122,6 +131,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (error) return { error };
+
+      // Si Supabase no devolvió error pero el usuario ya existía (identities vacío), no crear cuenta
+      const identities = (data?.user as { identities?: unknown[] } | undefined)?.identities;
+      if (data?.user && Array.isArray(identities) && identities.length === 0) {
+        return { error: { message: 'User already registered' } };
+      }
 
       if (data.user) {
         // Intentar insertar el perfil, si ya existe (409) hacer upsert
@@ -207,6 +222,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
     setUser(null);
     setSession(null);
+    setIsPasswordRecovery(false);
+  };
+
+  const clearPasswordRecovery = () => {
+    setIsPasswordRecovery(false);
+  };
+
+  const resetPasswordForEmail = async (email: string) => {
+    if (!supabaseConfigured) {
+      return { error: new Error('Supabase no está configurado.') };
+    }
+    try {
+      const redirectTo = `${typeof window !== 'undefined' ? window.location.origin : ''}/restablecer-contrasena`;
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
+      return { error: error ?? null };
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    if (!supabaseConfigured) {
+      return { error: new Error('Supabase no está configurado.') };
+    }
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      return { error: error ?? null };
+    } catch (error) {
+      return { error };
+    }
   };
 
   const refreshProfile = async () => {
@@ -222,6 +267,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signOut,
     loading,
     refreshProfile,
+    isPasswordRecovery,
+    clearPasswordRecovery,
+    resetPasswordForEmail,
+    updatePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

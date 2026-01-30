@@ -56,14 +56,6 @@ export default function Home() {
               {t('home.hero.joinCircle')}
             </Button>
           </Link>
-          <Link to="/valores">
-            <Button
-              variant="outlined"
-              className="w-full sm:w-auto !bg-white !border-white !text-[#2D5444] hover:!bg-[#1E1E1E] hover:!text-white hover:!border-[#1E1E1E]"
-            >
-              {t('home.hero.learnMore')}
-            </Button>
-          </Link>
         </div>
       )}
       <div className="mb-10">
@@ -73,8 +65,7 @@ export default function Home() {
           className="w-48 md:w-56 lg:w-64 mx-auto drop-shadow-lg"
         />
       </div>
-      <div className="flex items-center gap-4 justify-center">
-        <div className="w-16 h-0.5 bg-[#F5C542]"></div>
+      <div className="flex items-center justify-center text-center">
         <p className="text-white/70 text-sm">{t('home.hero.tagline')}</p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
 import { useAuth } from '../lib/AuthContext';
 import Button from '../components/Button';
@@ -13,6 +13,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const resetSuccess = (location.state as { message?: string } | null)?.message === 'resetSuccess';
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -96,6 +98,11 @@ export default function Login() {
 
           {/* FORMULARIO */}
           <div className="rounded-2xl bg-white/95 p-6 shadow-xl backdrop-blur-sm">
+            {resetSuccess && (
+              <div className="mb-4 bg-[#7CA982]/15 border border-[#7CA982]/40 text-[#2D5444] px-4 py-3 rounded-xl text-sm">
+                {t('resetPassword.successLogin')}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <div className="bg-[#E6A5A1]/10 border border-[#E6A5A1] text-[#D85B5B] px-4 py-3 rounded-lg text-sm">
@@ -118,9 +125,17 @@ export default function Login() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-[#2D5444] mb-2">
-                  {t('login.password')}
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="password" className="block text-sm font-semibold text-[#2D5444]">
+                    {t('login.password')}
+                  </label>
+                  <Link
+                    to="/olvidar-contrasena"
+                    className="text-sm font-medium text-[#3E6049] hover:underline"
+                  >
+                    {t('login.forgotPassword')}
+                  </Link>
+                </div>
                 <input
                   id="password"
                   type="password"

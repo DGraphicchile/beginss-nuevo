@@ -175,7 +175,37 @@
     "signUpHere": "Regístrate aquí",
     "errorRequired": "Por favor completa todos los campos",
     "errorInvalid": "Correo o contraseña incorrectos",
-    "errorGeneric": "Error al iniciar sesión. Intenta de nuevo."
+    "errorGeneric": "Error al iniciar sesión. Intenta de nuevo.",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "forgotPassword": {
+    "title": "Recuperar contraseña",
+    "subtitle": "Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "submit": "Enviar enlace",
+    "sending": "Enviando...",
+    "backToLogin": "Volver a iniciar sesión",
+    "successMessage": "Revisa tu correo. Si existe una cuenta con ese email, recibirás un enlace para restablecer tu contraseña.",
+    "checkSpam": "Si no lo ves, revisa la carpeta de spam.",
+    "errorRequired": "Ingresa tu correo electrónico.",
+    "errorGeneric": "No pudimos enviar el enlace. Verifica el correo e inténtalo de nuevo."
+  },
+  "resetPassword": {
+    "title": "Nueva contraseña",
+    "subtitle": "Elige una contraseña segura de al menos 6 caracteres.",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Mínimo 6 caracteres",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repite la contraseña",
+    "submit": "Guardar contraseña",
+    "saving": "Guardando...",
+    "backToLogin": "Volver a iniciar sesión",
+    "loading": "Verificando enlace...",
+    "errorPasswordLength": "La contraseña debe tener al menos 6 caracteres.",
+    "errorMismatch": "Las contraseñas no coinciden.",
+    "errorGeneric": "No se pudo actualizar la contraseña. Intenta de nuevo.",
+    "successLogin": "Contraseña actualizada. Ya puedes iniciar sesión con tu nueva contraseña."
   },
   "register": {
     "title": "Únete a Beginss",
@@ -244,6 +274,8 @@
     "joining": "Inscribiendo...",
     "modal": {
       "createTitle": "Crear Cafecito",
+      "editTitle": "Editar Cafecito",
+      "saveChanges": "Guardar cambios",
       "selectEventType": "Selecciona el tipo de evento",
       "typePresencial": "Presencial",
       "typeVirtual": "Virtual",
@@ -259,6 +291,7 @@
       "changeImage": "Cambiar imagen",
       "uploadImage": "Haz clic para subir una imagen",
       "uploadImageHint": "PNG, JPG hasta 5MB",
+      "imagePreviewAlt": "Vista previa de la imagen",
       "tagsLabel": "Etiquetas",
       "tagPlaceholder": "Escribe una etiqueta y presiona Enter",
       "add": "Agregar",
@@ -274,6 +307,11 @@
       "descriptionPlaceholder": "Describe tu Cafecito...",
       "cancel": "Cancelar"
     },
+    "aria": {
+      "heroImage": "Comunidad Beginss",
+      "featureImage": "Cafecito Beginss",
+      "ctaIcon": "Icono Beginss"
+    },
     "toasts": {
       "requiredFields": "Por favor, completa todos los campos requeridos.",
       "addressRequired": "Por favor, ingresa la dirección del evento.",
@@ -283,7 +321,8 @@
       "created": "Cafecito creado exitosamente!",
       "createError": "Error al crear el cafecito: {{message}}. Verifica que todos los campos estén completos e intenta de nuevo.",
       "noSpots": "No hay cupos disponibles.",
-      "joinError": "No se pudo completar la inscripción. Intenta de nuevo."
+      "joinError": "No se pudo completar la inscripción. Intenta de nuevo.",
+      "unknownError": "Error desconocido"
     },
     "defaultHostName": "Usuario Beginss",
     "cards": {

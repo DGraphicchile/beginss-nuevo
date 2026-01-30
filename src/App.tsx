@@ -9,6 +9,8 @@ import OnboardingModal from './components/OnboardingModal';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Marketplace from './pages/Marketplace';
 import CafecitoNew from './pages/CafecitoNew';
 import PostDetail from './pages/PostDetail';
@@ -40,6 +42,8 @@ function AppContent() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
+            <Route path="/olvidar-contrasena" element={<ForgotPassword />} />
+            <Route path="/restablecer-contrasena" element={<ResetPassword />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/cafecito" element={<CafecitoNew />} />
             <Route path="/cafecito/:postId" element={<PostDetail />} />

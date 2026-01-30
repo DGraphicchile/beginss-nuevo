@@ -12,7 +12,7 @@ import FloatingElements from '../components/FloatingElements';
 import { useAuth } from '../lib/AuthContext';
 import { useToast } from '../lib/ToastContext';
 import { supabase } from '../lib/supabase';
-import { CATEGORIAS_TITULOS, parseCategoriesFromDescription } from '../constants/circulos';
+import { CIRCULOS_CATEGORIAS, parseCategoriesFromDescription } from '../constants/circulos';
 
 // Fix para los iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -532,7 +532,7 @@ export default function CafecitoNew() {
           }
         } catch (uploadErr: any) {
           console.error('Exception uploading image:', uploadErr);
-          showToast(t('cafecito.toasts.uploadError', { message: uploadErr?.message || 'Error desconocido' }), 'error');
+          showToast(t('cafecito.toasts.uploadError', { message: uploadErr?.message || t('cafecito.toasts.unknownError') }), 'error');
           // Continuar con imagen por defecto
         }
       } else {
@@ -716,7 +716,7 @@ export default function CafecitoNew() {
         <div className="absolute inset-0">
           <img
             src="/2.jpg"
-            alt="Beginss Community"
+            alt={t('cafecito.aria.heroImage')}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
@@ -750,7 +750,7 @@ export default function CafecitoNew() {
   <div className="max-w-5xl w-full rounded-[2rem] overflow-hidden shadow-md">
     <img
       src="recurso-cafecito-1.svg"
-      alt="Cafecito Beginss"
+      alt={t('cafecito.aria.featureImage')}
       className="w-full h-auto object-cover rounded-[2rem]"
     />
   </div>
@@ -955,7 +955,7 @@ export default function CafecitoNew() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <img
             src="/recurso-5.svg"
-            alt="Beginss Icon"
+            alt={t('cafecito.aria.ctaIcon')}
             className="w-16 h-16 mx-auto mb-6"
           />
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#b2d9d9' }}>
@@ -1091,7 +1091,7 @@ export default function CafecitoNew() {
         }}>
           <div className="bg-white rounded-[2rem] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-[2rem] z-10">
-              <h2 className="text-2xl font-bold text-[#1E1E1E]">{t('cafecito.modal.createTitle')}</h2>
+              <h2 className="text-2xl font-bold text-[#1E1E1E]">{editingEventId ? t('cafecito.modal.editTitle') : t('cafecito.modal.createTitle')}</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
@@ -1160,27 +1160,30 @@ export default function CafecitoNew() {
                   <div>
                     <label className="block text-sm font-semibold text-[#1E1E1E] mb-2">{t('cafecito.modal.categoriesLabel')}</label>
                     <div className="border-2 border-gray-200 rounded-2xl p-4 focus-within:border-[#e74865] focus-within:ring-2 focus-within:ring-[#e74865]/20 transition-all max-h-48 overflow-y-auto">
-                      {CATEGORIAS_TITULOS.map((titulo) => (
-                        <label key={titulo} className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2">
+                      {CIRCULOS_CATEGORIAS.map((c) => (
+                        <label key={c.id} className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 -mx-2">
                           <input
                             type="checkbox"
-                            checked={formData.categories.includes(titulo)}
+                            checked={formData.categories.includes(c.title)}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFormData({ ...formData, categories: [...formData.categories, titulo] });
+                                setFormData({ ...formData, categories: [...formData.categories, c.title] });
                               } else {
-                                setFormData({ ...formData, categories: formData.categories.filter((c) => c !== titulo) });
+                                setFormData({ ...formData, categories: formData.categories.filter((cat) => cat !== c.title) });
                               }
                             }}
                             className="w-4 h-4 rounded border-gray-300 text-[#e74865] focus:ring-[#e74865]"
                           />
-                          <span className="text-sm text-[#1E1E1E]">{titulo}</span>
+                          <span className="text-sm text-[#1E1E1E]">{t(`circulosPage.circles.${c.id}.title`)}</span>
                         </label>
                       ))}
                     </div>
                     {formData.categories.length > 0 && (
                       <p className="text-xs text-gray-500 mt-1">
-                        {t('cafecito.modal.selected')}: {formData.categories.join(', ')}
+                        {t('cafecito.modal.selected')}: {formData.categories.map((titulo) => {
+                          const c = CIRCULOS_CATEGORIAS.find((cat) => cat.title === titulo);
+                          return c ? t(`circulosPage.circles.${c.id}.title`) : titulo;
+                        }).join(', ')}
                       </p>
                     )}
                   </div>
@@ -1203,7 +1206,7 @@ export default function CafecitoNew() {
                     <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center">
                       {formData.imagePreview ? (
                         <div className="relative">
-                          <img src={formData.imagePreview} alt="Preview" className="w-full h-48 object-cover rounded-xl mb-4" />
+                          <img src={formData.imagePreview} alt={t('cafecito.modal.imagePreviewAlt')} className="w-full h-48 object-cover rounded-xl mb-4" />
                           <button
                             onClick={() => {
                               setFormData({ ...formData, image: null, imagePreview: '' });
@@ -1394,7 +1397,7 @@ export default function CafecitoNew() {
                       className="flex-1"
                       disabled={formData.categories.length === 0 || !formData.name || !formData.date || !formData.time || !formData.maxAttendees || !formData.description || (eventType === 'presencial' && !formData.address) || (eventType === 'virtual' && !formData.eventUrl)}
                     >
-                      {t('cafecito.createCafecito')}
+                      {editingEventId ? t('cafecito.modal.saveChanges') : t('cafecito.createCafecito')}
                     </Button>
                   </div>
                 </>
