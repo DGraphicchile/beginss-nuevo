@@ -6,11 +6,22 @@ import Button from '../components/Button';
 import { Lock, ArrowLeft, CheckCircle } from 'lucide-react';
 
 const MIN_PASSWORD_LENGTH = 8;
+const UPDATE_PASSWORD_TIMEOUT_MS = 15000;
+const VERIFY_LINK_TIMEOUT_MS = 12_000;
 
 /** Detecta si la URL tiene el hash de recuperación (antes de que Supabase lo procese). */
 function getRecoveryFromHash(): boolean {
   if (typeof window === 'undefined') return false;
   return window.location.hash.includes('type=recovery');
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), ms)
+    ),
+  ]);
 }
 
 export default function ResetPassword() {
@@ -22,6 +33,7 @@ export default function ResetPassword() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [linkExpired, setLinkExpired] = useState(false);
   const [recoveryFromUrl] = useState(getRecoveryFromHash);
 
   const showResetForm = Boolean(user && (isPasswordRecovery || recoveryFromUrl));
@@ -32,6 +44,13 @@ export default function ResetPassword() {
       navigate('/login', { replace: true });
     }
   }, [user, isPasswordRecovery, recoveryFromUrl, navigate]);
+
+  // Timeout: si tras VERIFY_LINK_TIMEOUT_MS no hay usuario ni éxito, mostrar "enlace expirado"
+  useEffect(() => {
+    if (user || success || linkExpired) return;
+    const id = setTimeout(() => setLinkExpired(true), VERIFY_LINK_TIMEOUT_MS);
+    return () => clearTimeout(id);
+  }, [user, success, linkExpired]);
 
   // Redirección opcional tras éxito (3 segundos)
   useEffect(() => {
@@ -54,19 +73,58 @@ export default function ResetPassword() {
       return;
     }
     setLoading(true);
-    const { error: updateError } = await updatePassword(password);
-    if (updateError) {
-      setError(t('resetPassword.errorGeneric'));
+    try {
+      const { error: updateError } = await withTimeout(
+        updatePassword(password),
+        UPDATE_PASSWORD_TIMEOUT_MS
+      );
+      if (updateError) {
+        const msg =
+          typeof updateError === 'object' && updateError?.message
+            ? String(updateError.message)
+            : t('resetPassword.errorGeneric');
+        setError(msg);
+        setLoading(false);
+        return;
+      }
+      clearPasswordRecovery();
+      await signOut();
+      setSuccess(true);
+    } catch (err) {
+      const isTimeout = err instanceof Error && err.message === 'timeout';
+      setError(
+        isTimeout
+          ? t('resetPassword.errorTimeout')
+          : t('resetPassword.errorGeneric')
+      );
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[ResetPassword] Error:', err);
+      }
+    } finally {
       setLoading(false);
-      return;
     }
-    clearPasswordRecovery();
-    await signOut();
-    setSuccess(true);
-    setLoading(false);
   };
 
   if (!user && !success) {
+    if (linkExpired) {
+      return (
+        <section className="min-h-screen bg-[#F9F7F4] pt-28 pb-16 px-4 flex items-center justify-center">
+          <div className="max-w-md mx-auto rounded-3xl bg-[#FEF4EF] shadow-2xl ring-1 ring-black/5 p-6 md:p-10 text-center">
+            <h1 className="text-xl font-bold text-[#1F2D1F] mb-4">
+              {t('resetPassword.linkExpiredTitle')}
+            </h1>
+            <p className="text-[#5e3920] mb-6">
+              {t('resetPassword.linkExpiredMessage')}
+            </p>
+            <Link to="/olvidar-contrasena">
+              <Button variant="primary" className="w-full rounded-full !bg-[#2D5444] !text-white hover:!bg-[#3E6049]">
+                {t('resetPassword.requestNewLink')}
+              </Button>
+            </Link>
+          </div>
+        </section>
+      );
+    }
     return (
       <section className="min-h-screen bg-[#F9F7F4] pt-28 pb-16 px-4 flex items-center justify-center">
         <div className="text-center">

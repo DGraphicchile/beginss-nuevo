@@ -248,8 +248,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     try {
       const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error && process.env.NODE_ENV === 'development') {
+        console.error('[AuthContext] updatePassword error:', error);
+      }
       return { error: error ?? null };
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[AuthContext] updatePassword exception:', error);
+      }
       return { error };
     }
   };
