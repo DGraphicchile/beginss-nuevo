@@ -44,6 +44,7 @@ function AppContent() {
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
             <Route path="/olvidar-contrasena" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/restablecer-contrasena" element={<ResetPassword />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/cafecito" element={<CafecitoNew />} />

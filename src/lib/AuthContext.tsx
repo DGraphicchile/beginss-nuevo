@@ -234,7 +234,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: new Error('Supabase no está configurado.') };
     }
     try {
-      const redirectTo = `${typeof window !== 'undefined' ? window.location.origin : ''}/restablecer-contrasena`;
+      const redirectTo = `${typeof window !== 'undefined' ? window.location.origin : ''}/reset-password`;
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
       return { error: error ?? null };
     } catch (error) {

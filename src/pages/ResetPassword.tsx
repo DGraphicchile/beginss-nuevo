@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../lib/AuthContext';
 import Button from '../components/Button';
-import { Lock, ArrowLeft } from 'lucide-react';
+import { Lock, ArrowLeft, CheckCircle } from 'lucide-react';
+
+const MIN_PASSWORD_LENGTH = 8;
 
 /** Detecta si la URL tiene el hash de recuperación (antes de que Supabase lo procese). */
 function getRecoveryFromHash(): boolean {
@@ -19,6 +21,7 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [recoveryFromUrl] = useState(getRecoveryFromHash);
 
   const showResetForm = Boolean(user && (isPasswordRecovery || recoveryFromUrl));
@@ -30,10 +33,19 @@ export default function ResetPassword() {
     }
   }, [user, isPasswordRecovery, recoveryFromUrl, navigate]);
 
+  // Redirección opcional tras éxito (3 segundos)
+  useEffect(() => {
+    if (!success) return;
+    const timer = setTimeout(() => {
+      navigate('/login', { replace: true, state: { message: 'resetSuccess' } });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [success, navigate]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    if (password.length < 6) {
+    if (password.length < MIN_PASSWORD_LENGTH) {
       setError(t('resetPassword.errorPasswordLength'));
       return;
     }
@@ -50,10 +62,11 @@ export default function ResetPassword() {
     }
     clearPasswordRecovery();
     await signOut();
-    navigate('/login', { replace: true, state: { message: 'resetSuccess' } });
+    setSuccess(true);
+    setLoading(false);
   };
 
-  if (!user) {
+  if (!user && !success) {
     return (
       <section className="min-h-screen bg-[#F9F7F4] pt-28 pb-16 px-4 flex items-center justify-center">
         <div className="text-center">
@@ -64,7 +77,7 @@ export default function ResetPassword() {
     );
   }
 
-  if (!showResetForm) {
+  if (!showResetForm && !success) {
     return null;
   }
 
@@ -79,67 +92,91 @@ export default function ResetPassword() {
           {t('resetPassword.backToLogin')}
         </Link>
 
-        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#2D5444]/10 mb-6">
-          <Lock className="w-7 h-7 text-[#2D5444]" />
-        </div>
-
-        <h1 className="text-2xl md:text-3xl font-bold text-[#1F2D1F] mb-2 text-center">
-          {t('resetPassword.title')}
-        </h1>
-        <p className="text-[#5e3920] text-center mb-8">
-          {t('resetPassword.subtitle')}
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-[#E6A5A1]/10 border border-[#E6A5A1] text-[#D85B5B] px-4 py-3 rounded-xl text-sm">
-              {error}
+        {success ? (
+          <div className="space-y-6">
+            <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#7CA982]/20 mb-6">
+              <CheckCircle className="w-7 h-7 text-[#2D5444]" />
             </div>
-          )}
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-[#2D5444] mb-2">
-              {t('resetPassword.newPasswordLabel')}
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              minLength={6}
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
-              placeholder={t('resetPassword.newPasswordPlaceholder')}
-            />
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1F2D1F] mb-2 text-center">
+              {t('resetPassword.successTitle')}
+            </h1>
+            <p className="text-[#5e3920] text-center mb-8">
+              {t('resetPassword.successMessage')}
+            </p>
+            <Link to="/login" state={{ message: 'resetSuccess' }}>
+              <Button variant="primary" className="w-full rounded-full !bg-[#2D5444] !text-white hover:!bg-[#3E6049]">
+                {t('resetPassword.goToLogin')}
+              </Button>
+            </Link>
+            <p className="text-sm text-[#5e3920] text-center">
+              {t('resetPassword.redirectHint')}
+            </p>
           </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#2D5444]/10 mb-6">
+              <Lock className="w-7 h-7 text-[#2D5444]" />
+            </div>
 
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-[#2D5444] mb-2">
-              {t('resetPassword.confirmPasswordLabel')}
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              required
-              minLength={6}
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
-              placeholder={t('resetPassword.confirmPasswordPlaceholder')}
-            />
-          </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1F2D1F] mb-2 text-center">
+              {t('resetPassword.title')}
+            </h1>
+            <p className="text-[#5e3920] text-center mb-8">
+              {t('resetPassword.subtitle')}
+            </p>
 
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={loading}
-            className="w-full rounded-full !bg-[#2D5444] !text-white hover:!bg-[#3E6049]"
-          >
-            {loading ? t('resetPassword.saving') : t('resetPassword.submit')}
-          </Button>
-        </form>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-[#E6A5A1]/10 border border-[#E6A5A1] text-[#D85B5B] px-4 py-3 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold text-[#2D5444] mb-2">
+                  {t('resetPassword.newPasswordLabel')}
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  minLength={MIN_PASSWORD_LENGTH}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
+                  placeholder={t('resetPassword.newPasswordPlaceholder')}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-[#2D5444] mb-2">
+                  {t('resetPassword.confirmPasswordLabel')}
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  required
+                  minLength={MIN_PASSWORD_LENGTH}
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#7CA982] focus:ring-2 focus:ring-[#7CA982]/25 outline-none transition-all"
+                  placeholder={t('resetPassword.confirmPasswordPlaceholder')}
+                />
+              </div>
+
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={loading}
+                className="w-full rounded-full !bg-[#2D5444] !text-white hover:!bg-[#3E6049]"
+              >
+                {loading ? t('resetPassword.saving') : t('resetPassword.submit')}
+              </Button>
+            </form>
+          </>
+        )}
       </div>
     </section>
   );
