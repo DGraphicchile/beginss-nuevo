@@ -1185,19 +1185,19 @@ export default function ProfileNew() {
 
               {/* Intereses y Habilidades */}
               {(viewingProfile.interests.length > 0 || viewingProfile.skills.length > 0) && (
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white">
-                  <h2 className="text-2xl font-bold text-[#2D5444] mb-4">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-4 sm:p-6 border border-white overflow-hidden">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#2D5444] mb-4">
                     Intereses y Habilidades
                   </h2>
                   
                   {viewingProfile.interests.length > 0 && (
-                    <div className="mb-4">
+                    <div className="mb-4 min-w-0">
                       <h3 className="text-sm font-semibold text-[#2D5444] mb-2 uppercase tracking-wide">Intereses</h3>
                       <div className="flex flex-wrap gap-2">
                         {viewingProfile.interests.map((interest, idx) => (
                           <span
                             key={idx}
-                            className="px-3 py-1 rounded-full text-xs font-semibold bg-[#2D5444] text-white"
+                            className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#2D5444] text-white break-words max-w-full"
                           >
                             {interest}
                           </span>
@@ -1207,13 +1207,13 @@ export default function ProfileNew() {
                   )}
 
                   {viewingProfile.skills.length > 0 && (
-                    <div>
+                    <div className="min-w-0">
                       <h3 className="text-sm font-semibold text-[#2D5444] mb-2 uppercase tracking-wide">Habilidades</h3>
                       <div className="flex flex-wrap gap-2">
                         {viewingProfile.skills.map((skill, idx) => (
                           <span
                             key={idx}
-                            className="px-3 py-1 rounded-full text-xs font-semibold bg-[#CF3F7A] text-white"
+                            className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#CF3F7A] text-white break-words max-w-full"
                           >
                             {skill}
                           </span>
@@ -1226,7 +1226,7 @@ export default function ProfileNew() {
             </div>
 
             {/* CONTENIDO PRINCIPAL */}
-            <div className="lg:col-span-8 space-y-6">
+            <div className="lg:col-span-8 space-y-6 min-w-0">
               {/* Conexiones */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white">
                 <h2 className="text-2xl font-bold text-[#2D5444] mb-6">
@@ -1320,10 +1320,10 @@ export default function ProfileNew() {
     <div className="min-h-screen pt-20 pb-12 px-4 bg-[#FAF7F2]">
       <div className="max-w-7xl mx-auto">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-w-0">
 
           {/* SIDEBAR IZQUIERDO - PERFIL */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-6 min-w-0">
 
             {/* CARD DE PERFIL PRINCIPAL */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white">
@@ -1407,11 +1407,11 @@ export default function ProfileNew() {
                     {!formData.location && !formData.phone_number && !formData.profession && <div className="mb-4" />}
 
                     {formData.interests.length > 0 && (
-                      <div className="flex flex-wrap gap-2 justify-center mb-6">
+                      <div className="flex flex-wrap gap-2 justify-center mb-6 px-2 min-w-0">
                         {formData.interests.map((interest, idx) => (
                           <span
                             key={idx}
-                            className="px-3 py-1 rounded-full text-xs font-semibold bg-[#2D5444] text-white"
+                            className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#2D5444] text-white break-words max-w-full"
                           >
                             {interest}
                           </span>
@@ -1635,7 +1635,7 @@ export default function ProfileNew() {
           </div>
 
           {/* CONTENIDO PRINCIPAL */}
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-6 min-w-0">
 
             {/* CONTENIDO DE ACTIVIDAD */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white min-h-[500px]">
@@ -1746,43 +1746,43 @@ export default function ProfileNew() {
             </div>
 
             {/* INTERESES Y ETIQUETAS */}
-            <div className="bg-gray-50 rounded-2xl shadow-lg p-8 border border-gray-200">
-                <div>
-                  <h2 className="text-3xl font-bold text-[#1E1E1E] mb-2">
+            <div className="bg-gray-50 rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-200 overflow-hidden">
+                <div className="min-w-0">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] mb-2">
                     Intereses y etiquetas
                   </h2>
-                  <p className="text-base text-[#1E1E1E] mb-6">
+                  <p className="text-sm sm:text-base text-[#1E1E1E] mb-6">
                     Edita tus etiquetas para añadir intereses o habilidades que harán identificar mejor contenido.
                   </p>
 
                   {/* Toggle Buttons */}
-                  <div className="flex gap-3 mb-8">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-8">
                     <button
                       onClick={() => setInterestsTab('intereses')}
-                      className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 border ${
+                      className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all flex items-center justify-center gap-2 border text-sm sm:text-base ${
                         interestsTab === 'intereses'
                           ? 'bg-[#1E1E1E] text-white border-[#1E1E1E] shadow-md'
                           : 'bg-white text-[#6E6E6E] border-gray-300 hover:bg-gray-50'
                       }`}
                     >
-                      <Bookmark className="w-4 h-4" />
-                      Etiquetas de intereses
+                      <Bookmark className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">Etiquetas de intereses</span>
                     </button>
                     <button
                       onClick={() => setInterestsTab('habilidades')}
-                      className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 border ${
+                      className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all flex items-center justify-center gap-2 border text-sm sm:text-base ${
                         interestsTab === 'habilidades'
                           ? 'bg-[#1E1E1E] text-white border-[#1E1E1E] shadow-md'
                           : 'bg-white text-[#6E6E6E] border-gray-300 hover:bg-gray-50'
                       }`}
                     >
-                      <UserCog className="w-4 h-4" />
-                      Etiquetas de habilidades
+                      <UserCog className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">Etiquetas de habilidades</span>
                     </button>
                   </div>
 
                   {/* Etiquetas seleccionadas - Esta es la sección principal */}
-                  <div className="mb-8">
+                  <div className="mb-8 min-w-0">
                     <h3 className="text-sm font-semibold text-[#2D5444] mb-3 uppercase tracking-wide">
                       {interestsTab === 'intereses' ? 'Intereses' : 'Habilidades'} seleccionados ({(interestsTab === 'intereses' ? formData.interests : formData.skills).length})
                     </h3>
@@ -1791,7 +1791,7 @@ export default function ProfileNew() {
                         {(interestsTab === 'intereses' ? formData.interests : formData.skills).map((item, idx) => (
                           <span
                             key={idx}
-                            className={`px-4 py-2 rounded-full text-sm font-semibold text-white flex items-center gap-2 cursor-default select-none ${getTagColor(item, idx)}`}
+                            className={`inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-white cursor-default select-none max-w-full ${getTagColor(item, idx)}`}
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -1801,7 +1801,7 @@ export default function ProfileNew() {
                               e.stopPropagation();
                             }}
                           >
-                            <span className="pointer-events-none">{item}</span>
+                            <span className="pointer-events-none break-words">{item}</span>
                             <button
                               type="button"
                               onClick={(e) => {
@@ -1828,11 +1828,11 @@ export default function ProfileNew() {
                   </div>
 
                   {/* Agregar etiquetas nuevas */}
-                  <div>
-                    <h3 className="text-lg font-bold text-[#1E1E1E] mb-4">
+                  <div className="min-w-0">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1E1E1E] mb-4">
                       Agrega etiquetas nuevas
                     </h3>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <input
                         type="text"
                         value={customInterest}
@@ -1848,13 +1848,13 @@ export default function ProfileNew() {
                           }
                         }}
                         placeholder="Escribe etiquetas separadas por comas..."
-                        className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#2D5444] focus:ring-2 focus:ring-[#2D5444]/20 outline-none transition-all text-base"
+                        className="flex-1 min-w-0 w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#2D5444] focus:ring-2 focus:ring-[#2D5444]/20 outline-none transition-all text-sm sm:text-base"
                       />
                       <button
                         type="button"
                         onClick={() => interestsTab === 'intereses' ? handleAddCustomInterest() : handleAddCustomSkill()}
                         disabled={!customInterest.trim()}
-                        className="px-6 py-3 bg-[#2D5444] text-white rounded-full font-semibold hover:bg-[#2D5444]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-3 bg-[#2D5444] text-white rounded-full font-semibold hover:bg-[#2D5444]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 flex-shrink-0"
                       >
                         <Plus className="w-5 h-5" />
                         Agregar
@@ -2579,7 +2579,7 @@ export default function ProfileNew() {
           onClick={() => setShowInterestsModal(false)}
         >
           <div
-            className="bg-white rounded-3xl p-8 max-w-3xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-3xl p-4 sm:p-6 lg:p-8 max-w-3xl w-full shadow-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden min-w-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -2628,11 +2628,11 @@ export default function ProfileNew() {
             )}
 
             {/* Campo para agregar intereses personalizados */}
-            <div className="mb-6">
+            <div className="mb-6 min-w-0">
               <label className="block text-sm font-semibold text-[#2D5444] mb-2">
                 Agregar interés personalizado
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={customInterest}
@@ -2644,13 +2644,13 @@ export default function ProfileNew() {
                     }
                   }}
                   placeholder="Escribe un interés y presiona Enter..."
-                  className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#CF3F7A] focus:ring-2 focus:ring-[#CF3F7A]/20 outline-none transition-all"
+                  className="flex-1 min-w-0 w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#CF3F7A] focus:ring-2 focus:ring-[#CF3F7A]/20 outline-none transition-all"
                 />
                 <button
                   type="button"
                   onClick={handleAddCustomInterest}
                   disabled={!customInterest.trim()}
-                  className="px-6 py-3 bg-[#CF3F7A] text-white rounded-full font-semibold hover:bg-[#CF3F7A]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-6 py-3 bg-[#CF3F7A] text-white rounded-full font-semibold hover:bg-[#CF3F7A]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 flex-shrink-0"
                 >
                   <Plus className="w-5 h-5" />
                   Agregar
