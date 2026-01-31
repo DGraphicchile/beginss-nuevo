@@ -28,6 +28,7 @@ import Servicios from './pages/Servicios';
 import TiempoCompartido from './pages/TiempoCompartido';
 import EnConstruccion from './pages/EnConstruccion';
 import Contacto from './pages/Contacto';
+import NotFound from './pages/NotFound';
 
 function AppContent() {
   const { user, profile, loading } = useAuth();
@@ -62,6 +63,7 @@ function AppContent() {
             <Route path="/intercambio/tiempo" element={<TiempoCompartido />} />
             <Route path="/intercambio/:section" element={<EnConstruccion />} />
             <Route path="/contacto" element={<Contacto />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </div>
