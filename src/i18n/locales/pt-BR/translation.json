@@ -43,6 +43,31 @@
       "learnMore": "Saiba mais",
       "tagline": "🔄 Troque serviços  🤝 Conecte com mulheres reais 💛 Faça crescer seu propósito"
     },
+    "accessCards": {
+      "cafecito": {
+        "title": "Zona Cafecito",
+        "description": "Um espaço para conectar, compartilhar e criar comunidade entre mulheres.",
+        "point1": "Eventos e encontros virtuais ou presenciais",
+        "point2": "Publicações e ideias da comunidade",
+        "point3": "Inscrição em cafecitos e conversas"
+      },
+      "intercambio": {
+        "title": "Intercâmbio",
+        "description": "Encontre mulheres que oferecem ou buscam serviços e crie conexões com interesses similares.",
+        "point1": "Busque mulheres que oferecem serviços ou que buscam certos serviços",
+        "point2": "Conexão e propostas: conecte com usuárias com interesses similares",
+        "point3": "Trueque de objetos, banco de tempo e colaboração"
+      },
+      "marketplaceTrueque": {
+        "title": "Marketplace e Trueque",
+        "description": "Publique, compre, venda ou troque com mulheres da comunidade.",
+        "point1": "Produtos, serviços e oficinas",
+        "point2": "Venda, trueque ou pontos de tempo",
+        "point3": "Explore ofertas e publique as suas"
+      },
+      "ctaEnter": "Entrar",
+      "ctaRegisterLogin": "Cadastre-se ou entre para acessar"
+    },
     "howItWorks": {
       "label": "Como funciona o Beginss",
       "title": "Cadastre-se, explore<br />e viva a comunidade pelo app",

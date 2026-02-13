@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
-import { Heart, Leaf, Sparkles, Users, ArrowRight, Gift, Lightbulb, TreePine, Handshake, Star, TrendingUp, Infinity, UserPlus, Repeat, Store, Globe, MessageCircle, Circle } from 'lucide-react';
+import { Heart, Leaf, Sparkles, Users, ArrowRight, Gift, Lightbulb, TreePine, Handshake, Star, TrendingUp, Infinity, UserPlus, Repeat, Store, Globe, MessageCircle, Circle, Coffee, ShoppingBag, Check } from 'lucide-react';
 import Button from '../components/Button';
 import WaveDivider from '../components/WaveDivider';
 import { useAuth } from '../lib/AuthContext';
@@ -37,8 +37,8 @@ export default function Home() {
   {/* Capa de oscurecimiento para legibilidad */}
   <div className="absolute inset-0 bg-black/30" />
 
-  {/* Contenido principal: compacto y responsive para caber en la altura del hero */}
-  <div className="relative z-10 px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-center pt-14 pb-4 sm:py-6">
+  {/* Contenido principal: en móvil más abajo para mostrar más imagen; en desktop centrado */}
+  <div className="relative z-10 px-3 sm:px-6 lg:px-8 w-full h-full flex items-end justify-center pt-14 pb-14 sm:items-center sm:py-6">
     <div className="max-w-4xl mx-auto flex flex-col items-center text-center w-full max-h-full overflow-y-auto">
       <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
         <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
@@ -82,6 +82,142 @@ export default function Home() {
   </div>
 </section>
 
+      {/* Sección: Cards de acceso a Cafecito, Intercambio, Marketplace */}
+      <section className="relative bg-[#fef4ef] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {/* Card Cafecito */}
+          <Link
+            to={user ? '/cafecito' : '/registro'}
+            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#F5C542]"
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/young-women-chatting-and-laughing-in-casual-boho-o-2025-03-05-05-13-49-utc.jpg')" }}
+            />
+            {/* Tinte cálido + viñeta sutil */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#F5C542]/25 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
+            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#F5C542] flex items-center justify-center shadow-lg">
+              <Coffee className="w-6 h-6 text-[#1E1E1E]" />
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
+                {t('home.accessCards.cafecito.title')}
+              </h3>
+              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
+                {t('home.accessCards.cafecito.description')}
+              </p>
+              <ul className="space-y-2 mb-5">
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.cafecito.point1')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.cafecito.point2')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.cafecito.point3')}</span>
+                </li>
+              </ul>
+              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
+                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </Link>
+
+          {/* Card Intercambio */}
+          <Link
+            to={user ? '/intercambio' : '/registro'}
+            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#2D5444]"
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/hero-intercambiotiempo.jpg')" }}
+            />
+            {/* Tinte verde + viñeta sutil */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#2D5444]/20 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.12)_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
+            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#2D5444] flex items-center justify-center shadow-lg">
+              <Repeat className="w-6 h-6 text-white" />
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
+                {t('home.accessCards.intercambio.title')}
+              </h3>
+              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
+                {t('home.accessCards.intercambio.description')}
+              </p>
+              <ul className="space-y-2 mb-5">
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.intercambio.point1')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.intercambio.point2')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.intercambio.point3')}</span>
+                </li>
+              </ul>
+              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
+                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </Link>
+
+          {/* Card Marketplace y Trueque */}
+          <Link
+            to={user ? '/marketplace' : '/registro'}
+            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#CF3F7A]"
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: "url('/mujeresmarketplace-66.jpg')" }}
+            />
+            {/* Tinte rosa + viñeta sutil */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#CF3F7A]/20 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
+            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#CF3F7A] flex items-center justify-center shadow-lg">
+              <ShoppingBag className="w-6 h-6 text-white" />
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
+                {t('home.accessCards.marketplaceTrueque.title')}
+              </h3>
+              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
+                {t('home.accessCards.marketplaceTrueque.description')}
+              </p>
+              <ul className="space-y-2 mb-5">
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.marketplaceTrueque.point1')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.marketplaceTrueque.point2')}</span>
+                </li>
+                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
+                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
+                  <span>{t('home.accessCards.marketplaceTrueque.point3')}</span>
+                </li>
+              </ul>
+              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
+                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </Link>
+        </div>
+      </section>
 
 {/* Sección: Cómo funciona Beginss */}
 <section className="bg-[#fef4ef] py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
