@@ -68,6 +68,26 @@
       "ctaEnter": "Enter",
       "ctaRegisterLogin": "Sign up or log in to access"
     },
+    "mosaic": {
+      "cardCommunity": "Meet women who share your interests",
+      "cardCafecito": "Cafecito Zone",
+      "btnCafecito": "Go to Cafecito Zone",
+      "btnCafecitoExplore": "Explore Cafecito Zone",
+      "cardIntercambio": "Exchange",
+      "btnIntercambio": "View exchanges",
+      "btnIntercambioExplore": "Explore Exchange",
+      "cardIntercambioSupport": "Offer and receive services among women",
+      "cardMarketplace": "Marketplace and barter",
+      "btnMarketplace": "View marketplace",
+      "btnMarketplaceExplore": "Explore Marketplace",
+      "cardMarketplaceSupport": "Buy, sell and barter with others",
+      "badgeCafecito": "Cafecito",
+      "badgeIntercambio": "Exchange",
+      "badgeMarketplace": "Marketplace",
+      "badgeCircular": "Circular community",
+      "altVerticalImage": "Beginss women connecting",
+      "altHorizontalImage": "Beginss marketplace and barter"
+    },
     "howItWorks": {
       "label": "How Beginss works",
       "title": "Sign up, explore<br />and live the community from the app",
@@ -265,6 +285,20 @@
     "errorGeneric": "Error creating account"
   },
   "cafecito": {
+    "mosaic": {
+      "card1": "Meet new people",
+      "card2": "Meetups for parties or concerts",
+      "card3": "Friends to talk about books",
+      "card4": "Mom friends looking for advice",
+      "card5": "Women looking to pause and share",
+      "card6": "Plant lovers here",
+      "badge1": "Space for brands",
+      "badge2": "Support",
+      "badge3": "Projects",
+      "badge4": "Connection",
+      "altVerticalImage": "Beginss women at Cafecito",
+      "altHorizontalImage": "Beginss women creating together"
+    },
     "hero": {
       "badge": "Active community",
       "title": "Cafecito Zone",

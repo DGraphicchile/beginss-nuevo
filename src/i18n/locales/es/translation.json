@@ -68,6 +68,26 @@
       "ctaEnter": "Entrar",
       "ctaRegisterLogin": "Regístrate o inicia sesión para acceder"
     },
+    "mosaic": {
+      "cardCommunity": "Conocer mujeres que comparten tus intereses",
+      "cardCafecito": "Zona Cafecito",
+      "btnCafecito": "Ir a Zona Cafecito",
+      "btnCafecitoExplore": "Explorar Zona Cafecito",
+      "cardIntercambio": "Intercambio",
+      "btnIntercambio": "Ver intercambios",
+      "btnIntercambioExplore": "Explorar Intercambio",
+      "cardIntercambioSupport": "Ofrece y recibe servicios entre mujeres",
+      "cardMarketplace": "Marketplace y trueque",
+      "btnMarketplace": "Ver marketplace",
+      "btnMarketplaceExplore": "Explorar Marketplace",
+      "cardMarketplaceSupport": "Compra, vende y truequea con otras",
+      "badgeCafecito": "Cafecito",
+      "badgeIntercambio": "Intercambio",
+      "badgeMarketplace": "Marketplace",
+      "badgeCircular": "Comunidad circular",
+      "altVerticalImage": "Mujeres Beginss conectando",
+      "altHorizontalImage": "Marketplace y trueque Beginss"
+    },
     "howItWorks": {
       "label": "Así funciona Beginss",
       "title": "Regístrate, explora<br />y vive la comunidad desde la app",
@@ -265,6 +285,20 @@
     "errorGeneric": "Error al crear la cuenta"
   },
   "cafecito": {
+    "mosaic": {
+      "card1": "Conocer gente nueva",
+      "card2": "Juntadas para ir a fiestas o recitales",
+      "card3": "Amigas para hablar de libros",
+      "card4": "Amigas madres que buscan consejos",
+      "card5": "Chicas que buscan pausar y compartir",
+      "card6": "Amante de las plantas aquí",
+      "badge1": "Espacio para marcas",
+      "badge2": "Apoyo",
+      "badge3": "Proyectos",
+      "badge4": "Conexión",
+      "altVerticalImage": "Mujeres Beginss en Cafecito",
+      "altHorizontalImage": "Mujeres Beginss creando juntas"
+    },
     "hero": {
       "badge": "Comunidad activa",
       "title": "Zona Cafecito",

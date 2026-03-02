@@ -68,6 +68,26 @@
       "ctaEnter": "Entrar",
       "ctaRegisterLogin": "Cadastre-se ou entre para acessar"
     },
+    "mosaic": {
+      "cardCommunity": "Conhecer mulheres que compartilham seus interesses",
+      "cardCafecito": "Espaço Cafecito",
+      "btnCafecito": "Ir ao Espaço Cafecito",
+      "btnCafecitoExplore": "Explorar Espaço Cafecito",
+      "cardIntercambio": "Intercâmbio",
+      "btnIntercambio": "Ver intercâmbios",
+      "btnIntercambioExplore": "Explorar Intercâmbio",
+      "cardIntercambioSupport": "Ofereça e receba serviços entre mulheres",
+      "cardMarketplace": "Marketplace e trueque",
+      "btnMarketplace": "Ver marketplace",
+      "btnMarketplaceExplore": "Explorar Marketplace",
+      "cardMarketplaceSupport": "Compre, venda e troque com outras",
+      "badgeCafecito": "Cafecito",
+      "badgeIntercambio": "Intercâmbio",
+      "badgeMarketplace": "Marketplace",
+      "badgeCircular": "Comunidade circular",
+      "altVerticalImage": "Mulheres Beginss conectando",
+      "altHorizontalImage": "Marketplace e trueque Beginss"
+    },
     "howItWorks": {
       "label": "Como funciona o Beginss",
       "title": "Cadastre-se, explore<br />e viva a comunidade pelo app",
@@ -265,6 +285,20 @@
     "errorGeneric": "Erro ao criar a conta"
   },
   "cafecito": {
+    "mosaic": {
+      "card1": "Conhecer gente nova",
+      "card2": "Encontros para festas ou shows",
+      "card3": "Amigas para falar de livros",
+      "card4": "Mães amigas buscando conselhos",
+      "card5": "Mulheres que buscam pausar e compartilhar",
+      "card6": "Amantes de plantas aqui",
+      "badge1": "Espaço para marcas",
+      "badge2": "Apoio",
+      "badge3": "Projetos",
+      "badge4": "Conexão",
+      "altVerticalImage": "Mulheres Beginss no Cafecito",
+      "altHorizontalImage": "Mulheres Beginss criando juntas"
+    },
     "hero": {
       "badge": "Comunidade ativa",
       "title": "Espaço Cafecito",

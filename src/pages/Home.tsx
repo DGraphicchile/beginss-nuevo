@@ -21,7 +21,7 @@ export default function Home() {
   }));
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-[#fef4ef] overflow-hidden">
       {/* Hero Section: altura adaptativa para mantener relación de aspecto y reducir recorte */}
       <section
         className="relative text-white bg-no-repeat overflow-hidden flex items-center justify-center w-full"
@@ -37,15 +37,9 @@ export default function Home() {
   {/* Capa de oscurecimiento para legibilidad */}
   <div className="absolute inset-0 bg-black/30" />
 
-  {/* Contenido principal: en móvil más abajo para mostrar más imagen; en desktop centrado */}
-  <div className="relative z-10 px-3 sm:px-6 lg:px-8 w-full h-full flex items-end justify-center pt-14 pb-14 sm:items-center sm:py-6">
+  {/* Contenido principal: misma posición en mobile y desktop, cerca del centro */}
+  <div className="relative z-10 px-3 sm:px-6 lg:px-8 w-full h-full flex items-center justify-center pt-24 pb-8">
     <div className="max-w-4xl mx-auto flex flex-col items-center text-center w-full max-h-full overflow-y-auto">
-      <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
-        <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
-        <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-          {t('home.hero.badge')}
-        </span>
-      </div>
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-lg shrink-0">
         {t('home.hero.title1')}
         <br />
@@ -70,8 +64,12 @@ export default function Home() {
           className="w-28 sm:w-36 md:w-44 lg:w-52 xl:w-64 h-auto mx-auto drop-shadow-lg max-w-[90vw]"
         />
       </div>
-      <div className="flex items-center justify-center text-center shrink-0">
-        <p className="text-white/70 text-xs sm:text-sm">{t('home.hero.tagline')}</p>
+      {/* Badge de comunidad circular debajo del logo en mobile/desktop */}
+      <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
+        <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
+        <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+          {t('home.hero.badge')}
+        </span>
       </div>
     </div>
   </div>
@@ -82,140 +80,113 @@ export default function Home() {
   </div>
 </section>
 
-      {/* Sección: Cards de acceso a Cafecito, Intercambio, Marketplace */}
-      <section className="relative bg-[#fef4ef] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {/* Card Cafecito */}
-          <Link
-            to={user ? '/cafecito' : '/registro'}
-            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#F5C542]"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('/young-women-chatting-and-laughing-in-casual-boho-o-2025-03-05-05-13-49-utc.jpg')" }}
-            />
-            {/* Tinte cálido + viñeta sutil */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#F5C542]/25 via-transparent to-transparent" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
-            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#F5C542] flex items-center justify-center shadow-lg">
-              <Coffee className="w-6 h-6 text-[#1E1E1E]" />
-            </div>
-            <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
-                {t('home.accessCards.cafecito.title')}
-              </h3>
-              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
-                {t('home.accessCards.cafecito.description')}
-              </p>
-              <ul className="space-y-2 mb-5">
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.cafecito.point1')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.cafecito.point2')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#F5C542]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.cafecito.point3')}</span>
-                </li>
-              </ul>
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
-                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
-                <ArrowRight className="w-4 h-4" />
-              </span>
-            </div>
-          </Link>
+      {/* Sección: acceso visual a los espacios clave (Cafecito, Intercambio, Marketplace) en formato mosaico */}
+      <section className="relative -mt-px bg-[#fef4ef] py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Mosaico principal: replicamos el diseño de Cafecito, pero orientado a las 3 áreas clave */}
+          <div className="relative group/mosaic">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 lg:grid-rows-2 gap-4">
+              {/* 1. Primera columna: dos cards de texto (una encima de otra) */}
+              <div className="rounded-[2rem] bg-[#5F3A2D] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-1 lg:row-start-1 aspect-square transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                {t('home.mosaic.cardCommunity')}
+              </div>
+              {/* Naranja Cafecito con SVG y botón flotante encima */}
+              <div className="group relative rounded-[2rem] bg-[#E9521E] text-white px-4 pt-10 pb-24 flex flex-col items-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-1 lg:row-start-2 aspect-square overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                <div className="absolute inset-y-0 left-0 w-2/3 flex items-end justify-start transition-transform duration-500 group-hover:scale-105">
+                  <img
+                    src="/card-1.svg"
+                    alt=""
+                    className="h-full w-auto object-contain opacity-15"
+                  />
+                </div>
+                <Coffee className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 mb-3 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10 transition-transform duration-300 group-hover:translate-y-[-2px]">
+                  {t('home.mosaic.cardCafecito')}
+                </span>
+                <Link
+                  to={user ? '/cafecito' : '/registro'}
+                  className="absolute inset-x-4 bottom-4 z-20 flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-[#CF3F7A] text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95"
+                >
+                  {user ? t('home.mosaic.btnCafecito') : t('home.mosaic.btnCafecitoExplore')}
+                </Link>
+              </div>
 
-          {/* Card Intercambio */}
-          <Link
-            to={user ? '/intercambio' : '/registro'}
-            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#2D5444]"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('/hero-intercambiotiempo.jpg')" }}
-            />
-            {/* Tinte verde + viñeta sutil */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#2D5444]/20 via-transparent to-transparent" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.12)_100%)]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
-            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#2D5444] flex items-center justify-center shadow-lg">
-              <Repeat className="w-6 h-6 text-white" />
-            </div>
-            <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
-                {t('home.accessCards.intercambio.title')}
-              </h3>
-              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
-                {t('home.accessCards.intercambio.description')}
-              </p>
-              <ul className="space-y-2 mb-5">
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.intercambio.point1')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.intercambio.point2')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#7CA982]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.intercambio.point3')}</span>
-                </li>
-              </ul>
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
-                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
-                <ArrowRight className="w-4 h-4" />
-              </span>
-            </div>
-          </Link>
+              {/* 2. Columna central: card vertical solo con imagen (2 cuadrados de alto) */}
+              <div className="group relative overflow-hidden rounded-[2rem] shadow-lg lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:aspect-[1/2] transition-shadow duration-300 hover:shadow-2xl">
+                <img
+                  src="/card-vertical-home.png"
+                  alt={t('home.mosaic.altVerticalImage')}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
 
-          {/* Card Marketplace y Trueque */}
-          <Link
-            to={user ? '/marketplace' : '/registro'}
-            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-[#CF3F7A]"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-              style={{ backgroundImage: "url('/mujeresmarketplace-66.jpg')" }}
-            />
-            {/* Tinte rosa + viñeta sutil */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#CF3F7A]/20 via-transparent to-transparent" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
-            <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-[#CF3F7A] flex items-center justify-center shadow-lg">
-              <ShoppingBag className="w-6 h-6 text-white" />
+              {/* 3. Tercera columna: Intercambio con color verde y botón flotante encima */}
+              <div className="group relative rounded-[2rem] bg-[#2D5444] text-white px-4 pt-10 pb-24 flex flex-col items-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-3 lg:row-start-1 aspect-square overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                <Repeat className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 mb-3 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10 transition-transform duration-300 group-hover:translate-y-[-2px]">
+                  {t('home.mosaic.cardIntercambio')}
+                </span>
+                <Link
+                  to={user ? '/intercambio' : '/registro'}
+                  className="absolute inset-x-4 bottom-4 z-20 flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-[#2D5444] text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95"
+                >
+                  {user ? t('home.mosaic.btnIntercambio') : t('home.mosaic.btnIntercambioExplore')}
+                </Link>
+              </div>
+              <div className="rounded-[2rem] bg-[#B2D9D9] text-[#1E1E1E] px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-3 lg:row-start-2 aspect-square transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                {t('home.mosaic.cardIntercambioSupport')}
+              </div>
+
+              {/* 4. Cuarta columna: Marketplace con amarillo y botón flotante encima */}
+              <div className="group relative rounded-[2rem] bg-[#F4B710] text-[#1E1E1E] px-4 pt-4 pb-24 flex flex-col items-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-4 lg:row-start-1 aspect-square overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                <div className="absolute inset-y-0 left-0 w-2/3 flex items-center justify-start transition-transform duration-500 group-hover:scale-105">
+                  <img
+                    src="/card-amarilla.svg"
+                    alt=""
+                    className="h-full w-auto object-contain object-bottom opacity-20"
+                  />
+                </div>
+                <ShoppingBag className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 mb-3 text-[#1E1E1E] transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10 transition-transform duration-300 group-hover:translate-y-[-2px]">
+                  {t('home.mosaic.cardMarketplace')}
+                </span>
+                <Link
+                  to={user ? '/marketplace' : '/registro'}
+                  className="absolute inset-x-4 bottom-4 z-20 flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-[#CF3F7A] text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95"
+                >
+                  {user ? t('home.mosaic.btnMarketplace') : t('home.mosaic.btnMarketplaceExplore')}
+                </Link>
+              </div>
+              <div className="rounded-[2rem] bg-[#D0405D] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-5 lg:row-start-1 aspect-square transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                {t('home.mosaic.cardMarketplaceSupport')}
+              </div>
+
+              {/* 5. Derecha abajo: imagen horizontal (2 cuadrados de ancho) */}
+              <div className="group relative overflow-hidden rounded-[2rem] shadow-lg lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:aspect-[2/1] transition-shadow duration-300 hover:shadow-2xl">
+                <img
+                  src="/card-horizontal-home.png"
+                  alt={t('home.mosaic.altHorizontalImage')}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
             </div>
-            <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 drop-shadow">
-                {t('home.accessCards.marketplaceTrueque.title')}
-              </h3>
-              <p className="text-white/95 text-sm sm:text-base mb-4 drop-shadow leading-relaxed">
-                {t('home.accessCards.marketplaceTrueque.description')}
-              </p>
-              <ul className="space-y-2 mb-5">
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.marketplaceTrueque.point1')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.marketplaceTrueque.point2')}</span>
-                </li>
-                <li className="flex items-center gap-2 text-white/95 text-sm drop-shadow">
-                  <Check className="w-4 h-4 shrink-0 text-[#E2725B]" strokeWidth={2.5} />
-                  <span>{t('home.accessCards.marketplaceTrueque.point3')}</span>
-                </li>
-              </ul>
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 text-[#2D5444] font-semibold text-sm sm:text-base shadow-md group-hover:bg-white transition-colors">
-                {user ? t('home.accessCards.ctaEnter') : t('home.accessCards.ctaRegisterLogin')}
-                <ArrowRight className="w-4 h-4" />
+
+            {/* Badges flotantes sobre el grupo derecho, con microinteracciones al hover del mosaico */}
+            <div className="pointer-events-none absolute inset-x-6 sm:inset-x-10 lg:inset-x-16 top-1/2 flex flex-wrap justify-center lg:justify-end gap-2 sm:gap-3">
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#CF3F7A] text-white text-xs sm:text-sm font-semibold shadow-md -rotate-3 transition-all duration-300 group-hover/mosaic:scale-110 group-hover/mosaic:-translate-y-0.5 group-hover/mosaic:shadow-lg">
+                {t('home.mosaic.badgeCafecito')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#2D5444] text-white text-xs sm:text-sm font-semibold shadow-md rotate-2 transition-all duration-300 group-hover/mosaic:scale-110 group-hover/mosaic:-translate-y-0.5 group-hover/mosaic:shadow-lg">
+                {t('home.mosaic.badgeIntercambio')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F4B710] text-[#1E1E1E] text-xs sm:text-sm font-semibold shadow-md -rotate-2 transition-all duration-300 group-hover/mosaic:scale-110 group-hover/mosaic:-translate-y-0.5 group-hover/mosaic:shadow-lg">
+                {t('home.mosaic.badgeMarketplace')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#B2D9D9] text-[#1E1E1E] text-xs sm:text-sm font-semibold shadow-md rotate-3 transition-all duration-300 group-hover/mosaic:scale-110 group-hover/mosaic:-translate-y-0.5 group-hover/mosaic:shadow-lg">
+                {t('home.mosaic.badgeCircular')}
               </span>
             </div>
-          </Link>
+          </div>
         </div>
       </section>
 

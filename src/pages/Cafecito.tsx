@@ -344,6 +344,81 @@ export default function Cafecito() {
 
       <WaveDivider color="#FAF7F2" />
 
+      {/* Banda visual de acceso (mismo diseño que en Home debajo del hero) */}
+      <section className="relative -mt-px bg-[#fef4ef] py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Mosaico principal: 5 columnas x 2 filas en desktop, se apila en mobile */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 lg:grid-rows-2 gap-4">
+            {/* 1. Primera columna: dos cards de texto (una encima de otra) */}
+            <div className="rounded-[2rem] bg-[#5F3A2D] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-1 lg:row-start-1 aspect-square">
+              Conocer gente nueva
+            </div>
+            <div className="rounded-[2rem] bg-[#E89A94] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-1 lg:row-start-2 aspect-square">
+              Amigas para hablar de libros
+            </div>
+
+            {/* 2. Columna central: card vertical solo con imagen (2 cuadrados de alto) */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-lg lg:col-start-2 lg:row-start-1 lg:row-span-2 h-full">
+              <img
+                src="/group-of-volunteers-with-working-in-community-char-2025-02-11-14-58-29-utc.jpg"
+                alt="Mujeres Beginss colaborando"
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            {/* 3. Tercera columna: dos cards cuadradas de texto */}
+            <div className="rounded-[2rem] bg-[#CDE6E0] text-[#2D5444] px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-3 lg:row-start-1 aspect-square">
+              Chicas que buscan pausar y compartir
+            </div>
+            <div className="rounded-[2rem] bg-[#F7EFE9] text-[#5F5F5F] px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-3 lg:row-start-2 aspect-square">
+              Amantes de las plantas y lo artesanal
+            </div>
+
+            {/* 4. Cuarta columna (arriba): dos cards cuadradas de texto */}
+            <div className="rounded-[2rem] bg-[#F8E5C9] text-[#5F5F5F] px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-4 lg:row-start-1 aspect-square">
+              Buscar mujeres que ofrecen servicios
+            </div>
+            <div className="rounded-[2rem] bg-[#7CA982] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-base sm:text-lg font-semibold leading-relaxed lg:col-start-5 lg:row-start-1 aspect-square">
+              Conectar con quienes buscan apoyo parecido
+            </div>
+
+            {/* 5. Derecha abajo: imagen horizontal del ancho de las dos cards de arriba (2 cuadrados de ancho) */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-lg lg:col-start-4 lg:col-span-2 lg:row-start-2 h-full">
+              <img
+                src="/mujeresmarketplace-66.jpg"
+                alt="Marketplace y trueque Beginss"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+
+          {/* CTAs hacia las secciones clave */}
+          <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
+            <Link
+              to={user ? '/cafecito' : '/registro'}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#CF3F7A] text-white text-sm font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <Coffee className="w-4 h-4" />
+              <span>Zona Cafecito</span>
+            </Link>
+            <Link
+              to={user ? '/intercambio' : '/registro'}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#2D5444] text-white text-sm font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <Users className="w-4 h-4" />
+              <span>Intercambio</span>
+            </Link>
+            <Link
+              to={user ? '/marketplace' : '/registro'}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F5C542] text-[#1E1E1E] text-sm font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Marketplace y Trueque</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section-spacing px-4 sm:px-6 lg:px-8 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">

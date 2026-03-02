@@ -1,7 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, MapPin, Users, Video, Clock, Coffee, Plus, X, Upload, List } from 'lucide-react';
+import { Search, MapPin, Users, Video, Clock, Coffee, Plus, X, Upload, List, MessageCircle } from 'lucide-react';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import WaveDivider from '../components/WaveDivider';
@@ -696,23 +696,101 @@ export default function CafecitoNew() {
 
       <WaveDivider color="#FAF7F2" />
 
-      {/* Sección de imagen destacada: pegada al hero (margin negativo sobre la onda) */}
-<section className="-mt-8 sm:-mt-12 lg:-mt-16 pt-0 pb-2 sm:pb-3 px-2 sm:px-6 flex justify-center items-center overflow-hidden">
-  <button
-            type="button"
-            onClick={() => setShowFeatureImageModal(true)}
-            className="w-full max-w-5xl rounded-[2rem] overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e74865] focus-visible:ring-offset-2"
-            aria-label={t('cafecito.aria.featureImageExpand')}
-          >
-    <div className="w-full min-h-[200px] sm:min-h-[260px] md:min-h-0 flex items-center">
-      <img
-        src="/recurso-cafecito-1.svg"
-        alt={t('cafecito.aria.featureImage')}
-        className="w-full h-auto min-h-[200px] sm:min-h-[260px] md:min-h-0 object-contain object-center rounded-[2rem]"
-      />
-    </div>
-  </button>
-</section>
+      {/* Banda visual de acceso (mismo diseño que en Home debajo del hero) */}
+      <section className="relative -mt-px bg-[#fef4ef] py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Mosaico principal: 5 columnas x 2 filas en desktop, con cuadrados perfectos para las cards de texto */}
+          <div className="relative">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 lg:grid-rows-2 gap-4">
+            {/* 1. Primera columna: dos cards de texto (una encima de otra) */}
+            <div className="rounded-[2rem] bg-[#5F3A2D] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-1 sm:order-none lg:col-start-1 lg:row-start-1 aspect-square">
+              {t('cafecito.mosaic.card1')}
+            </div>
+            {/* Cuadrado inferior con fondo naranja + SVG ondulado en el lado izquierdo (completo, sin recorte) + texto */}
+            <div className="relative rounded-[2rem] bg-[#E9521E] overflow-hidden flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-2 sm:order-none lg:col-start-1 lg:row-start-2 aspect-square text-white px-4">
+              <div className="absolute inset-y-0 left-0 w-2/3 flex items-end justify-start">
+                <img
+                  src="/card-1.svg"
+                  alt=""
+                  className="h-full w-auto object-contain opacity-15"
+                />
+              </div>
+              <span className="relative z-10">
+                {t('cafecito.mosaic.card2')}
+              </span>
+            </div>
+
+            {/* 2. Columna central: card vertical solo con imagen (2 cuadrados de alto) */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-lg order-3 sm:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:aspect-[1/2]">
+              <img
+                src="/card-vertical-cafecito.png"
+                alt={t('cafecito.mosaic.altVerticalImage')}
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            {/* 3. Tercera columna: dos cards de texto */}
+            <div className="relative rounded-[2rem] bg-[#F4B710] overflow-hidden flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-4 sm:order-none lg:col-start-3 lg:row-start-1 aspect-square text-white px-4">
+              <div className="absolute inset-y-0 left-0 w-2/3 flex items-center justify-start">
+                <img
+                  src="/card-amarilla.svg"
+                  alt=""
+                  className="h-full w-auto object-contain object-bottom opacity-20"
+                />
+              </div>
+              <span className="relative z-10">
+                {t('cafecito.mosaic.card3')}
+              </span>
+            </div>
+            <div className="rounded-[2rem] bg-[#D0405D] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-6 sm:order-none lg:col-start-3 lg:row-start-2 aspect-square">
+              {t('cafecito.mosaic.card4')}
+            </div>
+
+            {/* 4. Cuarta columna (arriba): dos cards de texto */}
+            <div className="rounded-[2rem] bg-[#B2D9D9] text-white px-4 py-6 sm:py-8 flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-5 sm:order-none lg:col-start-4 lg:row-start-1 aspect-square">
+              {t('cafecito.mosaic.card5')}
+            </div>
+            <div className="relative rounded-[2rem] bg-[#DFBCDA] overflow-hidden flex items-center justify-center text-center text-lg sm:text-xl font-semibold leading-relaxed order-7 sm:order-none lg:col-start-5 lg:row-start-1 aspect-square text-white px-4">
+              <div className="absolute inset-0 flex items-end justify-end">
+                <img
+                  src="/card-lila.svg"
+                  alt=""
+                  className="w-auto h-auto max-w-full max-h-full object-contain opacity-20"
+                />
+              </div>
+              <span className="relative z-10">
+                {t('cafecito.mosaic.card6')}
+              </span>
+            </div>
+
+              {/* 5. Derecha abajo: imagen horizontal (2 cuadrados de ancho) */}
+              <div className="relative overflow-hidden rounded-[2rem] shadow-lg order-8 sm:order-none aspect-[4/3] lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:aspect-[2/1]">
+                <img
+                  src="/card-horizontal-cafecito.png"
+                  alt={t('cafecito.mosaic.altHorizontalImage')}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Badges flotantes sobre el grupo derecho (3 cards arriba + imagen abajo) */}
+            <div className="pointer-events-none absolute inset-x-6 sm:inset-x-10 lg:inset-x-16 top-1/2 flex flex-wrap justify-center lg:justify-end gap-2 sm:gap-3">
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#CF3F7A] text-white text-xs sm:text-sm font-semibold shadow-md -rotate-3">
+                {t('cafecito.mosaic.badge1')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#B28AD5] text-white text-xs sm:text-sm font-semibold shadow-md rotate-2">
+                {t('cafecito.mosaic.badge2')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F5C542] text-[#1E1E1E] text-xs sm:text-sm font-semibold shadow-md -rotate-2">
+                {t('cafecito.mosaic.badge3')}
+              </span>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#CF3F7A] text-white text-xs sm:text-sm font-semibold shadow-md rotate-3">
+                {t('cafecito.mosaic.badge4')}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Modal imagen destacada */}
       {showFeatureImageModal && (
