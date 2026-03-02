@@ -48,15 +48,6 @@ export default function Home() {
       <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-3 sm:mb-4 md:mb-6 leading-snug max-w-2xl drop-shadow shrink-0">
         {t('home.hero.subtitle')}
       </p>
-      {!user && (
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-3 sm:mb-4 md:mb-6 justify-center shrink-0">
-          <Link to="/registro">
-            <Button variant="cta" className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-2.5 px-5 sm:px-6">
-              {t('home.hero.joinCircle')}
-            </Button>
-          </Link>
-        </div>
-      )}
       <div className="mb-3 sm:mb-4 md:mb-6 shrink-0">
         <img
           src="/logo-hor-beige.svg"
@@ -64,13 +55,21 @@ export default function Home() {
           className="w-28 sm:w-36 md:w-44 lg:w-52 xl:w-64 h-auto mx-auto drop-shadow-lg max-w-[90vw]"
         />
       </div>
-      {/* Badge de comunidad circular debajo del logo en mobile/desktop */}
-      <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
-        <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
-        <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-          {t('home.hero.badge')}
-        </span>
-      </div>
+      {/* Badge cuando logueado; botón Únete al Círculo cuando no logueado */}
+      {user ? (
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-[#CF3F7A] rounded-full shadow-md shrink-0">
+          <Circle className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white" />
+          <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+            {t('home.hero.badge')}
+          </span>
+        </div>
+      ) : (
+        <Link to="/registro" className="shrink-0">
+          <Button variant="cta" className="text-sm sm:text-base py-2 sm:py-2.5 px-5 sm:px-6">
+            {t('home.hero.joinCircle')}
+          </Button>
+        </Link>
+      )}
     </div>
   </div>
 
