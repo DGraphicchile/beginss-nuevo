@@ -25,35 +25,41 @@ export default function Circulos() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 h-[600px]">
+      {/* Hero con imagen: contenido abajo para ver las caras */}
+      <section className="relative min-h-[45vh] sm:min-h-[50vh] flex items-end pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0">
           <img
             src="/img-header-circulodeaccion.jpg"
             alt="Círculos de Acción Beginss"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_85%]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
         </div>
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full">
-              <Infinity className="w-3 h-3 text-[#2D5444]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2D5444]">{t('circulosPage.hero.badge')}</span>
+        <div className="max-w-7xl mx-auto relative z-20 w-full pt-[22vh] sm:pt-[26vh]">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-1.5 mb-3 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full">
+              <Infinity className="w-2.5 h-2.5 text-[#2D5444]" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#2D5444]">{t('circulosPage.hero.badge')}</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight drop-shadow-lg">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
               <Trans i18nKey="circulosPage.hero.title" components={{ br: <br /> }} />
             </h2>
-            <p className="text-xl text-white max-w-4xl mx-auto leading-relaxed mb-4 drop-shadow-md">
+            <p className="text-base sm:text-lg text-white max-w-3xl mx-auto leading-relaxed mb-2 drop-shadow-md">
               {t('circulosPage.hero.description')}
             </p>
-            <p className="text-lg text-white/90 max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-sm sm:text-base text-white/90 max-w-2xl mx-auto drop-shadow-md">
               {t('circulosPage.hero.description2')}
             </p>
           </div>
+        </div>
+      </section>
 
+      {/* Grid de círculos y CTA */}
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {circulos.map((circulo, index) => (
                 <Link

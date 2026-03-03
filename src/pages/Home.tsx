@@ -38,7 +38,7 @@ export default function Home() {
   <div className="absolute inset-0 bg-black/30" />
 
   {/* Contenido principal: posicionado abajo para dejar visibles las caras de la imagen */}
-  <div className="relative z-20 px-3 sm:px-6 lg:px-8 w-full h-full flex items-end justify-center pt-24 pb-8 sm:pb-12">
+  <div className="relative z-20 px-3 sm:px-6 lg:px-8 w-full h-full flex items-end justify-center pt-[36vh] sm:pt-[40vh] pb-8 sm:pb-12">
     <div className="max-w-4xl mx-auto flex flex-col items-center text-center w-full max-h-full overflow-y-auto">
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight drop-shadow-lg shrink-0">
         {t('home.hero.title1')}

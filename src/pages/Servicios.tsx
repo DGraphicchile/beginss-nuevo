@@ -125,14 +125,14 @@ export default function Servicios() {
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* HERO con imagen */}
       <section
-        className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-top bg-no-repeat"
+        className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-end pt-28 sm:pt-28 lg:pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cover bg-top bg-no-repeat"
         style={{ backgroundImage: "url('/hero-servicios.jpg')" }}
       >
         {/* overlay */}
         <div className="absolute inset-0 bg-black/35" />
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10 text-center text-white w-full">
+        <div className="max-w-7xl mx-auto relative z-20 text-center text-white w-full pt-[28vh] sm:pt-[32vh]">
           <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white rounded-full shadow-md">
             <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F5C542]" />
             <span className="text-[#F5C542] text-xs sm:text-sm font-bold uppercase tracking-wider">

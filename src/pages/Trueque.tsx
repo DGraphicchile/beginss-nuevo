@@ -115,7 +115,7 @@ export default function Trueque() {
   <div className="min-h-screen bg-white">
     {/* HERO */}
 <section
-  className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-center bg-cover bg-no-repeat"
+  className="relative min-h-[50vh] sm:min-h-[55vh] flex items-end pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-center bg-cover bg-no-repeat"
   style={{ backgroundImage: "url('/img-header-trueque.jpg')" }}
 >
   <div className="absolute inset-0" /> {/* Oscurece la imagen un poco */}
@@ -126,7 +126,7 @@ export default function Trueque() {
   <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#CF3F7A]/20 rounded-full blur-3xl -z-10" />
 
   {/* Contenido principal */}
-  <div className="max-w-7xl mx-auto relative z-10 text-center text-white">
+  <div className="max-w-7xl mx-auto relative z-20 text-center text-white w-full pt-[28vh] sm:pt-[32vh]">
     {/* Badge*/}
     <div className="inline-flex items-center gap-2 mb-6 px-6 py-3 rounded-full shadow-lg bg-white backdrop-blur-md">
       <Repeat className="w-5 h-5 text-[#01492b] drop-shadow-md" />

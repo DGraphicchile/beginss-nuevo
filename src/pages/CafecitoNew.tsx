@@ -675,7 +675,7 @@ export default function CafecitoNew() {
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10 w-full h-full flex items-center justify-center pt-14 pb-4 sm:py-6">
+        <div className="max-w-7xl mx-auto relative z-20 w-full h-full flex items-end justify-center pt-[28vh] sm:pt-[32vh] pb-8 sm:pb-12">
           <div className="text-center w-full max-h-full overflow-y-auto">
             <div className="inline-flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 px-3 sm:px-5 py-1.5 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg shrink-0">
               <Coffee className="w-3 h-3 sm:w-4 sm:h-4 text-[#e74865]" />

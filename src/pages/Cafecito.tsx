@@ -299,8 +299,8 @@ export default function Cafecito() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative min-h-[50vh] sm:min-h-[55vh] flex items-end pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 min-h-[50vh] sm:min-h-[55vh]">
           <img
             src="/grupodemujeresbeginns.jpg"
             alt="Beginss Women Community"
@@ -311,7 +311,7 @@ export default function Cafecito() {
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto relative z-20 w-full pt-[28vh] sm:pt-[32vh]">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
               <Coffee className="w-4 h-4 text-[#e74865]" />

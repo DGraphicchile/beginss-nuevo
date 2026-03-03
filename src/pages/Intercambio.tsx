@@ -20,7 +20,7 @@ export default function Intercambio() {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-       <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+       <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[60vh] flex items-end pt-28 sm:pt-28 lg:pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
   <div className="absolute inset-0">
     <img
       src="/trendy-and-interracial-group-of-girlfriends-lookin-2024-11-15-08-57-27-utc.jpg"
@@ -32,7 +32,7 @@ export default function Intercambio() {
 
   <FloatingElements />
 
-  <div className="max-w-7xl mx-auto relative z-10 w-full">
+  <div className="max-w-7xl mx-auto relative z-20 w-full pt-[28vh] sm:pt-[32vh]">
     <div className="text-center mb-8 sm:mb-12">
       <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
         <Repeat className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F5C542]" />

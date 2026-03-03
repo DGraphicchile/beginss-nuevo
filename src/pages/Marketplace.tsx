@@ -345,19 +345,19 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[65vh] xl:min-h-[70vh] flex items-center pt-28 sm:pt-28 lg:pt-32 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative min-h-[50vh] sm:min-h-[55vh] lg:min-h-[65vh] xl:min-h-[70vh] flex items-end pt-28 sm:pt-28 lg:pt-32 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 min-h-[50vh] sm:min-h-[55vh] lg:min-h-[65vh] xl:min-h-[70vh]">
           <img
             src="/mujeresmarketplace-66.jpg"
             alt="Beginss Community"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover object-[center_85%]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
         </div>
 
         <FloatingElements />
 
-        <div className="max-w-7xl mx-auto relative z-10 w-full">
+        <div className="max-w-7xl mx-auto relative z-20 w-full pt-[28vh] sm:pt-[32vh]">
           <div className="text-center mb-8 sm:mb-12">
             <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-4 sm:px-5 py-2 sm:py-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
               <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7CA982]" />
